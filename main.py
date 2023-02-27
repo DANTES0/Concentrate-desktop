@@ -18,7 +18,7 @@ class MyGui(QtWidgets.QWidget):
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.timerEvent)
         self.timer.start(1000)
-
+#It is comment
     def timerEvent(self):
         #        global time
         self.time = self.time.addSecs(1)
