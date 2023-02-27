@@ -45,7 +45,7 @@ def sliderChanged(event):
 
 
 root = Tk()
-
+print("Hello World!")
 root.title('Confidence')
 root.geometry('480x480')
 root.iconbitmap("source/cat.ico")
