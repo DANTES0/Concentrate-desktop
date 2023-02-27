@@ -1,7 +1,7 @@
 import sys
 from PyQt5 import QtCore, QtWidgets
 
-
+#Валера я от тебя такого не ожидал все а теперь
 class MyGui(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
