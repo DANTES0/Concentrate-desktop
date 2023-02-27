@@ -1,7 +1,7 @@
 import sys
 from PyQt5 import QtCore, QtWidgets
 
-
+#new code from bogdan
 class MyGui(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
