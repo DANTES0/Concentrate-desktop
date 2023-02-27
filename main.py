@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtWidgets
-
+ХУЙНЯ
 
 class MyGui(QtWidgets.QWidget):
     def __init__(self):
