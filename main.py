@@ -1,7 +1,8 @@
-import sys
+import sys, random
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPainter, QBrush, QPen, QImage, QPalette
+from PyQt5.QtChart import *
 from PyQt5.QtCore import *
 
 
@@ -16,7 +17,8 @@ class Window(QMainWindow):
         # palette.setBrush(QPalette.Window, QBrush(sImage))
         # self.setPalette(palette)
         # self.lable.setText("Да ДА ДА")
-        self.CreateTimer()
+        self.Graph()
+        # self.CreateTimer()
         self.InitWindow()
 
 
@@ -115,12 +117,54 @@ class Window(QMainWindow):
         min_sec_format = '{:02d}:{:02d}'.format(m, s)
         self.lable.setText(str(min_sec_format))
     def InitWindow(self):
-
+        # self.setWindowFlags(Qt.FramelessWindowHint)
         self.setWindowTitle(self.title)
         self.setGeometry(650,50,750,850)
         self.setFixedSize(QSize(750,850))
         self.show()
 
+
+    def Graph(self):
+        self.set0 = QBarSet('X0')
+        self.set1 = QBarSet('X1')
+        self.set2 = QBarSet('X2')
+        self.set3 = QBarSet('X3')
+        self.set4 = QBarSet('X4')
+
+        self.set0.append([random.randint(0, 10) for i in range(6)])
+        self.set1.append([random.randint(0, 10) for i in range(6)])
+        self.set2.append([random.randint(0, 10) for i in range(6)])
+        self.set3.append([random.randint(0, 10) for i in range(6)])
+        self.set4.append([random.randint(0, 10) for i in range(6)])
+
+        series = QStackedBarSeries()
+        series.append(self.set0)
+        series.append(self.set1)
+        series.append(self.set2)
+        series.append(self.set3)
+        series.append(self.set4)
+
+        chart = QChart()
+        chart.addSeries(series)
+        chart.setTitle('Bar Chart Demo')
+        chart.setAnimationOptions(QChart.SeriesAnimations)
+
+        months = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun')
+
+        axisX = QBarCategoryAxis()
+        axisX.append(months)
+
+        axisY = QValueAxis()
+        axisY.setRange(0, 15)
+
+        chart.addAxis(axisX, Qt.AlignBottom)
+        chart.addAxis(axisY, Qt.AlignLeft)
+
+        chart.legend().setVisible(True)
+        chart.legend().setAlignment(Qt.AlignBottom)
+
+        chartView = QChartView(chart)
+        self.setCentralWidget(chartView)
 
     # def timerEvent(self):
     #     #        global time
