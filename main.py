@@ -6,6 +6,7 @@ from PyQt5.QtChart import *
 from PyQt5.QtCore import *
 
 
+
 class Window(QMainWindow):
     def __init__(self):
 
@@ -125,42 +126,56 @@ class Window(QMainWindow):
 
 
     def Graph(self):
-        self.set0 = QBarSet('X0')
+        # self.set0 = QBarSet('X0')
         self.set1 = QBarSet('X1')
         self.set2 = QBarSet('X2')
         self.set3 = QBarSet('X3')
         self.set4 = QBarSet('X4')
 
-        self.set0.append([random.randint(0, 10) for i in range(6)])
-        self.set1.append([random.randint(0, 10) for i in range(6)])
-        self.set2.append([random.randint(0, 10) for i in range(6)])
-        self.set3.append([random.randint(0, 10) for i in range(6)])
-        self.set4.append([random.randint(0, 10) for i in range(6)])
+        # self.set0.append([random.randint(0, 10) for i in range(7)])
+        self.set1.append([random.randint(0, 10) for i in range(7)])
+        self.set2.append([random.randint(0, 10) for i in range(7)])
+        self.set3.append([random.randint(0, 10) for i in range(7)])
+        self.set4.append([random.randint(0, 10) for i in range(7)])
 
         series = QStackedBarSeries()
-        series.append(self.set0)
+        # series.append(self.set0)
         series.append(self.set1)
         series.append(self.set2)
         series.append(self.set3)
         series.append(self.set4)
-
         chart = QChart()
         chart.addSeries(series)
-        chart.setTitle('Bar Chart Demo')
-        chart.setAnimationOptions(QChart.SeriesAnimations)
+        # chart.setTheme('ChartThemeBlueCerulean')
+        # chart.setTitle('Bar Chart Demo')
+        # chart.setAnimationOptions(QChart.SeriesAnimations)
+        chart.setAnimationOptions(QChart.AllAnimations)
+        chart.setTheme(4)
+        chart.setBackgroundRoundness(50)
+        chart.setDropShadowEnabled(True)
+        # chart.isZoomed()
+        # chart.setBackgroundVisible(False)
 
-        months = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun')
+        months = ('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat')
 
         axisX = QBarCategoryAxis()
         axisX.append(months)
-
         axisY = QValueAxis()
-        axisY.setRange(0, 15)
+        minY = 0
+        maxY = 12
+        axisY.setRange(minY, maxY)
+        axisY.setLabelFormat("%dh")
+        axisY.setTickCount(3)
+        axisY.setMinorTickCount(1)
 
         chart.addAxis(axisX, Qt.AlignBottom)
-        chart.addAxis(axisY, Qt.AlignLeft)
+        chart.addAxis(axisY, Qt.AlignRight)
+        chart.setFont(QtGui.QFont('Times',100))
+        # chart.removeAxis(axisX)
 
         chart.legend().setVisible(True)
+        chart.legend().setFont(QtGui.QFont('Arial', 30))
+        chart.legend().hide()
         chart.legend().setAlignment(Qt.AlignBottom)
 
         chartView = QChartView(chart)
