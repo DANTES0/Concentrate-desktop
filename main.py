@@ -120,8 +120,8 @@ class Window(QMainWindow):
     def InitWindow(self):
         # self.setWindowFlags(Qt.FramelessWindowHint)
         self.setWindowTitle(self.title)
-        self.setGeometry(650,50,750,850)
-        self.setFixedSize(QSize(750,850))
+        self.setGeometry(650,50,700,850)
+        self.setFixedSize(QSize(700,850))
         self.show()
 
 
@@ -137,7 +137,10 @@ class Window(QMainWindow):
         self.set2.append([random.randint(0, 10) for i in range(7)])
         self.set3.append([random.randint(0, 10) for i in range(7)])
         self.set4.append([random.randint(0, 10) for i in range(7)])
-
+        self.set1.setColor(QtGui.QColor("#FA7F9D"))
+        self.set2.setColor(QtGui.QColor("#97ACF9"))
+        self.set3.setColor(QtGui.QColor("#FADA7F"))
+        self.set4.setColor(QtGui.QColor("#8CFA9C"))
         series = QStackedBarSeries()
         # series.append(self.set0)
         series.append(self.set1)
@@ -150,13 +153,19 @@ class Window(QMainWindow):
         # chart.setTitle('Bar Chart Demo')
         # chart.setAnimationOptions(QChart.SeriesAnimations)
         chart.setAnimationOptions(QChart.AllAnimations)
-        chart.setTheme(4)
+        # chart.setTheme(4)
         chart.setBackgroundRoundness(50)
         chart.setDropShadowEnabled(True)
         # chart.isZoomed()
         # chart.setBackgroundVisible(False)
 
-        months = ('<font face="Arial" size="7">Sun</font>', '<font face="Arial" size="7">Mon</font>', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat')
+        months = ('<font color="#29002F" face="Inter" size="7">sun</font>',
+                  '<font face="Arial" size="7">Mon</font>',
+                  '<font face="Bryndan Write" size="7">TUE</font>',
+                  '<font face="Bryndan Write" size="7">WED</font>',
+                  '<font face="Bryndan Write" size="7">Thu</font>',
+                  '<font face="Bryndan Write" size="7">FRI</font>',
+                  '<font face="Bryndan Write" size="7">SAT</font>')
 
         axisX = QBarCategoryAxis()
         axisX.append(months)
@@ -164,7 +173,7 @@ class Window(QMainWindow):
         minY = 0
         maxY = 12
         axisY.setRange(minY, maxY)
-        axisY.setLabelFormat('<font face="Monotype Corsiva" size="7">%dh</font>')
+        axisY.setLabelFormat('<font face="Bryndan Write" size="7">%dh</font>')
         axisY.setTickCount(3)
         axisY.setMinorTickCount(1)
 
