@@ -127,10 +127,10 @@ class Window(QMainWindow):
 
     def Graph(self):
         # self.set0 = QBarSet('X0')
-        self.set1 = QBarSet('X1')
-        self.set2 = QBarSet('X2')
-        self.set3 = QBarSet('X3')
-        self.set4 = QBarSet('X4')
+        self.set1 = QBarSet('<font color="aqua">Sport</font>')
+        self.set2 = QBarSet('<font color="blue">Work</font>')
+        self.set3 = QBarSet('<font color="green">Study</font>')
+        self.set4 = QBarSet('<font color="brown">Meditation</font>')
 
         # self.set0.append([random.randint(0, 10) for i in range(7)])
         self.set1.append([random.randint(0, 10) for i in range(7)])
@@ -156,7 +156,7 @@ class Window(QMainWindow):
         # chart.isZoomed()
         # chart.setBackgroundVisible(False)
 
-        months = ('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat')
+        months = ('<font face="Arial" size="7">Sun</font>', '<font face="Arial" size="7">Mon</font>', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat')
 
         axisX = QBarCategoryAxis()
         axisX.append(months)
@@ -164,18 +164,18 @@ class Window(QMainWindow):
         minY = 0
         maxY = 12
         axisY.setRange(minY, maxY)
-        axisY.setLabelFormat("%dh")
+        axisY.setLabelFormat('<font face="Monotype Corsiva" size="7">%dh</font>')
         axisY.setTickCount(3)
         axisY.setMinorTickCount(1)
 
         chart.addAxis(axisX, Qt.AlignBottom)
         chart.addAxis(axisY, Qt.AlignRight)
-        chart.setFont(QtGui.QFont('Times',100))
+        chart.setFont(QtGui.QFont('Arial',100))
         # chart.removeAxis(axisX)
 
         chart.legend().setVisible(True)
-        chart.legend().setFont(QtGui.QFont('Arial', 30))
-        chart.legend().hide()
+        chart.legend().setFont(QtGui.QFont('Arial', 14))
+        # chart.legend().hide()
         chart.legend().setAlignment(Qt.AlignBottom)
 
         chartView = QChartView(chart)
