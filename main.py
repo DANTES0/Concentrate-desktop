@@ -1,7 +1,7 @@
 import sys, random
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QPainter, QBrush, QPen, QImage, QPalette
+from PyQt5.QtGui import *
 from PyQt5.QtChart import *
 from PyQt5.QtCore import *
 
@@ -14,13 +14,17 @@ class Window(QMainWindow):
         self.title = "123"
         self.scene = QGraphicsScene()
         self.view= QGraphicsView(self.scene)
-        # oImage = QImage("source\IMG_2309.jpg")
+        self.setStyleSheet("background-color: #E5DBE9")
+        # oImage = QImage("source")
         # sImage = oImage.scaled(QSize(750, 850))
         # palette = QPalette()
         # palette.setBrush(QPalette.Window, QBrush(sImage))
         # self.setPalette(palette)
         # self.lable.setText("Да ДА ДА")
+
         self.Graph()
+        self.create_donutchart()
+        self.BackLabel()
         # self.CreateTimer()
         self.InitWindow()
 
@@ -127,12 +131,20 @@ class Window(QMainWindow):
         self.show()
 
 
+    def BackLabel(self):
+        self.backLabel = QLabel("White", self)
+        pixmap = QPixmap('source/Cat_1.png')
+        self.backLabel.setPixmap(pixmap)
+        self.backLabel.setStyleSheet("background-color: transparent")
+        # self.backLabel.setMinimumSize(120,120)
+        self.backLabel.setGeometry(387,560,100,100)
+
     def Graph(self):
         # self.set0 = QBarSet('X0')
-        self.set1 = QBarSet('<font color="#FA7F9D">Sport</font>')
-        self.set2 = QBarSet('<font color="#97ACF9">Work</font>')
-        self.set3 = QBarSet('<font color="#FADA7F">Study</font>')
-        self.set4 = QBarSet('<font color="#8CFA9C">Meditation</font>')
+        self.set1 = QBarSet('<b><font color="#FA7F9D">Sport</font></b>')
+        self.set2 = QBarSet('<b><font color="#97ACF9">Work</font></b>')
+        self.set3 = QBarSet('<b><font color="#FADA7F">Study</font></b>')
+        self.set4 = QBarSet('<b><font color="#8CFA9C">Meditation</font></b>')
 
         # self.set0.append([random.randint(0, 10) for i in range(7)])
         self.set1.append([random.randint(0, 10) for i in range(7)])
@@ -155,22 +167,23 @@ class Window(QMainWindow):
         # chart.set
         chart.addSeries(series)
         # chart.setTheme('ChartThemeBlueCerulean')
-        # chart.setTitle('Bar Chart Demo')
+        chart.setTitle(f'<b><font face="Inter" size="4" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ20% from last week</font></b>'
+                       '<br align="left"><b><font face="Inter" size="4" color="#29002F">ㅤ3 h 10 min</font></b></br>')
         # chart.setAnimationOptions(QChart.SeriesAnimations)
         chart.setAnimationOptions(QChart.AllAnimations)
         # chart.setTheme(4)
-        chart.setBackgroundRoundness(50)
+        chart.setBackgroundRoundness(30)
         chart.setDropShadowEnabled(True)
         # chart.isZoomed()
         # chart.setBackgroundVisible(False)
 
-        months = ('<b><font color="#29002F" face="Inter" size="4">Sun</font></b>',
-                  '<b><font face="Inter" size="4">Mon</font></b>',
-                  '<b><font face="Inter" size="4">Tue</font></b>',
-                  '<b><font face="Inter" size="4">Wed</font></b>',
-                  '<b><font face="Inter" size="4">Thu</font></b>',
-                  '<b><font face="Inter" size="4">Fri</font></b>',
-                  '<b><font face="Inter" size="4">Sat</font></b>')
+        months = ('<b><font face="Inter" color="#6E6E6E" size="4">Sun</font></b>',
+                  '<b><font face="Inter" color="#6E6E6E" size="4">Mon</font></b>',
+                  '<b><font face="Inter" color="#6E6E6E" size="4">Tue</font></b>',
+                  '<b><font face="Inter" color="#6E6E6E" size="4">Wed</font></b>',
+                  '<b><font face="Inter" color="#6E6E6E" size="4">Thu</font></b>',
+                  '<b><font face="Inter" color="#6E6E6E" size="4">Fri</font></b>',
+                  '<b><font face="Inter" color="#6E6E6E" size="4">Sat</font></b>')
 
         axisX = QBarCategoryAxis()
         axisX.append(months)
@@ -178,31 +191,60 @@ class Window(QMainWindow):
         minY = 0
         maxY = 12
         axisY.setRange(minY, maxY)
-        axisY.setLabelFormat('<font face="Bryndan Write" size="5">%dh</font>')
+        # axisY.setLabelFormat('<font face="Bryndan Write" size="5">%dh</font>')
+        axisY.setLabelFormat('<b><font face="Inter" color="#6E6E6E" size="4">%dh</font></b>')
         axisY.setTickCount(3)
         axisY.setMinorTickCount(1)
 
         chart.addAxis(axisX, Qt.AlignBottom)
         chart.addAxis(axisY, Qt.AlignRight)
-        # chart.setFont(QtGui.QFont('Arial',100))
-        # chart.removeAxis(axisX)
-        chart.setGeometry(320, 400, 300, 260)
         chart.legend().setVisible(True)
-        chart.legend().setFont(QtGui.QFont('Arial', 14))
-        # chart.legend().hide()
+        chart.legend().setFont(QtGui.QFont('Arial', 12))
         chart.legend().setAlignment(Qt.AlignBottom)
+        chart.legend().setMarkerShape(2)
+
         #Стало
         chartView = QChartView(chart, self)
         # self.scene.addItem(self.chart)
-        chartView.setGeometry(0, 0, 700, 400)
-        chartView.move(0, 400)
+        chartView.setGeometry(0, 0, 580, 318)
+        chartView.move(60, 130)
         # self.chartView.show()
         # self.setCentralWidget(chartView)
 
         # self.view.show()
         # chartView.setAlignment(Qt.AlignBottom)
 
+    def create_donutchart(self):
 
+        series = QPieSeries()
+        series.setHoleSize(0.4)
+        # series.setPieSize(0.8)
+        series.append(f'<b><font color="#FA7F9D">Sport {4}h {33}min</font></b>', 20).setColor(QtGui.QColor("#FA7F9D"))
+        series.append('<b><font color="#97ACF9">Work 1h 45min</font></b>', 45).setColor(QtGui.QColor("#97ACF9"))
+        series.append('<b><font color="#FADA7F">Study 1h</font></b>', 25).setColor(QtGui.QColor("#FADA7F"))
+        series.append('<b><font color="#8CFA9C">Meditation 2h</font></b>', 10).setColor(QtGui.QColor("#8CFA9C"))
+
+        chart = QChart()
+        # chart.legend().hide()
+        # chart.legend().moveBy(5,700)
+        chart.legend().setAlignment(QtCore.Qt.AlignLeft)
+        chart.addSeries(series)
+        # chart.setMaximumSize(450, 450)
+        chart.setAnimationOptions(QChart.SeriesAnimations)
+        # chart.setTitle("")
+        # chart.setTheme(QChart.ChartThemeQt)
+        chart.setBackgroundRoundness(30)
+        chart.setDropShadowEnabled(True)
+        # chart.setBackgroundVisible(False)
+        chart.legend().setFont(QtGui.QFont('Arial', 12))
+        chart.legend().setMarkerShape(2)
+
+        chartview = QChartView(chart, self)
+        chartview.setGeometry(0,0, 580, 318)
+        chartview.move(60, 450)
+        chartview.setRenderHint(QPainter.Antialiasing)
+
+        # self.setCentralWidget(chartview)
     # def timerEvent(self):
     #     #        global time
     #     self.time = self.time.addSecs(1)
@@ -212,9 +254,9 @@ class Window(QMainWindow):
 
     # def paintEvent(self,event):
     #     painter = QPainter(self)
-    #     painter.setPen(QPen(Qt.red, 8, Qt.SolidLine))
-    #     painter.setBrush(QBrush(Qt.red, Qt.SolidPattern))
-    #     painter.drawEllipse(130,150,350,350)
+    #     painter.setPen(QPen(Qt.white, 8, Qt.SolidLine))
+    #     painter.setBrush(QBrush(Qt.white, Qt.SolidPattern))
+    #     painter.drawRect(60,130,580,318)
 
 
 if __name__ == '__main__':
