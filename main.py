@@ -12,6 +12,8 @@ class Window(QMainWindow):
 
         super().__init__()
         self.title = "123"
+        self.scene = QGraphicsScene()
+        self.view= QGraphicsView(self.scene)
         # oImage = QImage("source\IMG_2309.jpg")
         # sImage = oImage.scaled(QSize(750, 850))
         # palette = QPalette()
@@ -127,10 +129,10 @@ class Window(QMainWindow):
 
     def Graph(self):
         # self.set0 = QBarSet('X0')
-        self.set1 = QBarSet('<font color="aqua">Sport</font>')
-        self.set2 = QBarSet('<font color="blue">Work</font>')
-        self.set3 = QBarSet('<font color="green">Study</font>')
-        self.set4 = QBarSet('<font color="brown">Meditation</font>')
+        self.set1 = QBarSet('<font color="#FA7F9D">Sport</font>')
+        self.set2 = QBarSet('<font color="#97ACF9">Work</font>')
+        self.set3 = QBarSet('<font color="#FADA7F">Study</font>')
+        self.set4 = QBarSet('<font color="#8CFA9C">Meditation</font>')
 
         # self.set0.append([random.randint(0, 10) for i in range(7)])
         self.set1.append([random.randint(0, 10) for i in range(7)])
@@ -141,54 +143,63 @@ class Window(QMainWindow):
         self.set2.setColor(QtGui.QColor("#97ACF9"))
         self.set3.setColor(QtGui.QColor("#FADA7F"))
         self.set4.setColor(QtGui.QColor("#8CFA9C"))
-        series = QStackedBarSeries()
+        self.series = QStackedBarSeries()
         # series.append(self.set0)
-        series.append(self.set1)
-        series.append(self.set2)
-        series.append(self.set3)
-        series.append(self.set4)
-        chart = QChart()
-        chart.addSeries(series)
+        self.series.append(self.set1)
+        self.series.append(self.set2)
+        self.series.append(self.set3)
+        self.series.append(self.set4)
+        self.chart = QChart()
+        # chart.setPos(700, 600)
+        self.chart.setMaximumSize(700, 400)
+        # chart.set
+        self.chart.addSeries(self.series)
         # chart.setTheme('ChartThemeBlueCerulean')
         # chart.setTitle('Bar Chart Demo')
         # chart.setAnimationOptions(QChart.SeriesAnimations)
-        chart.setAnimationOptions(QChart.AllAnimations)
+        self.chart.setAnimationOptions(QChart.AllAnimations)
         # chart.setTheme(4)
-        chart.setBackgroundRoundness(50)
-        chart.setDropShadowEnabled(True)
+        self.chart.setBackgroundRoundness(50)
+        self.chart.setDropShadowEnabled(True)
         # chart.isZoomed()
         # chart.setBackgroundVisible(False)
 
-        months = ('<font color="#29002F" face="Inter" size="7">sun</font>',
-                  '<font face="Arial" size="7">Mon</font>',
-                  '<font face="Bryndan Write" size="7">TUE</font>',
-                  '<font face="Bryndan Write" size="7">WED</font>',
-                  '<font face="Bryndan Write" size="7">Thu</font>',
-                  '<font face="Bryndan Write" size="7">FRI</font>',
-                  '<font face="Bryndan Write" size="7">SAT</font>')
+        self.months = ('<b><font color="#29002F" face="Inter" size="4">Sun</font></b>',
+                  '<b><font face="Inter" size="4">Mon</font></b>',
+                  '<b><font face="Inter" size="4">Tue</font></b>',
+                  '<b><font face="Inter" size="4">Wed</font></b>',
+                  '<b><font face="Inter" size="4">Thu</font></b>',
+                  '<b><font face="Inter" size="4">Fri</font></b>',
+                  '<b><font face="Inter" size="4">Sat</font></b>')
 
-        axisX = QBarCategoryAxis()
-        axisX.append(months)
-        axisY = QValueAxis()
+        self.axisX = QBarCategoryAxis()
+        self.axisX.append(self.months)
+        self.axisY = QValueAxis()
         minY = 0
         maxY = 12
-        axisY.setRange(minY, maxY)
-        axisY.setLabelFormat('<font face="Bryndan Write" size="7">%dh</font>')
-        axisY.setTickCount(3)
-        axisY.setMinorTickCount(1)
+        self.axisY.setRange(minY, maxY)
+        self.axisY.setLabelFormat('<font face="Bryndan Write" size="5">%dh</font>')
+        self.axisY.setTickCount(3)
+        self.axisY.setMinorTickCount(1)
 
-        chart.addAxis(axisX, Qt.AlignBottom)
-        chart.addAxis(axisY, Qt.AlignRight)
-        chart.setFont(QtGui.QFont('Arial',100))
+        self.chart.addAxis(self.axisX, Qt.AlignBottom)
+        self.chart.addAxis(self.axisY, Qt.AlignRight)
+        # chart.setFont(QtGui.QFont('Arial',100))
         # chart.removeAxis(axisX)
-
-        chart.legend().setVisible(True)
-        chart.legend().setFont(QtGui.QFont('Arial', 14))
+        self.chart.setGeometry(320, 400, 300, 260)
+        self.chart.legend().setVisible(True)
+        self.chart.legend().setFont(QtGui.QFont('Arial', 14))
         # chart.legend().hide()
-        chart.legend().setAlignment(Qt.AlignBottom)
+        self.chart.legend().setAlignment(Qt.AlignBottom)
+        self.chartView = QChartView(self.chart)
+        # self.scene.addItem(self.chart)
+        # self.chartView.setGeometry(320, 400, 300, 260)
+        # self.chartView.show()
+        self.setCentralWidget(self.chartView)
 
-        chartView = QChartView(chart)
-        self.setCentralWidget(chartView)
+        # self.view.show()
+        # chartView.setAlignment(Qt.AlignBottom)
+
 
     # def timerEvent(self):
     #     #        global time
