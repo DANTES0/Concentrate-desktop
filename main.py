@@ -11,9 +11,10 @@ class Window(QMainWindow):
     def __init__(self):
 
         super().__init__()
-        self.title = "123"
+        self.title = "Meow concentration"
         self.scene = QGraphicsScene()
         self.view= QGraphicsView(self.scene)
+        self.setWindowIcon(QtGui.QIcon('source/cat.ico'))
         self.setStyleSheet("background-color: #E5DBE9")
         # oImage = QImage("source")
         # sImage = oImage.scaled(QSize(750, 850))
@@ -25,6 +26,8 @@ class Window(QMainWindow):
         self.Graph()
         self.create_donutchart()
         self.BackLabel()
+        self.FrameBtn()
+        self.FrameWeek()
         # self.CreateTimer()
         self.InitWindow()
 
@@ -137,7 +140,11 @@ class Window(QMainWindow):
         self.backLabel.setPixmap(pixmap)
         self.backLabel.setStyleSheet("background-color: transparent")
         # self.backLabel.setMinimumSize(120,120)
-        self.backLabel.setGeometry(387,560,100,100)
+        self.backLabel.setGeometry(387,627,100,100)
+
+        ConcentrationLabel = QLabel("Concentration time", self)
+        ConcentrationLabel.setGeometry(83,101,227,29)
+        ConcentrationLabel.setStyleSheet("background-color: transparent; font: bold 24px; font-family: Inter; color: #29002F")
 
     def Graph(self):
         # self.set0 = QBarSet('X0')
@@ -167,8 +174,8 @@ class Window(QMainWindow):
         # chart.set
         chart.addSeries(series)
         # chart.setTheme('ChartThemeBlueCerulean')
-        chart.setTitle(f'<b><font face="Inter" size="4" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ20% from last week</font></b>'
-                       '<br align="left"><b><font face="Inter" size="4" color="#29002F">ㅤ3 h 10 min</font></b></br>')
+        chart.setTitle(f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤㅤ20% from last week</font></b>'
+                       '<br align="left"><b><font face="Inter" size="5" color="#29002F">ㅤ3 h 10 min</font></b></br>')
         # chart.setAnimationOptions(QChart.SeriesAnimations)
         chart.setAnimationOptions(QChart.AllAnimations)
         # chart.setTheme(4)
@@ -202,12 +209,11 @@ class Window(QMainWindow):
         chart.legend().setFont(QtGui.QFont('Arial', 12))
         chart.legend().setAlignment(Qt.AlignBottom)
         chart.legend().setMarkerShape(2)
-
         #Стало
         chartView = QChartView(chart, self)
         # self.scene.addItem(self.chart)
         chartView.setGeometry(0, 0, 580, 318)
-        chartView.move(60, 130)
+        chartView.move(60, 120)
         # self.chartView.show()
         # self.setCentralWidget(chartView)
 
@@ -223,7 +229,6 @@ class Window(QMainWindow):
         series.append('<b><font color="#97ACF9">Work 1h 45min</font></b>', 45).setColor(QtGui.QColor("#97ACF9"))
         series.append('<b><font color="#FADA7F">Study 1h</font></b>', 25).setColor(QtGui.QColor("#FADA7F"))
         series.append('<b><font color="#8CFA9C">Meditation 2h</font></b>', 10).setColor(QtGui.QColor("#8CFA9C"))
-
         chart = QChart()
         # chart.legend().hide()
         # chart.legend().moveBy(5,700)
@@ -241,7 +246,7 @@ class Window(QMainWindow):
 
         chartview = QChartView(chart, self)
         chartview.setGeometry(0,0, 580, 318)
-        chartview.move(60, 450)
+        chartview.move(60, 520)
         chartview.setRenderHint(QPainter.Antialiasing)
 
         # self.setCentralWidget(chartview)
@@ -257,6 +262,54 @@ class Window(QMainWindow):
     #     painter.setPen(QPen(Qt.white, 8, Qt.SolidLine))
     #     painter.setBrush(QBrush(Qt.white, Qt.SolidPattern))
     #     painter.drawRect(60,130,580,318)
+
+
+    def FrameBtn(self):
+        frame = QFrame(self)
+        # frame.setFrameShape(QFrame.StyledPanel)
+        frame.setFrameShape(QFrame.NoFrame)
+        frame.setGeometry(0,0,700,88)
+        frame.setStyleSheet("background-color:#D8B5E9;")
+        TimerBtn = QPushButton('Timer',self)
+        TimerBtn.setGeometry(51,24,127,50)
+        TimerBtn.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        TaskButton = QPushButton('Task',self)
+        TaskButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        TaskButton.setGeometry(208,24,127,50)
+        StatisticsButton = QPushButton('Statistics',self)
+        StatisticsButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        StatisticsButton.setGeometry(365, 24, 127, 50)
+        CatRoomButton = QPushButton('Cat room',self)
+        CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        CatRoomButton.setGeometry(522,24,127,50)
+
+    def FrameWeek(self):
+        frame = QFrame(self)
+        frame.setFrameShape(QFrame.NoFrame)
+        frame.setGeometry(66,474,568,36)
+        frame.setStyleSheet("background-color:#A597AB; border-radius: 10px")
+        sunBtn = QPushButton('sun', self)
+        sunBtn.setGeometry(73,478,79,28)
+        sunBtn.setStyleSheet("background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F")
+        monBtn = QPushButton('mon', self)
+        monBtn.setGeometry(152,478,79,28)
+        monBtn.setStyleSheet("background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F")
+        tueBtn = QPushButton('tue', self)
+        tueBtn.setGeometry(231,478,79,28)
+        tueBtn.setStyleSheet("background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F")
+        wedBtn = QPushButton('wed', self)
+        wedBtn.setGeometry(310,478,79,28)
+        wedBtn.setStyleSheet("background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F")
+        thuBtn = QPushButton('thu', self)
+        thuBtn.setGeometry(389,478,79,28)
+        thuBtn.setStyleSheet("background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F")
+        friBtn = QPushButton('fri', self)
+        friBtn.setGeometry(468,478,79,28)
+        friBtn.setStyleSheet("background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F")
+        satBtn = QPushButton('sat', self)
+        satBtn.setGeometry(547,478,79,28)
+        satBtn.setStyleSheet("background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F")
+
 
 
 if __name__ == '__main__':
