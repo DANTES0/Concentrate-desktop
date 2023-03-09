@@ -16,6 +16,7 @@ class Window(QMainWindow):
         self.view= QGraphicsView(self.scene)
         self.setWindowIcon(QtGui.QIcon('source/cat.ico'))
         self.setStyleSheet("background-color: #E5DBE9")
+        self.prevSender = None
         # oImage = QImage("source")
         # sImage = oImage.scaled(QSize(750, 850))
         # palette = QPalette()
@@ -305,12 +306,40 @@ class Window(QMainWindow):
         thuBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
         friBtn = QPushButton('fri', self)
         friBtn.setGeometry(468,478,79,28)
-        friBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+        friBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                             "QPushButton:pressed{background-color:#000000; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
         satBtn = QPushButton('sat', self)
         satBtn.setGeometry(547,478,79,28)
-        satBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
-        # satBtn.setStyleSheet("QPushButton:hover{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#ffffff}")
-        # satBtn.setStyleSheet("""QPushButton:hover {background-color:#ffffff}""")
+        satBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                                  "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                                  "QPushButton:pressed{background-color:#000000; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+        self.prevSender = monBtn
+        sunBtn.clicked.connect(self.Actions)
+        monBtn.clicked.connect(self.Actions)
+        tueBtn.clicked.connect(self.Actions)
+        wedBtn.clicked.connect(self.Actions)
+        thuBtn.clicked.connect(self.Actions)
+        satBtn.clicked.connect(self.Actions)
+        friBtn.clicked.connect(self.Actions)
+        # self.WeekPushButton = QButtonGroup()
+        # self.WeekPushButton.addButton(sunBtn)
+        # self.WeekPushButton.addButton(monBtn)
+        # self.WeekPushButton.addButton(thuBtn)
+        # self.WeekPushButton.addButton(wedBtn)
+        # self.WeekPushButton.addButton(friBtn)
+        # self.WeekPushButton.buttonClicked.connect(self.Actions)
+        # self.WeekPushButton.addButton()
+
+    def Actions(self):
+        sender = self.sender()
+        sender.setStyleSheet("background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F")
+        self.prevSender.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                                      "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                                      "QPushButton:pressed{background-color:#000000; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                                      )
+        self.prevSender = sender
+
 
 if __name__ == '__main__':
     App = QApplication(sys.argv)
