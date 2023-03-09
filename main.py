@@ -338,6 +338,12 @@ class Window(QMainWindow):
                                       "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
                                       "QPushButton:pressed{background-color:#000000; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
                                       )
+        if self.prevSender == sender:
+            sender.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                )
         self.prevSender = sender
 
 
