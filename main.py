@@ -1,34 +1,26 @@
 import sys
 from PyQt5 import QtCore, QtWidgets
-
-
-class MyGui(QtWidgets.QWidget):
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
+from PyQt5.uic import loadUi
+class MainUI(QMainWindow):
     def __init__(self):
-        super().__init__()
+        super(MainUI, self).__init__()
+        loadUi("app.ui", self)
 
-        self.lcdTime = QtWidgets.QLCDNumber(self)
-        self.lcdTime.setSegmentStyle(QtWidgets.QLCDNumber.Filled)
-        self.lcdTime.setDigitCount(8)
+        # PAGE 1
+        self.btn_page_1.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.page_1))
 
-        self.time = QtCore.QTime(0, 0, 0)
+        # PAGE 2
+        self.btn_page_2.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.page_2))
 
-        vbox = QtWidgets.QVBoxLayout(self)
-        vbox.addWidget(self.lcdTime)
+        # PAGE 3
+        self.btn_page_3.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.page_3))
 
-        self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.timerEvent)
-        self.timer.start(1000)
-
-    def timerEvent(self):
-        #        global time
-        self.time = self.time.addSecs(1)
-        #        print(self.time.toString("hh:mm"))
-        self.lcdTime.display(self.time.toString("hh:mm:ss"))
-
+        # PAGE 4
+        self.btn_page_4.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.page_4))
 
 if __name__ == '__main__':
-    app = QtWidgets.QApplication(sys.argv)
-    w = MyGui()
-    w.resize(300, 120)
-    w.show()
+    app = QApplication(sys.argv)
+    ui = MainUI()
+    ui.show()
     sys.exit(app.exec_())
