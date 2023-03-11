@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtChart import *
 from PyQt5.QtCore import *
-import timer_class, main
 
 class Statistics(QMainWindow):
     def __init__(self):
@@ -20,7 +19,7 @@ class Statistics(QMainWindow):
         self.Graph()
         self.create_donutchart()
         self.BackLabel()
-        self.FrameBtn()
+        # self.FrameBtn()
         self.FrameWeek()
         # self.CreateTimer()
         self.InitWindow()
@@ -144,25 +143,25 @@ class Statistics(QMainWindow):
         chartview.setRenderHint(QPainter.Antialiasing)
 
         # self.setCentralWidget(chartview)
-    def FrameBtn(self):
-        frame = QFrame(self)
-        # frame.setFrameShape(QFrame.StyledPanel)
-        frame.setFrameShape(QFrame.NoFrame)
-        frame.setGeometry(0,0,700,88)
-        frame.setStyleSheet("background-color:#D8B5E9;")
-        TimerBtn = QPushButton('Timer',self)
-        TimerBtn.clicked.connect(self.gotoTimer)
-        TimerBtn.setGeometry(51,24,127,50)
-        TimerBtn.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
-        TaskButton = QPushButton('Task',self)
-        TaskButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
-        TaskButton.setGeometry(208,24,127,50)
-        StatisticsButton = QPushButton('Statistics',self)
-        StatisticsButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
-        StatisticsButton.setGeometry(365, 24, 127, 50)
-        CatRoomButton = QPushButton('Cat room',self)
-        CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
-        CatRoomButton.setGeometry(522,24,127,50)
+    # def FrameBtn(self):
+    #     frame = QFrame(self)
+    #     # frame.setFrameShape(QFrame.StyledPanel)
+    #     frame.setFrameShape(QFrame.NoFrame)
+    #     frame.setGeometry(0,0,700,88)
+    #     frame.setStyleSheet("background-color:#D8B5E9;")
+    #     TimerBtn = QPushButton('Timer',self)
+    #     TimerBtn.clicked.connect(self.gotoTimer)
+    #     TimerBtn.setGeometry(51,24,127,50)
+    #     TimerBtn.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+    #     TaskButton = QPushButton('Task',self)
+    #     TaskButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+    #     TaskButton.setGeometry(208,24,127,50)
+    #     StatisticsButton = QPushButton('Statistics',self)
+    #     StatisticsButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+    #     StatisticsButton.setGeometry(365, 24, 127, 50)
+    #     CatRoomButton = QPushButton('Cat room',self)
+    #     CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+    #     CatRoomButton.setGeometry(522,24,127,50)
     def FrameWeek(self):
         frame = QFrame(self)
         frame.setFrameShape(QFrame.NoFrame)
@@ -216,7 +215,8 @@ class Statistics(QMainWindow):
                 )
         self.prevSender = sender
     def gotoTimer(self):
-        print(main.widget.currentIndex)
-        timer = timer_class.Timer()
-        main.widget.addWidget(timer)
-        main.widget.setCurrentIndex(main.widget.currentIndex()-1)
+        print("123")
+        # global widget
+        # timer = timer_class.Timer()
+        # main.widget.addWidget(timer)
+        # widget.setCurrentIndex(widget.currentIndex()-1)
