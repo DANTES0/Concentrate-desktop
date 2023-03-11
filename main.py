@@ -20,6 +20,7 @@ class Timer(QMainWindow):
         self.InitWindow()
 
     def Task_list(self):
+
         lable = QLabel("Task list",self)
         lable.setGeometry(51,663,127,50)
         lable.setAlignment(Qt.AlignCenter)
@@ -34,11 +35,24 @@ class Timer(QMainWindow):
         list2.setGeometry(51, 777, 598, 50)
         list2.setStyleSheet("background-color:#ffffff; border-radius:25px; font-family: Inter; font:18px;"
                             "padding: 0 40px; font-weight:bold;")
+        lableCircle1 = QLabel(self)
+        lableCircle1.setGeometry(69, 740, 9, 9)
+        lableCircle1.setStyleSheet("background-color:#8350AA; border-radius:4px")
+
+        lableCircle2 = QLabel(self)
+        lableCircle2.setGeometry(69, 797, 9, 9)
+        lableCircle2.setStyleSheet("background-color:#8350AA; border-radius:4px")
 
     def Frame_Timer(self):
         frame = QFrame(self)
         frame.setGeometry(146,156,407, 407)
         frame.setStyleSheet("border-radius: 200px; border: 1px solid black")
+
+        pic_lable = QLabel(self)
+        pixmap = QPixmap('source/Time_Cat.png')
+        pic_lable.setPixmap(pixmap)
+        pic_lable.setGeometry(246, 217, 197, 254)
+        # pic_lable.setStyleSheet("background-color:transparent")
     def CreateTimer(self):
         self.start = False
         self.count = 0
