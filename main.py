@@ -14,8 +14,16 @@ class Timer(QMainWindow):
         self.setWindowIcon(QtGui.QIcon('source/cat.ico'))
         self.setStyleSheet("background-color: #E5DBE9")
         self.FrameBtn()
+        self.Frame_Timer()
         self.CreateTimer()
+
         self.InitWindow()
+
+    def Frame_Timer(self):
+        frame = QFrame(self)
+        frame.setGeometry(146,156,407, 407)
+        frame.setStyleSheet("border-radius: 200px; border: 1px solid black")
+
     def CreateTimer(self):
         self.start = False
         self.count = 0
@@ -29,14 +37,12 @@ class Timer(QMainWindow):
         self.sliderTimer.setPageStep(60)
 
         self.lable = QLabel("00:00", self)
-        self.lable.setFont(QtGui.QFont('Arial', 30))
+        self.lable.setFont(QtGui.QFont('Arial', 20))
         # self.lable.resize(220,220)
         self.lable.setAlignment(Qt.AlignCenter)
-        self.lable.setStyleSheet("border: 3px solid black; border-radius:200px;")
+        self.lable.setStyleSheet("color:white; font-family: Inter")
         # self.lable.move(250, 300)
-        self.lable.setGeometry(146,156,407,407)
-        self.lable.setAlignment(Qt.AlignBottom)
-        self.lable.setAlignment(Qt.AlignHCenter)
+        self.lable.setGeometry(299,482,115,36)
         # self.lable.setText(str(self.sliderTimer.value()))
 
         self.start_btn = QPushButton("Start", self)
