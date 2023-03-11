@@ -432,9 +432,13 @@ class Statistics(QMainWindow):
         widget.addWidget(timer)
         widget.setCurrentIndex(widget.currentIndex()-1)
 
+
 app = QtWidgets.QApplication(sys.argv)
 global widget
 widget = QtWidgets.QStackedWidget()
+widget.setWindowTitle("Meow concentration")
+widget.setWindowIcon(QtGui.QIcon('source/cat.ico'))
+widget.setGeometry(650,50,700,850)
 timer=Timer()
 stats=Statistics()
 widget.addWidget(timer)
