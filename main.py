@@ -37,24 +37,27 @@ class Timer(QMainWindow):
         self.sliderTimer.setPageStep(60)
 
         self.lable = QLabel("00:00", self)
-        self.lable.setFont(QtGui.QFont('Arial', 20))
+        self.lable.setFont(QtGui.QFont('Inter', 20))
         # self.lable.resize(220,220)
         self.lable.setAlignment(Qt.AlignCenter)
-        self.lable.setStyleSheet("color:white; font-family: Inter")
+        self.lable.setStyleSheet("color:white; font-family: Inter;")
         # self.lable.move(250, 300)
         self.lable.setGeometry(299,482,115,36)
         # self.lable.setText(str(self.sliderTimer.value()))
 
         self.start_btn = QPushButton("Start", self)
-        self.start_btn.move(70, 250)
+        self.start_btn.setGeometry(208,594,127,50)
         self.start_btn.clicked.connect(self.start_action)
-        # self.start_btn.resize(150, 150)
-        self.start_btn.setStyleSheet("border: 2px solid black;border-radius: 15%;")
+        self.start_btn.setStyleSheet("border-radius: 25px; background-color:#9CC152; color:#ffffff; "
+                                     "font-family:Inter; font:24px; font-weight:bold")
 
         self.stop_btn = QPushButton("Stop", self)
         self.stop_btn.move(70, 250)
+        self.stop_btn.setGeometry(365, 594, 127, 50)
         self.stop_btn.clicked.connect(self.stop_action)
-        self.stop_btn.setVisible(False)
+        self.stop_btn.setStyleSheet("border-radius: 25px; background-color:#FA7B7B; color:#ffffff; "
+                                     "font-family:Inter; font:24px; font-weight:bold")
+        # self.stop_btn.setVisible(False)
 
         self.timer = QTimer(self)
         self.time = QTime(0,0,0)
