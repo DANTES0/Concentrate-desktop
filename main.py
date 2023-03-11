@@ -43,15 +43,24 @@ class Timer(QMainWindow):
         lableCircle2.setGeometry(69, 797, 9, 9)
         lableCircle2.setStyleSheet("background-color:#8350AA; border-radius:4px")
 
+    def paintEvent(self,event):
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
+        # Draw the background circle
+        pen = QPen(QColor(187, 137, 217), 20, Qt.SolidLine, Qt.FlatCap)
+        painter.setPen(pen)
+        painter.setBrush(QColor(229, 219, 233))
+        painter.drawEllipse(146, 106, 407, 407)
+        # painter.fillRect(146,156,407,407,QColor(229, 219, 233))
     def Frame_Timer(self):
-        frame = QFrame(self)
-        frame.setGeometry(146,156,407, 407)
-        frame.setStyleSheet("border-radius: 200px; border: 1px solid black")
-
+        # frame = QFrame(self)
+        # frame.setGeometry(146,156,407, 407)
+        # frame.setStyleSheet("border-radius: 200px; border: 1px solid black")
         pic_lable = QLabel(self)
         pixmap = QPixmap('source/Time_Cat.png')
         pic_lable.setPixmap(pixmap)
-        pic_lable.setGeometry(246, 217, 197, 254)
+        pic_lable.setGeometry(246, 167, 197, 254)
+
         # pic_lable.setStyleSheet("background-color:transparent")
     def CreateTimer(self):
         self.start = False
@@ -63,12 +72,33 @@ class Timer(QMainWindow):
         self.sliderTimer.setSingleStep(60)
         self.sliderTimer.setTickInterval(60)
         self.sliderTimer.setPageStep(60)
-
+        self.sliderTimer.setGeometry(211,525,280,15)
+        self.sliderTimer.setStyleSheet(""".QSlider {
+                                            min-height: 68px;
+                                            max-height: 68px;
+                                            background: transparent;
+                                            }
+                                            
+                                            .QSlider::groove:horizontal {
+                                            border: 1px solid #262626;
+                                            height: 5px;
+                                            background: #393939;
+                                            margin: 0 12px;
+                                            }
+                                            
+                                            .QSlider::handle:horizontal {
+                                            background: #BB89D9;
+                                            border: 4px solid #BB89D9;
+                                            border-radius: 8px;
+                                            width: 32px;
+                                            height: 100px;
+                                            margin: -8px -12px;
+                                        }""")
         self.lable = QLabel("00:00", self)
         self.lable.setFont(QtGui.QFont('Inter', 20))
         self.lable.setAlignment(Qt.AlignCenter)
         self.lable.setStyleSheet("color:white; font-family: Inter;")
-        self.lable.setGeometry(299,482,115,36)
+        self.lable.setGeometry(298,432,115,36)
 
         self.start_btn = QPushButton("Start", self)
         self.start_btn.setGeometry(208,594,127,50)
