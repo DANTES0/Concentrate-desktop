@@ -87,7 +87,7 @@ class Timer(QMainWindow):
         self.setWindowTitle(self.title)
         self.setGeometry(650,50,700,850)
         self.setFixedSize(QSize(700,850))
-        self.show()
+        # self.show()
     def FrameBtn(self):
         frame = QFrame(self)
         frame.setFrameShape(QFrame.NoFrame)
@@ -107,7 +107,10 @@ class Timer(QMainWindow):
         CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         CatRoomButton.setGeometry(522,24,127,50)
     def gotoStats(self):
-        widget.setCurrentWidget(widget.currentIndex()+1)
+        print(widget.currentIndex)
+        statistics = Statistics()
+        widget.addWidget(statistics)
+        widget.setCurrentIndex(widget.currentIndex()+1)
 class Statistics(QMainWindow):
     def __init__(self):
 
@@ -229,7 +232,7 @@ class Statistics(QMainWindow):
         self.setWindowTitle(self.title)
         self.setGeometry(650,50,700,850)
         self.setFixedSize(QSize(700,850))
-        self.show()
+        # self.show()
     def BackLabel(self):
         self.backLabel = QLabel("White", self)
         pixmap = QPixmap('source/Cat_1.png')
@@ -424,11 +427,14 @@ class Statistics(QMainWindow):
                 )
         self.prevSender = sender
     def gotoTimer(self):
-        widget.setCurrentWidget(widget.currentIndex()-1)
+        print(widget.currentIndex)
+        timer = Timer()
+        widget.addWidget(timer)
+        widget.setCurrentIndex(widget.currentIndex()-1)
 
 app = QtWidgets.QApplication(sys.argv)
 global widget
-widget=QtWidgets.QStackedWidget()
+widget = QtWidgets.QStackedWidget()
 timer=Timer()
 stats=Statistics()
 widget.addWidget(timer)
