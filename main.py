@@ -16,18 +16,32 @@ class Timer(QMainWindow):
         self.FrameBtn()
         self.Frame_Timer()
         self.CreateTimer()
-
+        self.Task_list()
         self.InitWindow()
+
+    def Task_list(self):
+        lable = QLabel("Task list",self)
+        lable.setGeometry(51,663,127,50)
+        lable.setAlignment(Qt.AlignCenter)
+        lable.setStyleSheet("background-color:#8350AA;border-radius:25px;font:24px;font-family:Inter;"
+                            "font-weight:bold;color:#ffffff;")
+
+        list1 = QLineEdit(self)
+        list1.setGeometry(51,720,598,50)
+        list1.setStyleSheet("background-color:#ffffff; border-radius:25px; font-family: Inter; font:18px;"
+                            "padding: 0 40px; font-weight:bold;")
+        list2 = QLineEdit(self)
+        list2.setGeometry(51, 777, 598, 50)
+        list2.setStyleSheet("background-color:#ffffff; border-radius:25px; font-family: Inter; font:18px;"
+                            "padding: 0 40px; font-weight:bold;")
 
     def Frame_Timer(self):
         frame = QFrame(self)
         frame.setGeometry(146,156,407, 407)
         frame.setStyleSheet("border-radius: 200px; border: 1px solid black")
-
     def CreateTimer(self):
         self.start = False
         self.count = 0
-
         self.sliderTimer = QSlider(Qt.Horizontal, self)
         self.sliderTimer.move(70, 150)
         self.sliderTimer.setRange(0,7200)
@@ -38,12 +52,9 @@ class Timer(QMainWindow):
 
         self.lable = QLabel("00:00", self)
         self.lable.setFont(QtGui.QFont('Inter', 20))
-        # self.lable.resize(220,220)
         self.lable.setAlignment(Qt.AlignCenter)
         self.lable.setStyleSheet("color:white; font-family: Inter;")
-        # self.lable.move(250, 300)
         self.lable.setGeometry(299,482,115,36)
-        # self.lable.setText(str(self.sliderTimer.value()))
 
         self.start_btn = QPushButton("Start", self)
         self.start_btn.setGeometry(208,594,127,50)
@@ -57,7 +68,6 @@ class Timer(QMainWindow):
         self.stop_btn.clicked.connect(self.stop_action)
         self.stop_btn.setStyleSheet("border-radius: 25px; background-color:#FA7B7B; color:#ffffff; "
                                      "font-family:Inter; font:24px; font-weight:bold")
-        # self.stop_btn.setVisible(False)
 
         self.timer = QTimer(self)
         self.time = QTime(0,0,0)
@@ -73,8 +83,6 @@ class Timer(QMainWindow):
                 self.lable.setText("00:00")
                 self.start = False
     def start_action(self):
-        self.start_btn.setVisible(False)
-        self.stop_btn.setVisible(True)
         self.start = True
         print(self.start)
         print(self.count)
@@ -83,10 +91,7 @@ class Timer(QMainWindow):
     def stop_action(self):
         self.start = False
         self.count = 0
-        self.stop_btn.setVisible(False)
-        self.start_btn.setVisible(True)
         self.sliderTimer.setValue(0)
-        # self.label.setText("00:00")
     def UpdateLabel(self,value):
         self.count = value
         m, s = divmod(self.count, 60)
