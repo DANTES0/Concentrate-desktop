@@ -1,26 +1,62 @@
-import sys
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
-from PyQt5.uic import loadUi
-class MainUI(QMainWindow):
+import sys, random
+from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtChart import *
+from PyQt5.QtCore import *
+from stats_class import Statistics
+from timer_class import Timer
+
+class widgets(QMainWindow):
     def __init__(self):
-        super(MainUI, self).__init__()
-        loadUi("app.ui", self)
+        super().__init__()
+        self.scene = QGraphicsScene()
+        self.view = QGraphicsView(self.scene)
+        self.FrameBtn()
+        self.widget = QtWidgets.QStackedWidget(self)
+        self.widget.setGeometry(0, 88, 700, 762)
+        self.timer = Timer()
+        self.stats = Statistics()
+        self.widget.addWidget(self.timer)
+        self.widget.addWidget(self.stats)
+        self.InitWindow()
 
-        # PAGE 1
-        self.btn_page_1.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.page_1))
+    def InitWindow(self):
+        self.setWindowTitle("Meow concentration")
+        self.setWindowIcon(QtGui.QIcon("source/cat.ico"))
+        self.setGeometry(650, 50, 700, 850)
+        self.setFixedSize(QSize(700, 850))
+        self.show()
+    def FrameBtn(self):
+        frame = QFrame(self)
+        frame.setFrameShape(QFrame.NoFrame)
+        frame.setGeometry(0,0,700,88)
+        frame.setStyleSheet("background-color:#D8B5E9;")
+        TimerBtn = QPushButton('Timer',self)
+        TimerBtn.setGeometry(51,24,127,50)
+        TimerBtn.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        TimerBtn.clicked.connect(self.gotoTimer)
+        TaskButton = QPushButton('Task',self)
+        TaskButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        TaskButton.setGeometry(208,24,127,50)
+        StatisticsButton = QPushButton('Statistics',self)
+        StatisticsButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        StatisticsButton.setGeometry(365, 24, 127, 50)
+        StatisticsButton.clicked.connect(self.gotoStats)
+        CatRoomButton = QPushButton('Cat room',self)
+        CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        CatRoomButton.setGeometry(522,24,127,50)
 
-        # PAGE 2
-        self.btn_page_2.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.page_2))
+    def gotoTimer(self):
+        self.timer = Timer()
+        self.widget.addWidget(self.timer)
+        self.widget.setCurrentIndex(0)
+    def gotoStats(self):
+        print(self.widget.currentIndex())
+        self.stats = Statistics()
+        self.widget.addWidget(self.stats)
+        self.widget.setCurrentIndex(1)
 
-        # PAGE 3
-        self.btn_page_3.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.page_3))
-
-        # PAGE 4
-        self.btn_page_4.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.page_4))
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ui = MainUI()
-    ui.show()
-    sys.exit(app.exec_())
+app = QtWidgets.QApplication(sys.argv)
+window = widgets()
+sys.exit(app.exec_())
