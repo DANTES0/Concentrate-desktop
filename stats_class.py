@@ -26,8 +26,8 @@ class Statistics(QMainWindow):
     def InitWindow(self):
         # self.setWindowFlags(Qt.FramelessWindowHint)
         self.setWindowTitle(self.title)
-        self.setGeometry(650,50,700,850)
-        self.setFixedSize(QSize(700,850))
+        self.setGeometry(650,50,700,762)
+        self.setFixedSize(QSize(700,762))
         # self.show()
     def BackLabel(self):
         self.backLabel = QLabel("White", self)

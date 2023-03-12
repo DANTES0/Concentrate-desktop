@@ -85,8 +85,8 @@ class Timer(QMainWindow):
         self.lable.setText(str(min_sec_format))
     def InitWindow(self):
         self.setWindowTitle(self.title)
-        self.setGeometry(650,50,700,850)
-        self.setFixedSize(QSize(700,850))
+        self.setGeometry(650,50,700,762)
+        self.setFixedSize(QSize(700,762))
         # self.show()
     # def FrameBtn(self):
     #     frame = QFrame(self)

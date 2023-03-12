@@ -10,13 +10,24 @@ from timer_class import Timer
 class widgets(QMainWindow):
     def __init__(self):
         super().__init__()
-        widget = QtWidgets.QStackedWidget()
+        self.scene = QGraphicsScene()
+        self.view = QGraphicsView(self.scene)
+        self.FrameBtn()
+        self.widget = QtWidgets.QStackedWidget(self)
+        self.widget.setGeometry(0, 88, 700, 850)
         timer = Timer()
         stats = Statistics()
-        widget.addWidget(timer)
-        widget.addWidget(stats)
-        self.FrameBtn()
+        self.widget.addWidget(timer)
+        self.widget.addWidget(stats)
+        self.InitWindow()
+        # self.widget.show()
 
+
+    def InitWindow(self):
+        # self.setWindowTitle(self.title)
+        self.setGeometry(650, 50, 700, 850)
+        self.setFixedSize(QSize(700, 850))
+        self.show()
     def FrameBtn(self):
         frame = QFrame(self)
         # frame.setFrameShape(QFrame.StyledPanel)
@@ -24,7 +35,7 @@ class widgets(QMainWindow):
         frame.setGeometry(0,0,700,88)
         frame.setStyleSheet("background-color:#D8B5E9;")
         TimerBtn = QPushButton('Timer',self)
-        TimerBtn.clicked.connect(self.gotoTimer)
+        # TimerBtn.clicked.connect(self.gotoTimer)
         TimerBtn.setGeometry(51,24,127,50)
         TimerBtn.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         TaskButton = QPushButton('Task',self)
@@ -39,24 +50,7 @@ class widgets(QMainWindow):
 
 app = QtWidgets.QApplication(sys.argv)
 # global widget
-widget = QtWidgets.QStackedWidget()
-widget.setWindowTitle("Meow concentration")
-widget.setWindowIcon(QtGui.QIcon('source/cat.ico'))
-widget.setGeometry(650,50,700,850)
-timer = Timer()
-stats = Statistics()
-widget.addWidget(timer)
-widget.addWidget(stats)
-# widget.show()
-def switch_page_stat():
-    stats = Statistics()
-    widget.addWidget(stats)
-    widget.setCurrentIndex(widget.currentIndex()+1)
-
-def switch_page_timer():
-    timer = Timer()
-    widget.addWidget(timer)
-    widget.setCurrentIndex(widget.currentIndex()-1)
+window = widgets()
 
 try:
     sys.exit(app.exec_())
