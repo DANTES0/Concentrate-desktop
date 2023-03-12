@@ -427,6 +427,7 @@ class Statistics(QMainWindow):
         StatisticsButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         StatisticsButton.setGeometry(365, 24, 127, 50)
         CatRoomButton = QPushButton('Cat room',self)
+        CatRoomButton.clicked.connect(self.gotoCatRoom)
         CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         CatRoomButton.setGeometry(522,24,127,50)
     def FrameWeek(self):
@@ -495,15 +496,53 @@ class Statistics(QMainWindow):
         widget.addWidget(timer)
         widget.setCurrentIndex(widget.currentIndex()-1)
 
+    def gotoCatRoom(self):
+        print(widget.currentIndex)
+        timer = Timer()
+        widget.addWidget(timer)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
 class Cat_Room(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.FrameBtn()
         self.InitWindow()
     def InitWindow(self):
         self.setStyleSheet("background-color:#ffffff")
         # self.setWindowTitle(self.title)
         self.setGeometry(650,50,700,850)
         self.setFixedSize(QSize(700,850))
+
+    def FrameBtn(self):
+        frame = QFrame(self)
+        # frame.setFrameShape(QFrame.StyledPanel)
+        frame.setFrameShape(QFrame.NoFrame)
+        frame.setGeometry(0,0,700,88)
+        frame.setStyleSheet("background-color:#D8B5E9;")
+        TimerBtn = QPushButton('Timer',self)
+        TimerBtn.clicked.connect(self.gotoTimer)
+        TimerBtn.setGeometry(51,24,127,50)
+        TimerBtn.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        TaskButton = QPushButton('Task',self)
+        TaskButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        TaskButton.setGeometry(208,24,127,50)
+        StatisticsButton = QPushButton('Statistics',self)
+        StatisticsButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        StatisticsButton.clicked.connect(self.gotoStats)
+        StatisticsButton.setGeometry(365, 24, 127, 50)
+        CatRoomButton = QPushButton('Cat room',self)
+        CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        CatRoomButton.setGeometry(522,24,127,50)
+    def gotoStats(self):
+        print(widget.currentIndex)
+        statistics = Statistics()
+        widget.addWidget(statistics)
+        widget.setCurrentIndex(widget.currentIndex()-1)
+    def gotoTimer(self):
+        print(widget.currentIndex)
+        timer = Timer()
+        widget.addWidget(timer)
+        widget.setCurrentIndex(widget.currentIndex()-2)
 
 
 
