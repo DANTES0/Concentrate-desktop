@@ -20,22 +20,17 @@ class widgets(QMainWindow):
         self.widget.addWidget(self.timer)
         self.widget.addWidget(self.stats)
         self.InitWindow()
-        # self.widget.show()
-
 
     def InitWindow(self):
-        # self.setWindowTitle(self.title)
         self.setGeometry(650, 50, 700, 850)
         self.setFixedSize(QSize(700, 850))
         self.show()
     def FrameBtn(self):
         frame = QFrame(self)
-        # frame.setFrameShape(QFrame.StyledPanel)
         frame.setFrameShape(QFrame.NoFrame)
         frame.setGeometry(0,0,700,88)
         frame.setStyleSheet("background-color:#D8B5E9;")
         TimerBtn = QPushButton('Timer',self)
-        # TimerBtn.clicked.connect(self.gotoTimer)
         TimerBtn.setGeometry(51,24,127,50)
         TimerBtn.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         TimerBtn.clicked.connect(self.gotoTimer)
