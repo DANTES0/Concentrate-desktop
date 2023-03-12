@@ -14,11 +14,11 @@ class widgets(QMainWindow):
         self.view = QGraphicsView(self.scene)
         self.FrameBtn()
         self.widget = QtWidgets.QStackedWidget(self)
-        self.widget.setGeometry(0, 88, 700, 850)
-        timer = Timer()
-        stats = Statistics()
-        self.widget.addWidget(timer)
-        self.widget.addWidget(stats)
+        self.widget.setGeometry(0, 88, 700, 762)
+        self.timer = Timer()
+        self.stats = Statistics()
+        self.widget.addWidget(self.timer)
+        self.widget.addWidget(self.stats)
         self.InitWindow()
         # self.widget.show()
 
@@ -38,21 +38,28 @@ class widgets(QMainWindow):
         # TimerBtn.clicked.connect(self.gotoTimer)
         TimerBtn.setGeometry(51,24,127,50)
         TimerBtn.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        TimerBtn.clicked.connect(self.gotoTimer)
         TaskButton = QPushButton('Task',self)
         TaskButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         TaskButton.setGeometry(208,24,127,50)
         StatisticsButton = QPushButton('Statistics',self)
         StatisticsButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         StatisticsButton.setGeometry(365, 24, 127, 50)
+        StatisticsButton.clicked.connect(self.gotoStats)
         CatRoomButton = QPushButton('Cat room',self)
         CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         CatRoomButton.setGeometry(522,24,127,50)
 
-app = QtWidgets.QApplication(sys.argv)
-# global widget
-window = widgets()
+    def gotoTimer(self):
+        self.timer = Timer()
+        self.widget.addWidget(self.timer)
+        self.widget.setCurrentIndex(0)
+    def gotoStats(self):
+        print(self.widget.currentIndex())
+        self.stats = Statistics()
+        self.widget.addWidget(self.stats)
+        self.widget.setCurrentIndex(1)
 
-try:
-    sys.exit(app.exec_())
-except:
-    print("Exiting")
+app = QtWidgets.QApplication(sys.argv)
+window = widgets()
+sys.exit(app.exec_())
