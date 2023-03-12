@@ -42,7 +42,6 @@ class Timer(QMainWindow):
         lableCircle2 = QLabel(self)
         lableCircle2.setGeometry(69, 797, 9, 9)
         lableCircle2.setStyleSheet("background-color:#8350AA; border-radius:4px")
-
     def paintEvent(self,event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
@@ -162,6 +161,7 @@ class Timer(QMainWindow):
         StatisticsButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         StatisticsButton.setGeometry(365, 24, 127, 50)
         CatRoomButton = QPushButton('Cat room',self)
+        CatRoomButton.clicked.connect(self.gotoCatRoom)
         CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         CatRoomButton.setGeometry(522,24,127,50)
     def gotoStats(self):
@@ -169,6 +169,37 @@ class Timer(QMainWindow):
         statistics = Statistics()
         widget.addWidget(statistics)
         widget.setCurrentIndex(widget.currentIndex()+1)
+
+    def gotoCatRoom(self):
+        print(widget.currentIndex)
+        room = CatRoom()
+        widget.addWidget(room)
+        widget.setCurrentIndex(widget.currentIndex()+2)
+
+class CatRoom(QMainWindow):
+    def __init__(self):
+        super.__init__()
+        self.title = "Meow concentration"
+        self.scene = QGraphicsScene()
+        self.view= QGraphicsView(self.scene)
+        self.setWindowIcon(QtGui.QIcon('source/cat.ico'))
+        self.setStyleSheet("background-color: red")
+        self.prevSender = None
+        self.InitWindow()
+    def BackLabel(self):
+        self.backLabel = QLabel("White", self)
+        pixmap = QPixmap('source/Cat_1.png')
+        self.backLabel.setPixmap(pixmap)
+        self.backLabel.setStyleSheet("background-color: transparent")
+        # self.backLabel.setMinimumSize(120,120)
+        self.backLabel.setGeometry(387,627,100,100)
+
+    def InitWindow(self):
+        # self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setWindowTitle(self.title)
+        self.setGeometry(650,50,700,850)
+        self.setFixedSize(QSize(700,850))
+
 class Statistics(QMainWindow):
     def __init__(self):
 
@@ -422,6 +453,7 @@ class Statistics(QMainWindow):
         StatisticsButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         StatisticsButton.setGeometry(365, 24, 127, 50)
         CatRoomButton = QPushButton('Cat room',self)
+        CatRoomButton.clicked.connect(self.gotoCatRoom)
         CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         CatRoomButton.setGeometry(522,24,127,50)
     def FrameWeek(self):
@@ -489,6 +521,11 @@ class Statistics(QMainWindow):
         timer = Timer()
         widget.addWidget(timer)
         widget.setCurrentIndex(widget.currentIndex()-1)
+    def gotoCatRoom(self):
+        print(widget.currentIndex)
+        room = CatRoom()
+        widget.addWidget(room)
+        widget.setCurrentIndex(widget.currentIndex()+1)
 
 
 app = QtWidgets.QApplication(sys.argv)
@@ -501,6 +538,8 @@ timer=Timer()
 stats=Statistics()
 widget.addWidget(timer)
 widget.addWidget(stats)
+
+
 widget.show()
 
 try:
