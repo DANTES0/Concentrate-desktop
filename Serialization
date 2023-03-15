@@ -1,0 +1,29 @@
+    # import pickle
+    #
+    # # Объект # для сериализации
+    # x = [1, 2, 3, 4, 5]
+    #
+    # # сериализовать
+    # with open('output.dat', 'wb') as f:
+    #     pickle.dump(x, f)
+    #
+    # # десериализовать
+    # with open('output.dat', 'rb') as f:
+    #     data = pickle.load(f)
+    #     print((data, type(data)))
+
+    # import json
+    #
+    # # Объект # для сериализации
+    # x = [1, 2, 3, 4, 5]
+    #
+    # # сериализовать
+    # with open('output.dat', 'w') as f:
+    #     str = json.dumps(x)
+    #     f.write(str)
+    #
+    # # десериализовать
+    # with open('output.dat', 'r') as f:
+    #     s = f.read()
+    #     data = json.loads(s)
+    #     print((data, type(data)))
