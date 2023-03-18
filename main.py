@@ -7,6 +7,7 @@ from PyQt5.QtCore import *
 from stats_class import Statistics
 from timer_class import Timer
 
+#kkv
 class widgets(QMainWindow):
     def __init__(self):
         super().__init__()
