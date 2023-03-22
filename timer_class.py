@@ -308,7 +308,6 @@ class Timer(QMainWindow):
 
     def stop_action(self):
         self.start = False
-        self.count = 0
         if self.prevSenderTag == self.label_work:
             name_tag = 'work'
         if self.prevSenderTag == self.label_sport:
@@ -381,6 +380,7 @@ class Timer(QMainWindow):
         self.label_sport_circle.show()
         self.label_1.show()
         self.pic_label.show()
+        self.count = 0
 
     def UpdateLabel(self, value):
         self.count = value

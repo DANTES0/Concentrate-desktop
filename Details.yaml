@@ -18,3 +18,7 @@
     tag: sport
     time: 7200
     week: 2
+- - date: 2023-03-22
+    tag: work
+    time: 3
+    week: 2
