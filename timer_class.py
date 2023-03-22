@@ -17,33 +17,8 @@ class Timer(QMainWindow):
         self.prevSenderTag = None
         self.Frame_Timer()
         self.CreateTimer()
-        # self.Task_list()
         self.choose_tag()
         self.InitWindow()
-
-    # def Task_list(self):
-    #
-    #     lable = QLabel("Task list", self)
-    #     lable.setGeometry(51, 575, 127, 50)
-    #     lable.setAlignment(Qt.AlignCenter)
-    #     lable.setStyleSheet("background-color:#8350AA;border-radius:25px;font:24px;font-family:Inter;"
-    #                         "font-weight:bold;color:#ffffff;")
-    #
-    #     list1 = QLineEdit(self)
-    #     list1.setGeometry(51, 632, 598, 50)
-    #     list1.setStyleSheet("background-color:#ffffff; border-radius:25px; font-family: Inter; font:18px;"
-    #                         "padding: 0 40px; font-weight:bold;")
-    #     list2 = QLineEdit(self)
-    #     list2.setGeometry(51, 689, 598, 50)
-    #     list2.setStyleSheet("background-color:#ffffff; border-radius:25px; font-family: Inter; font:18px;"
-    #                         "padding: 0 40px; font-weight:bold;")
-    #     lableCircle1 = QLabel(self)
-    #     lableCircle1.setGeometry(69, 652, 9, 9)
-    #     lableCircle1.setStyleSheet("background-color:#8350AA; border-radius:4px")
-    #
-    #     lableCircle2 = QLabel(self)
-    #     lableCircle2.setGeometry(69, 709, 9, 9)
-    #     lableCircle2.setStyleSheet("background-color:#8350AA; border-radius:4px")
 
     def choose_tag(self):
         self.labelTag = QLabel(self)
@@ -118,19 +93,6 @@ class Timer(QMainWindow):
             self.label_sport_circle.setStyleSheet("background:#979797; border-radius:5px")
             self.label_study_circle.setStyleSheet("background:#979797; border-radius:5px")
             self.label_work_circle.setStyleSheet("background:#979797; border-radius:5px")
-    # def paintEvent(self, event):
-    #     painter = QPainter(self)
-    #     painter.setRenderHint(QPainter.Antialiasing)
-    #     pen = QPen(QColor(187, 137, 217), 20, Qt.SolidLine, Qt.FlatCap)
-    #     painter.setPen(pen)
-    #     painter.setBrush(QColor(229, 219, 233))
-    #     painter.drawEllipse(146, 20, 407, 407)
-    #     if self.sender == self.start_btn:
-    #         self.animationPainter = QPropertyAnimation(painter, b"geometry")
-    #         self.animationPainter.setDuration(1000)
-    #         self.animationPainter.setStartValue(QRect(146, 20, 407, 407))
-    #         self.animationPainter.setEndValue(QRect(146, 70, 407, 407))
-    #         self.animationPainter.start()
 
 
     def Frame_Timer(self):
@@ -146,12 +108,6 @@ class Timer(QMainWindow):
         self.pic_label_timer.setPixmap(pixmap)
         self.pic_label_timer.setGeometry(246, 60, 197, 254)
         self.pic_label_timer.setStyleSheet("background:transparent")
-
-        # self.ellipse = QtWidgets.QGraphicsEllipseItem()
-        # pen = QPen(QColor(187, 137, 217), 20, Qt.SolidLine, Qt.FlatCap)
-        # self.ellipse.setPen(pen)
-        # self.ellipse.setBrush(QColor(229, 219, 233))
-        # self.ellipse.setRect(146, 20, 407, 407)
 
     def CreateTimer(self):
         self.start = False
@@ -207,7 +163,6 @@ class Timer(QMainWindow):
         self.timer = QTimer(self)
         self.time = QTime(0, 0, 0)
         self.timer.timeout.connect(self.showTime)
-        # self.timer.start(1000)
 
     def showTime(self):
         if self.start:
@@ -218,71 +173,127 @@ class Timer(QMainWindow):
             if self.count == 0:
                 self.lableTimer.setText("00:00")
                 self.start = False
+                self.sliderTimer.setEnabled(True)
+                self.start_btn.setEnabled(True)
+                self.animationTimer = QPropertyAnimation(self.lableTimer, b"geometry")
+                self.animationTimer.setDuration(1000)
+                self.animationTimer.setStartValue(QRect(298, 408, 115, 36))
+                self.animationTimer.setEndValue(QRect(298, 358, 115, 36))
+                self.animationTimer.start()
+
+                self.anmationStartBtn = QPropertyAnimation(self.start_btn, b"geometry")
+                self.anmationStartBtn.setDuration(1000)
+                self.anmationStartBtn.setStartValue(QRect(208, 550, 127, 50))
+                self.anmationStartBtn.setEndValue(QRect(208, 500, 127, 50))
+                self.anmationStartBtn.start()
+
+                self.animationStopBtn = QPropertyAnimation(self.stop_btn, b"geometry")
+                self.animationStopBtn.setDuration(1000)
+                self.animationStopBtn.setStartValue(QRect(365, 550, 127, 50))
+                self.animationStopBtn.setEndValue(QRect(365, 500, 127, 50))
+                self.animationStopBtn.start()
+
+                self.animationSliderTimer = QPropertyAnimation(self.sliderTimer, b"geometry")
+                self.animationSliderTimer.setDuration(1000)
+                self.animationSliderTimer.setStartValue(QRect(211, 480, 280, 15))
+                self.animationSliderTimer.setEndValue(QRect(211, 430, 280, 15))
+                self.animationSliderTimer.start()
+
+                self.animationSmallLabelTimer = QPropertyAnimation(self.smallEllipse, b"geometry")
+                self.animationSmallLabelTimer.setDuration(1000)
+                self.animationSmallLabelTimer.setStartValue(QRect(160, 86, 384, 384))
+                self.animationSmallLabelTimer.setEndValue(QRect(160, 36, 384, 384))
+                self.animationSmallLabelTimer.start()
+
+                self.animationBigLabelTimer = QPropertyAnimation(self.bigEllipse, b"geometry")
+                self.animationBigLabelTimer.setDuration(1000)
+                self.animationBigLabelTimer.setStartValue(QRect(138, 64, 428, 428))
+                self.animationBigLabelTimer.setEndValue(QRect(138, 14, 428, 428))
+                self.animationBigLabelTimer.start()
+
+                self.animationPicLabelTimer = QPropertyAnimation(self.pic_label_timer, b"geometry")
+                self.animationPicLabelTimer.setDuration(1000)
+                self.animationPicLabelTimer.setStartValue(QRect(246, 110, 197, 254))
+                self.animationPicLabelTimer.setEndValue(QRect(246, 60, 197, 254))
+                self.animationPicLabelTimer.start()
+
+                self.labelTag.show()
+                self.label_work.show()
+                self.label_sport.show()
+                self.label_other.show()
+                self.label_study.show()
+                self.label_other_circle.show()
+                self.label_work_circle.show()
+                self.label_study_circle.show()
+                self.label_sport_circle.show()
+                self.label_1.show()
+                self.pic_label.show()
 
     def start_action(self):
-        self.timer.start(1000)
-        self.sliderTimer.setEnabled(False)
-        self.start_btn.setEnabled(False)
-        #дичь лютая
-        self.lableTimer.setGeometry(298,358,115,36)
-        self.animationTimer = QPropertyAnimation(self.lableTimer, b"geometry")
-        self.animationTimer.setDuration(1000)
-        self.animationTimer.setStartValue(QRect(298, 358, 115, 36))
-        self.animationTimer.setEndValue(QRect(298, 408, 115, 36))
-        self.animationTimer.start()
+        if self.count != 0:
+            self.timer.start(1000)
+            self.sliderTimer.setEnabled(False)
+            self.start_btn.setEnabled(False)
+            #дичь лютая
+            self.lableTimer.setGeometry(298,358,115,36)
+            self.animationTimer = QPropertyAnimation(self.lableTimer, b"geometry")
+            self.animationTimer.setDuration(1000)
+            self.animationTimer.setStartValue(QRect(298, 358, 115, 36))
+            self.animationTimer.setEndValue(QRect(298, 408, 115, 36))
+            self.animationTimer.start()
 
-        self.anmationStartBtn = QPropertyAnimation(self.start_btn, b"geometry")
-        self.anmationStartBtn.setDuration(1000)
-        self.anmationStartBtn.setStartValue(QRect(208, 500, 127, 50))
-        self.anmationStartBtn.setEndValue(QRect(208, 550, 127, 50))
-        self.anmationStartBtn.start()
+            self.anmationStartBtn = QPropertyAnimation(self.start_btn, b"geometry")
+            self.anmationStartBtn.setDuration(1000)
+            self.anmationStartBtn.setStartValue(QRect(208, 500, 127, 50))
+            self.anmationStartBtn.setEndValue(QRect(208, 550, 127, 50))
+            self.anmationStartBtn.start()
 
-        self.animationStopBtn = QPropertyAnimation(self.stop_btn, b"geometry")
-        self.animationStopBtn.setDuration(1000)
-        self.animationStopBtn.setStartValue(QRect(365,500,127,50))
-        self.animationStopBtn.setEndValue(QRect(365, 550, 127, 50))
-        self.animationStopBtn.start()
+            self.animationStopBtn = QPropertyAnimation(self.stop_btn, b"geometry")
+            self.animationStopBtn.setDuration(1000)
+            self.animationStopBtn.setStartValue(QRect(365,500,127,50))
+            self.animationStopBtn.setEndValue(QRect(365, 550, 127, 50))
+            self.animationStopBtn.start()
 
-        self.animationSliderTimer = QPropertyAnimation(self.sliderTimer, b"geometry")
-        self.animationSliderTimer.setDuration(1000)
-        self.animationSliderTimer.setStartValue(QRect(211, 430, 280, 15))
-        self.animationSliderTimer.setEndValue(QRect(211, 480, 280, 15))
-        self.animationSliderTimer.start()
+            self.animationSliderTimer = QPropertyAnimation(self.sliderTimer, b"geometry")
+            self.animationSliderTimer.setDuration(1000)
+            self.animationSliderTimer.setStartValue(QRect(211, 430, 280, 15))
+            self.animationSliderTimer.setEndValue(QRect(211, 480, 280, 15))
+            self.animationSliderTimer.start()
 
-        self.animationSmallLabelTimer = QPropertyAnimation(self.smallEllipse, b"geometry")
-        self.animationSmallLabelTimer.setDuration(1000)
-        self.animationSmallLabelTimer.setStartValue(QRect(160,36,384,384))
-        self.animationSmallLabelTimer.setEndValue(QRect(160,86,384,384))
-        self.animationSmallLabelTimer.start()
+            self.animationSmallLabelTimer = QPropertyAnimation(self.smallEllipse, b"geometry")
+            self.animationSmallLabelTimer.setDuration(1000)
+            self.animationSmallLabelTimer.setStartValue(QRect(160,36,384,384))
+            self.animationSmallLabelTimer.setEndValue(QRect(160,86,384,384))
+            self.animationSmallLabelTimer.start()
 
-        self.animationBigLabelTimer = QPropertyAnimation(self.bigEllipse, b"geometry")
-        self.animationBigLabelTimer.setDuration(1000)
-        self.animationBigLabelTimer.setStartValue(QRect(138, 14, 428, 428))
-        self.animationBigLabelTimer.setEndValue(QRect(138, 64, 428, 428))
-        self.animationBigLabelTimer.start()
+            self.animationBigLabelTimer = QPropertyAnimation(self.bigEllipse, b"geometry")
+            self.animationBigLabelTimer.setDuration(1000)
+            self.animationBigLabelTimer.setStartValue(QRect(138, 14, 428, 428))
+            self.animationBigLabelTimer.setEndValue(QRect(138, 64, 428, 428))
+            self.animationBigLabelTimer.start()
 
-        self.animationPicLabelTimer = QPropertyAnimation(self.pic_label_timer, b"geometry")
-        self.animationPicLabelTimer.setDuration(1000)
-        self.animationPicLabelTimer.setStartValue(QRect(246, 60, 197, 254))
-        self.animationPicLabelTimer.setEndValue(QRect(246, 110, 197, 254))
-        self.animationPicLabelTimer.start()
-        #***********************************
-        self.start = True
-        print(self.start)
-        print(self.count)
-        self.labelTag.hide()
-        self.label_work.hide()
-        self.label_sport.hide()
-        self.label_other.hide()
-        self.label_study.hide()
-        self.label_other_circle.hide()
-        self.label_work_circle.hide()
-        self.label_study_circle.hide()
-        self.label_sport_circle.hide()
-        self.label_1.hide()
-        self.pic_label.hide()
-        if self.count == 0:
-            self.start = False
+            self.animationPicLabelTimer = QPropertyAnimation(self.pic_label_timer, b"geometry")
+            self.animationPicLabelTimer.setDuration(1000)
+            self.animationPicLabelTimer.setStartValue(QRect(246, 60, 197, 254))
+            self.animationPicLabelTimer.setEndValue(QRect(246, 110, 197, 254))
+            self.animationPicLabelTimer.start()
+            #***********************************
+            self.start = True
+            print(self.start)
+            print(self.count)
+            self.labelTag.hide()
+            self.label_work.hide()
+            self.label_sport.hide()
+            self.label_other.hide()
+            self.label_study.hide()
+            self.label_other_circle.hide()
+            self.label_work_circle.hide()
+            self.label_study_circle.hide()
+            self.label_sport_circle.hide()
+            self.label_1.hide()
+            self.pic_label.hide()
+            if self.count == 0:
+                self.start = False
 
     def stop_action(self):
         self.start = False
@@ -292,7 +303,6 @@ class Timer(QMainWindow):
         self.sliderTimer.setValue(0)
         self.timer.stop()
         #***************************
-        self.animationTimer.finished
         self.animationTimer = QPropertyAnimation(self.lableTimer, b"geometry")
         self.animationTimer.setDuration(1000)
         self.animationTimer.setStartValue(QRect(298, 408, 115, 36))
