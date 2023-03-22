@@ -196,6 +196,17 @@ class Timer(QMainWindow):
             if self.count == 0:
                 self.lableTimer.setText("00:00")
                 self.start = False
+                self.labelTag.show()
+                self.label_work.show()
+                self.label_sport.show()
+                self.label_other.show()
+                self.label_study.show()
+                self.label_other_circle.show()
+                self.label_work_circle.show()
+                self.label_study_circle.show()
+                self.label_sport_circle.show()
+                self.label_1.show()
+                self.pic_label.show()
 
     def start_action(self):
         self.start = True
@@ -224,12 +235,24 @@ class Timer(QMainWindow):
         self.start = False
         self.count = 0
         self.sliderTimer.setValue(0)
+        self.labelTag.show()
+        self.label_work.show()
+        self.label_sport.show()
+        self.label_other.show()
+        self.label_study.show()
+        self.label_other_circle.show()
+        self.label_work_circle.show()
+        self.label_study_circle.show()
+        self.label_sport_circle.show()
+        self.label_1.show()
+        self.pic_label.show()
 
     def UpdateLabel(self, value):
         self.count = value
         m, s = divmod(self.count, 60)
         min_sec_format = '{:02d}:{:02d}'.format(m, s)
         self.lableTimer.setText(str(min_sec_format))
+        print(self.count)
 
     def InitWindow(self):
         self.setWindowTitle(self.title)
