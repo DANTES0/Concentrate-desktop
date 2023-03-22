@@ -13,6 +13,7 @@ class Timer(QMainWindow):
         self.view= QGraphicsView(self.scene)
         self.setWindowIcon(QtGui.QIcon('source/cat.ico'))
         self.setStyleSheet("background-color: #E5DBE9")
+
         self.prevSenderTag = None
         self.CreateTimer()
         self.Frame_Timer()
@@ -117,19 +118,32 @@ class Timer(QMainWindow):
             self.label_sport_circle.setStyleSheet("background:#979797; border-radius:5px")
             self.label_study_circle.setStyleSheet("background:#979797; border-radius:5px")
             self.label_work_circle.setStyleSheet("background:#979797; border-radius:5px")
-    def paintEvent(self, event):
-        painter = QPainter(self)
-        painter.setRenderHint(QPainter.Antialiasing)
-        pen = QPen(QColor(187, 137, 217), 20, Qt.SolidLine, Qt.FlatCap)
-        painter.setPen(pen)
-        painter.setBrush(QColor(229, 219, 233))
-        painter.drawEllipse(146, 20, 407, 407)
+    # def paintEvent(self, event):
+    #     painter = QPainter(self)
+    #     painter.setRenderHint(QPainter.Antialiasing)
+    #     pen = QPen(QColor(187, 137, 217), 20, Qt.SolidLine, Qt.FlatCap)
+    #     painter.setPen(pen)
+    #     painter.setBrush(QColor(229, 219, 233))
+    #     painter.drawEllipse(146, 20, 407, 407)
+    #     if self.sender == self.start_btn:
+    #         self.animationPainter = QPropertyAnimation(painter, b"geometry")
+    #         self.animationPainter.setDuration(1000)
+    #         self.animationPainter.setStartValue(QRect(146, 20, 407, 407))
+    #         self.animationPainter.setEndValue(QRect(146, 70, 407, 407))
+    #         self.animationPainter.start()
+
 
     def Frame_Timer(self):
         pic_lable = QLabel(self)
         pixmap = QPixmap('source/Time_Cat.png')
         pic_lable.setPixmap(pixmap)
         pic_lable.setGeometry(246, 60, 197, 254)
+
+        self.ellipse = QtWidgets.QGraphicsEllipseItem()
+        self.ellipse.setRect(146,20,407,407)
+        pen = QPen(QColor(187, 137, 217), 20, Qt.SolidLine, Qt.FlatCap)
+        self.ellipse.setPen(pen)
+        self.ellipse.setBrush(QColor(229, 219, 233))
 
     def CreateTimer(self):
         self.start = False
@@ -209,6 +223,32 @@ class Timer(QMainWindow):
                 self.pic_label.show()
 
     def start_action(self):
+        self.sender = self.sender()
+        #дичь лютая
+        self.animationTimer = QPropertyAnimation(self.lableTimer, b"geometry")
+        self.animationTimer.setDuration(1000)
+        self.animationTimer.setStartValue(QRect(298, 358, 115, 36))
+        self.animationTimer.setEndValue(QRect(298, 408, 115, 36))
+        self.animationTimer.start()
+
+        self.anmationStartBtn = QPropertyAnimation(self.start_btn, b"geometry")
+        self.anmationStartBtn.setDuration(1000)
+        self.anmationStartBtn.setStartValue(QRect(208, 500, 127, 50))
+        self.anmationStartBtn.setEndValue(QRect(208, 550, 127, 50))
+        self.anmationStartBtn.start()
+
+        self.animationStopBtn = QPropertyAnimation(self.stop_btn, b"geometry")
+        self.animationStopBtn.setDuration(1000)
+        self.animationStopBtn.setStartValue(QRect(365,500,127,50))
+        self.animationStopBtn.setEndValue(QRect(365, 550, 127, 50))
+        self.animationStopBtn.start()
+
+        self.animationSliderTimer = QPropertyAnimation(self.sliderTimer, b"geometry")
+        self.animationSliderTimer.setDuration(1000)
+        self.animationSliderTimer.setStartValue(QRect(211, 430, 280, 15))
+        self.animationSliderTimer.setEndValue(QRect(211, 480, 280, 15))
+        self.animationSliderTimer.start()
+        #***********************************
         self.start = True
         print(self.start)
         print(self.count)
@@ -227,7 +267,6 @@ class Timer(QMainWindow):
         # i = 358
         # while i != 500:
         #     self.lableTimer.move(298,i)
-
         if self.count == 0:
             self.start = False
 
