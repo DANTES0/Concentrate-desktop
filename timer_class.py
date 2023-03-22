@@ -45,16 +45,16 @@ class Timer(QMainWindow):
     #     lableCircle2.setStyleSheet("background-color:#8350AA; border-radius:4px")
 
     def choose_tag(self):
-        label = QLabel(self)
-        label.setGeometry(183,590,333,92)
-        label.setStyleSheet("background: #ffffff; border-radius: 40px;")
-        label_1 = QLabel('Choose \n   a tag',self)
-        label_1.setGeometry(62,613,95,58)
-        label_1.setStyleSheet("font-family: Inter; font:bold 24px")
+        self.labelTag = QLabel(self)
+        self.labelTag.setGeometry(183,590,333,92)
+        self.labelTag.setStyleSheet("background: #ffffff; border-radius: 40px;")
+        self.label_1 = QLabel('Choose \n   a tag',self)
+        self.label_1.setGeometry(62,613,95,58)
+        self.label_1.setStyleSheet("font-family: Inter; font:bold 24px")
         pixmap = QPixmap('source/Arrow.png')
-        pic_label = QLabel(self)
-        pic_label.setPixmap(pixmap)
-        pic_label.setGeometry(100,570,85,40)
+        self.pic_label = QLabel(self)
+        self.pic_label.setPixmap(pixmap)
+        self.pic_label.setGeometry(100,570,85,40)
 
         self.label_work = QPushButton('work', self)
         self.label_work.setGeometry(267,610, 60, 24)
@@ -68,6 +68,12 @@ class Timer(QMainWindow):
         self.label_other = QPushButton('other', self)
         self.label_other.setGeometry(407,647,60,24)
         self.label_other.setStyleSheet("background:transparent; font: bold 20px; font-family:Inter")
+
+        self.btnGroup = QButtonGroup(self)
+        self.btnGroup.addButton(self.label_work)
+        self.btnGroup.addButton(self.label_study)
+        self.btnGroup.addButton(self.label_other)
+        self.btnGroup.addButton(self.label_sport)
 
         self.label_work_circle = QLabel(self)
         self.label_work_circle.setGeometry(239,619,10,10)
@@ -84,11 +90,33 @@ class Timer(QMainWindow):
         self.prevSenderTag = self.label_work
 
         self.label_work.clicked.connect(self.Action_Tag)
+        self.label_study.clicked.connect(self.Action_Tag)
+        self.label_sport.clicked.connect(self.Action_Tag)
+        self.label_other.clicked.connect(self.Action_Tag)
 
 
     def Action_Tag(self):
         sender = self.sender()
-        self.label_work_circle.setStyleSheet("background:#8350AA; border-radius:5px")
+        if sender == self.label_sport:
+            self.label_sport_circle.setStyleSheet("background:#8350AA; border-radius:5px")
+            self.label_other_circle.setStyleSheet("background:#979797; border-radius:5px")
+            self.label_study_circle.setStyleSheet("background:#979797; border-radius:5px")
+            self.label_work_circle.setStyleSheet("background:#979797; border-radius:5px")
+        if sender == self.label_study:
+            self.label_study_circle.setStyleSheet("background:#8350AA; border-radius:5px")
+            self.label_other_circle.setStyleSheet("background:#979797; border-radius:5px")
+            self.label_sport_circle.setStyleSheet("background:#979797; border-radius:5px")
+            self.label_work_circle.setStyleSheet("background:#979797; border-radius:5px")
+        if sender == self.label_work:
+            self.label_work_circle.setStyleSheet("background:#8350AA; border-radius:5px")
+            self.label_other_circle.setStyleSheet("background:#979797; border-radius:5px")
+            self.label_study_circle.setStyleSheet("background:#979797; border-radius:5px")
+            self.label_sport_circle.setStyleSheet("background:#979797; border-radius:5px")
+        if sender == self.label_other:
+            self.label_other_circle.setStyleSheet("background:#8350AA; border-radius:5px")
+            self.label_sport_circle.setStyleSheet("background:#979797; border-radius:5px")
+            self.label_study_circle.setStyleSheet("background:#979797; border-radius:5px")
+            self.label_work_circle.setStyleSheet("background:#979797; border-radius:5px")
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
@@ -135,11 +163,11 @@ class Timer(QMainWindow):
                                             height: 100px;
                                             margin: -8px -12px;
                                         }""")
-        self.lable = QLabel("00:00", self)
-        self.lable.setFont(QtGui.QFont('Inter', 20))
-        self.lable.setAlignment(Qt.AlignCenter)
-        self.lable.setStyleSheet("color:#8350AA; font-family: Inter; font-weight:bold;")
-        self.lable.setGeometry(298, 358, 115, 36)
+        self.lableTimer = QLabel("00:00", self)
+        self.lableTimer.setFont(QtGui.QFont('Inter', 20))
+        self.lableTimer.setAlignment(Qt.AlignCenter)
+        self.lableTimer.setStyleSheet("color:#8350AA; font-family: Inter; font-weight:bold;")
+        self.lableTimer.setGeometry(298, 358, 115, 36)
 
         self.start_btn = QPushButton("Start", self)
         self.start_btn.setGeometry(208, 500, 127, 50)
@@ -164,15 +192,31 @@ class Timer(QMainWindow):
             self.count -= 1
             m, s = divmod(self.count, 60)
             min_sec_format = '{:02d}:{:02d}'.format(m, s)
-            self.lable.setText(str(min_sec_format))
+            self.lableTimer.setText(str(min_sec_format))
             if self.count == 0:
-                self.lable.setText("00:00")
+                self.lableTimer.setText("00:00")
                 self.start = False
 
     def start_action(self):
         self.start = True
         print(self.start)
         print(self.count)
+        self.labelTag.hide()
+        self.label_work.hide()
+        self.label_sport.hide()
+        self.label_other.hide()
+        self.label_study.hide()
+        self.label_other_circle.hide()
+        self.label_work_circle.hide()
+        self.label_study_circle.hide()
+        self.label_sport_circle.hide()
+        self.label_1.hide()
+        self.pic_label.hide()
+        # self.lableTimer.move(298,400)
+        # i = 358
+        # while i != 500:
+        #     self.lableTimer.move(298,i)
+
         if self.count == 0:
             self.start = False
 
@@ -185,7 +229,7 @@ class Timer(QMainWindow):
         self.count = value
         m, s = divmod(self.count, 60)
         min_sec_format = '{:02d}:{:02d}'.format(m, s)
-        self.lable.setText(str(min_sec_format))
+        self.lableTimer.setText(str(min_sec_format))
 
     def InitWindow(self):
         self.setWindowTitle(self.title)
