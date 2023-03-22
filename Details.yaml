@@ -1,4 +1,20 @@
-- date: 2023-03-22
-  tag: work
-  time: 210
-  week: 2
+- - date: 2023-03-22
+    tag: work
+    time: 300
+    week: 2
+- - date: 2023-03-22
+    tag: work
+    time: 150
+    week: 2
+- - date: 2023-03-22
+    tag: other
+    time: 810
+    week: 2
+- - date: 2023-03-22
+    tag: study
+    time: 750
+    week: 2
+- - date: 2023-03-22
+    tag: sport
+    time: 7200
+    week: 2

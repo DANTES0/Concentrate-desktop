@@ -318,8 +318,11 @@ class Timer(QMainWindow):
         if self.prevSenderTag == self.label_study:
             name_tag = 'study'
         details = [{'tag': name_tag, 'week': datetime.date.today().weekday(), 'time': (self.all_count_timer - self.count), 'date': datetime.date.today()}]
+        with open('Details.yaml', 'r') as f:
+            yaml_data = yaml.safe_load(f)
+        yaml_data.append(details)
         with open('Details.yaml', 'w') as f:
-            yaml.dump(details, f)
+            yaml.dump(yaml_data, f)
         self.sliderTimer.setEnabled(True)
         self.start_btn.setEnabled(True)
         self.sliderTimer.setValue(0)
