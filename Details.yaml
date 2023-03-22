@@ -22,3 +22,11 @@
     tag: work
     time: 3
     week: 2
+- - date: 2023-03-22
+    tag: sport
+    time: 30
+    week: 2
+- - date: 2023-03-22
+    tag: study
+    time: 21
+    week: 2

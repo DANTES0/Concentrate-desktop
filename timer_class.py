@@ -175,6 +175,21 @@ class Timer(QMainWindow):
             if self.count == 0:
                 self.lableTimer.setText("00:00")
                 self.start = False
+                if self.prevSenderTag == self.label_work:
+                    name_tag = 'work'
+                if self.prevSenderTag == self.label_sport:
+                    name_tag = 'sport'
+                if self.prevSenderTag == self.label_other:
+                    name_tag = 'other'
+                if self.prevSenderTag == self.label_study:
+                    name_tag = 'study'
+                details = [{'tag': name_tag, 'week': datetime.date.today().weekday(),
+                            'time': (self.all_count_timer - self.count), 'date': datetime.date.today()}]
+                with open('Details.yaml', 'r') as f:
+                    yaml_data = yaml.safe_load(f)
+                yaml_data.append(details)
+                with open('Details.yaml', 'w') as f:
+                    yaml.dump(yaml_data, f)
                 self.sliderTimer.setEnabled(True)
                 self.start_btn.setEnabled(True)
                 self.animationTimer = QPropertyAnimation(self.lableTimer, b"geometry")
