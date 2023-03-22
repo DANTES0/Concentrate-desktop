@@ -13,6 +13,7 @@ class Timer(QMainWindow):
         self.view= QGraphicsView(self.scene)
         self.setWindowIcon(QtGui.QIcon('source/cat.ico'))
         self.setStyleSheet("background-color: #E5DBE9")
+        self.prevSenderTag = None
         self.CreateTimer()
         self.Frame_Timer()
         # self.Task_list()
@@ -70,7 +71,7 @@ class Timer(QMainWindow):
 
         self.label_work_circle = QLabel(self)
         self.label_work_circle.setGeometry(239,619,10,10)
-        self.label_work_circle.setStyleSheet("background:#979797; border-radius:5px")
+        self.label_work_circle.setStyleSheet("background:#8350AA; border-radius:5px")
         self.label_study_circle = QLabel(self)
         self.label_study_circle.setGeometry(239,655,10,10)
         self.label_study_circle.setStyleSheet("background:#979797; border-radius:5px")
@@ -80,7 +81,14 @@ class Timer(QMainWindow):
         self.label_other_circle = QLabel(self)
         self.label_other_circle.setGeometry(379,655,10,10)
         self.label_other_circle.setStyleSheet("background:#979797; border-radius:5px")
+        self.prevSenderTag = self.label_work
 
+        self.label_work.clicked.connect(self.Action_Tag)
+
+
+    def Action_Tag(self):
+        sender = self.sender()
+        self.label_work_circle.setStyleSheet("background:#8350AA; border-radius:5px")
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
