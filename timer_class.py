@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtChart import *
 from PyQt5.QtCore import *
+import yaml, datetime
 class Timer(QMainWindow):
     def __init__(self):
 
@@ -73,6 +74,7 @@ class Timer(QMainWindow):
 
     def Action_Tag(self):
         sender = self.sender()
+        self.prevSenderTag = sender
         if sender == self.label_sport:
             self.label_sport_circle.setStyleSheet("background:#8350AA; border-radius:5px")
             self.label_other_circle.setStyleSheet("background:#979797; border-radius:5px")
@@ -231,6 +233,15 @@ class Timer(QMainWindow):
 
     def start_action(self):
         if self.count != 0:
+            # 0 - Monday(Понедельник);
+            # 1 - Tuesday(Вторник);
+            # 2 - Wednesday(Среда);
+            # 3 - Thursday(Четверг);
+            # 4 - Friday(Пятница);
+            # 5 - Saturday(Суббота);
+            # 6 - Sunday(Воскресенье).
+            print(datetime.date.today().weekday())
+            self.all_count_timer = self.count
             self.timer.start(1000)
             self.sliderTimer.setEnabled(False)
             self.start_btn.setEnabled(False)
@@ -298,6 +309,17 @@ class Timer(QMainWindow):
     def stop_action(self):
         self.start = False
         self.count = 0
+        if self.prevSenderTag == self.label_work:
+            name_tag = 'work'
+        if self.prevSenderTag == self.label_sport:
+            name_tag = 'sport'
+        if self.prevSenderTag == self.label_other:
+            name_tag = 'other'
+        if self.prevSenderTag == self.label_study:
+            name_tag = 'study'
+        details = [{'tag': name_tag, 'week': datetime.date.today().weekday(), 'time': (self.all_count_timer - self.count), 'date': datetime.date.today()}]
+        with open('Details.yaml', 'w') as f:
+            yaml.dump(details, f)
         self.sliderTimer.setEnabled(True)
         self.start_btn.setEnabled(True)
         self.sliderTimer.setValue(0)
@@ -366,5 +388,5 @@ class Timer(QMainWindow):
 
     def InitWindow(self):
         self.setWindowTitle(self.title)
-        self.setGeometry(650,50,700,762)
-        self.setFixedSize(QSize(700,762))
+        self.setGeometry(650, 50, 700, 762)
+        self.setFixedSize(QSize(700, 762))
