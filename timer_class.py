@@ -15,32 +15,71 @@ class Timer(QMainWindow):
         self.setStyleSheet("background-color: #E5DBE9")
         self.CreateTimer()
         self.Frame_Timer()
-        self.Task_list()
+        # self.Task_list()
+        self.choose_tag()
         self.InitWindow()
 
-    def Task_list(self):
+    # def Task_list(self):
+    #
+    #     lable = QLabel("Task list", self)
+    #     lable.setGeometry(51, 575, 127, 50)
+    #     lable.setAlignment(Qt.AlignCenter)
+    #     lable.setStyleSheet("background-color:#8350AA;border-radius:25px;font:24px;font-family:Inter;"
+    #                         "font-weight:bold;color:#ffffff;")
+    #
+    #     list1 = QLineEdit(self)
+    #     list1.setGeometry(51, 632, 598, 50)
+    #     list1.setStyleSheet("background-color:#ffffff; border-radius:25px; font-family: Inter; font:18px;"
+    #                         "padding: 0 40px; font-weight:bold;")
+    #     list2 = QLineEdit(self)
+    #     list2.setGeometry(51, 689, 598, 50)
+    #     list2.setStyleSheet("background-color:#ffffff; border-radius:25px; font-family: Inter; font:18px;"
+    #                         "padding: 0 40px; font-weight:bold;")
+    #     lableCircle1 = QLabel(self)
+    #     lableCircle1.setGeometry(69, 652, 9, 9)
+    #     lableCircle1.setStyleSheet("background-color:#8350AA; border-radius:4px")
+    #
+    #     lableCircle2 = QLabel(self)
+    #     lableCircle2.setGeometry(69, 709, 9, 9)
+    #     lableCircle2.setStyleSheet("background-color:#8350AA; border-radius:4px")
 
-        lable = QLabel("Task list", self)
-        lable.setGeometry(51, 575, 127, 50)
-        lable.setAlignment(Qt.AlignCenter)
-        lable.setStyleSheet("background-color:#8350AA;border-radius:25px;font:24px;font-family:Inter;"
-                            "font-weight:bold;color:#ffffff;")
+    def choose_tag(self):
+        label = QLabel(self)
+        label.setGeometry(183,590,333,92)
+        label.setStyleSheet("background: #ffffff; border-radius: 40px;")
+        label_1 = QLabel('Choose \n   a tag',self)
+        label_1.setGeometry(62,613,95,58)
+        label_1.setStyleSheet("font-family: Inter; font:bold 24px")
+        pixmap = QPixmap('source/Arrow.png')
+        pic_label = QLabel(self)
+        pic_label.setPixmap(pixmap)
+        pic_label.setGeometry(100,570,85,40)
 
-        list1 = QLineEdit(self)
-        list1.setGeometry(51, 632, 598, 50)
-        list1.setStyleSheet("background-color:#ffffff; border-radius:25px; font-family: Inter; font:18px;"
-                            "padding: 0 40px; font-weight:bold;")
-        list2 = QLineEdit(self)
-        list2.setGeometry(51, 689, 598, 50)
-        list2.setStyleSheet("background-color:#ffffff; border-radius:25px; font-family: Inter; font:18px;"
-                            "padding: 0 40px; font-weight:bold;")
-        lableCircle1 = QLabel(self)
-        lableCircle1.setGeometry(69, 652, 9, 9)
-        lableCircle1.setStyleSheet("background-color:#8350AA; border-radius:4px")
+        self.label_work = QPushButton('work', self)
+        self.label_work.setGeometry(267,610, 60, 24)
+        self.label_work.setStyleSheet("background:transparent; font: bold 20px; font-family:Inter;")
+        self.label_study = QPushButton('study', self)
+        self.label_study.setGeometry(267,647,60,24)
+        self.label_study.setStyleSheet("background:transparent; font: bold 20px; font-family:Inter")
+        self.label_sport = QPushButton('sport', self)
+        self.label_sport.setGeometry(407,610,60,24)
+        self.label_sport.setStyleSheet("background:transparent; font: bold 20px; font-family:Inter")
+        self.label_other = QPushButton('other', self)
+        self.label_other.setGeometry(407,647,60,24)
+        self.label_other.setStyleSheet("background:transparent; font: bold 20px; font-family:Inter")
 
-        lableCircle2 = QLabel(self)
-        lableCircle2.setGeometry(69, 709, 9, 9)
-        lableCircle2.setStyleSheet("background-color:#8350AA; border-radius:4px")
+        self.label_work_circle = QLabel(self)
+        self.label_work_circle.setGeometry(239,619,10,10)
+        self.label_work_circle.setStyleSheet("background:#979797; border-radius:5px")
+        self.label_study_circle = QLabel(self)
+        self.label_study_circle.setGeometry(239,655,10,10)
+        self.label_study_circle.setStyleSheet("background:#979797; border-radius:5px")
+        self.label_sport_circle = QLabel(self)
+        self.label_sport_circle.setGeometry(379,619,10,10)
+        self.label_sport_circle.setStyleSheet("background:#979797; border-radius:5px")
+        self.label_other_circle = QLabel(self)
+        self.label_other_circle.setGeometry(379,655,10,10)
+        self.label_other_circle.setStyleSheet("background:#979797; border-radius:5px")
 
     def paintEvent(self, event):
         painter = QPainter(self)
