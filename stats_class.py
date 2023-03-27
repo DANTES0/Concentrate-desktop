@@ -1,4 +1,6 @@
 import sys, random
+
+import yaml
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -95,7 +97,20 @@ class Statistics(QMainWindow):
         chartView.setGeometry(0, 0, 580, 318)
         chartView.move(60, 32)
     def create_donutchart(self):
+        sum = 0
+        with open('Details.yaml') as f:
+                templates = yaml.safe_load(f)
+        for k in templates:
+            for key_word in k:
+                if key_word['tag'] == 'work' and key_word['week'] == 0:
+                    sum = sum + key_word['time']
+        print(sum)
+                # print(key_word['tag'])
+                # for name in key_word:
+                #     if name == 'tag':
+                #         print(key_word.values())
 
+        print(templates)
         series = QPieSeries()
         series.setHoleSize(0.4)
 

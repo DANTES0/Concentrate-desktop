@@ -16,6 +16,7 @@ class Timer(QMainWindow):
         self.setStyleSheet("background-color: #E5DBE9")
 
         self.prevSenderTag = None
+        print (datetime.date.today().weekday())
         self.Frame_Timer()
         self.CreateTimer()
         self.choose_tag()

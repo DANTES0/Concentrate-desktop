@@ -1,7 +1,7 @@
 - - date: 2023-03-22
     tag: work
     time: 300
-    week: 2
+    week: 0
 - - date: 2023-03-22
     tag: work
     time: 150
@@ -46,3 +46,7 @@
     tag: sport
     time: 9
     week: 3
+- - date: 2023-03-27
+    tag: work
+    time: 6
+    week: 0
