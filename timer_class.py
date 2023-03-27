@@ -20,7 +20,6 @@ class Timer(QMainWindow):
         self.CreateTimer()
         self.choose_tag()
         self.InitWindow()
-
     def choose_tag(self):
         self.labelTag = QLabel(self)
         self.labelTag.setGeometry(183,590,333,92)
@@ -70,8 +69,6 @@ class Timer(QMainWindow):
         self.label_study.clicked.connect(self.Action_Tag)
         self.label_sport.clicked.connect(self.Action_Tag)
         self.label_other.clicked.connect(self.Action_Tag)
-
-
     def Action_Tag(self):
         sender = self.sender()
         self.prevSenderTag = sender
@@ -95,8 +92,6 @@ class Timer(QMainWindow):
             self.label_sport_circle.setStyleSheet("background:#979797; border-radius:5px")
             self.label_study_circle.setStyleSheet("background:#979797; border-radius:5px")
             self.label_work_circle.setStyleSheet("background:#979797; border-radius:5px")
-
-
     def Frame_Timer(self):
         self.bigEllipse = QLabel(self)
         self.bigEllipse.setGeometry(138, 14, 428, 428)
@@ -110,7 +105,6 @@ class Timer(QMainWindow):
         self.pic_label_timer.setPixmap(pixmap)
         self.pic_label_timer.setGeometry(246, 60, 197, 254)
         self.pic_label_timer.setStyleSheet("background:transparent")
-
     def CreateTimer(self):
         self.start = False
         self.count = 0
@@ -165,7 +159,6 @@ class Timer(QMainWindow):
         self.timer = QTimer(self)
         self.time = QTime(0, 0, 0)
         self.timer.timeout.connect(self.showTime)
-
     def showTime(self):
         if self.start:
             self.count -= 1
@@ -245,7 +238,6 @@ class Timer(QMainWindow):
                 self.label_sport_circle.show()
                 self.label_1.show()
                 self.pic_label.show()
-
     def start_action(self):
         if self.count != 0:
             # 0 - Monday(Понедельник);
@@ -320,7 +312,6 @@ class Timer(QMainWindow):
             self.pic_label.hide()
             if self.count == 0:
                 self.start = False
-
     def stop_action(self):
         self.start = False
         if self.prevSenderTag == self.label_work:
@@ -396,14 +387,12 @@ class Timer(QMainWindow):
         self.label_1.show()
         self.pic_label.show()
         self.count = 0
-
     def UpdateLabel(self, value):
         self.count = value
         m, s = divmod(self.count, 60)
         min_sec_format = '{:02d}:{:02d}'.format(m, s)
         self.lableTimer.setText(str(min_sec_format))
         print(self.count)
-
     def InitWindow(self):
         self.setWindowTitle(self.title)
         self.setGeometry(650, 50, 700, 762)

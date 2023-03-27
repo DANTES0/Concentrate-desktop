@@ -119,7 +119,6 @@ class Statistics(QMainWindow):
         chartview.setGeometry(0,0, 580, 318)
         chartview.move(60, 410)
         chartview.setRenderHint(QPainter.Antialiasing)
-
     def FrameWeek(self):
         frame = QFrame(self)
         frame.setFrameShape(QFrame.NoFrame)
