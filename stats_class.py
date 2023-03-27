@@ -19,11 +19,11 @@ class Statistics(QMainWindow):
         self.prevSender = None
         self.data_base = sqlite3.connect('details.db')
         self.cur = self.data_base.cursor()
+        self.cleanTable()
         self.Graph()
-        self.create_donutchart()
+        self.create_donutchart(0)
         self.BackLabel()
         self.FrameWeek()
-        self.cleanTable()
         self.InitWindow()
 
     def InitWindow(self):
@@ -35,7 +35,7 @@ class Statistics(QMainWindow):
         pixmap = QPixmap('source/Cat_1.png')
         self.backLabel.setPixmap(pixmap)
         self.backLabel.setStyleSheet("background-color: transparent")
-        self.backLabel.setGeometry(387,520,100,100)
+        self.backLabel.setGeometry(383,520,100,100)
 
         ConcentrationLabel = QLabel("Concentration time", self)
         ConcentrationLabel.setGeometry(83,13,227,29)
@@ -108,132 +108,67 @@ class Statistics(QMainWindow):
             if ((row[1] < left_border) or (row[2] < datetime.date.today().month) or (row[3] < datetime.date.today().year)):
                 self.cur.execute(f"DELETE FROM stats WHERE data='{row[4]}'")
                 self.data_base.commit()
-            print(row[0], row[1], row[2], row[3], row[4])
+            # print(row[0], row[1], row[2], row[3], row[4])
 
-    def create_donutchart(self):
-        sum = 0
-        # print (datetime.date.today().day-7)
-        # with open('Details.yaml') as f:
-        #         templates = yaml.safe_load(f)
-        # for k in templates:
-        #     for key_word in k:
-        #         # print(key_word)
-        #         if key_word['tag'] == 'other':
-        #             if(key_word['date']<datetime.date.today()):
-        #                 print("сравнило!!!")
-        #                 temp = key_word
-        #                 pr = k
-        #                 # print(k)
-        #                 print(temp)
-        #                 # if os.path.exists('Temp.yaml'):
-        #                 #     with open('Temp.yaml', 'r') as f:
-        #                 #         yaml_temp_date = yaml.safe_load(f)
-        #                 #     yaml_temp_date.append(pr)
-        #                 #     with open('Temp.yaml', 'w') as f:
-        #                 #         yaml.dump(yaml_temp_date, f)
-        #                 # else:
-        #                 #     with open('Temp.yaml', 'w') as f:
-        #                 #         yaml.dump(pr,f)
-        #                 #     for i in yaml_temp_date:
-        #                 #         print(i)
-        #                 # print(yaml_temp_date)
-        #                     # if yaml.safe_load(f) == key_word:
-        #                     #     temp = yaml.safe_load(f)
-        #                 # print(temp)
-        #         # print(key_word['date'])
-        #         #Важно
-        #         # if key_word['tag'] == 'work' and key_word['week'] == 0:
-        #         #     if key_word['date'] == datetime.date.today().day:
-        #         #         print(key_word)
-        #         #     sum = sum + key_word['time']
-        #
-        #
-        #         # print(key_word['tag'])
-        #         # for name in key_word:
-        #         #     if name == 'tag':
-        #         #         print(key_word.values())
-        #
-        # print(templates)
-        series = QPieSeries()
-        series.setHoleSize(0.4)
+    def create_donutchart(self, week):
+        sum_work = 0
+        sum_sport = 0
+        sum_other = 0
+        sum_study = 0
+        self.cur.execute("SELECT week, tag, time FROM stats")
+        res = self.cur.fetchall()
+        for row in res:
+            if row[0] == week:
+                if row[1] == 'work':
+                    sum_work = sum_work + row[2]
+                if row[1] == 'study':
+                    sum_study = sum_study + row[2]
+                if row[1] == 'other':
+                    sum_other = sum_other + row[2]
+                if row[1] == 'sport':
+                    sum_sport = sum_sport + row[2]
 
-        series.append(f'<b><font color="#FA7F9D">Sport {4}h {33}min</font></b>', 20).setColor(QtGui.QColor("#FA7F9D"))
-        series.append('<b><font color="#97ACF9">Work 1h 45min</font></b>', 45).setColor(QtGui.QColor("#97ACF9"))
-        series.append('<b><font color="#FADA7F">Study 1h</font></b>', 25).setColor(QtGui.QColor("#FADA7F"))
-        series.append('<b><font color="#8CFA9C">Meditation 2h</font></b>', 10).setColor(QtGui.QColor("#8CFA9C"))
-        chart = QChart()
+            print(row[0], row[1], row[2])
+        minute_work, seconds_work = divmod(sum_work, 60)
+        minute_study, seconds_study = divmod(sum_study, 60)
+        minute_sport, seconds_sport = divmod(sum_sport, 60)
+        minute_other, seconds_other = divmod(sum_other, 60)
 
-        chart.legend().setAlignment(QtCore.Qt.AlignLeft)
-        chart.addSeries(series)
+        self.series = QPieSeries()
+        self.series.clear()
+        self.series.setHoleSize(0.4)
 
-        chart.setAnimationOptions(QChart.SeriesAnimations)
-        chart.setBackgroundRoundness(30)
-        chart.setDropShadowEnabled(True)
+        self.series.append(f'<b><font color="#FA7F9D">Sport {minute_sport}m {seconds_sport}s</font></b>', sum_sport).setColor(QtGui.QColor("#FA7F9D"))
+        self.series.append(f'<b><font color="#97ACF9">Work {minute_work}m {seconds_work}s</font></b>', sum_work).setColor(QtGui.QColor("#97ACF9"))
+        self.series.append(f'<b><font color="#FADA7F">Study {minute_study}m {seconds_study}s</font></b>', sum_study).setColor(QtGui.QColor("#FADA7F"))
+        self.series.append(f'<b><font color="#8CFA9C">Other {minute_other}m {seconds_other}s</font></b>', sum_other).setColor(QtGui.QColor("#8CFA9C"))
+        self.chart = QChart()
 
-        chart.legend().setFont(QtGui.QFont('Arial', 12))
-        chart.legend().setMarkerShape(2)
+        self.chart.legend().setAlignment(QtCore.Qt.AlignLeft)
+        self.chart.addSeries(self.series)
 
-        chartview = QChartView(chart, self)
-        chartview.setGeometry(0,0, 580, 318)
-        chartview.move(60, 410)
-        chartview.setRenderHint(QPainter.Antialiasing)
+        self.chart.setAnimationOptions(QChart.SeriesAnimations)
+        self.chart.setBackgroundRoundness(30)
+        self.chart.setDropShadowEnabled(True)
 
-    def FrameWeek(self):
-        frame = QFrame(self)
-        frame.setFrameShape(QFrame.NoFrame)
-        frame.setGeometry(66,370,568,36)
-        frame.setStyleSheet("background-color:#A597AB; border-radius: 10px")
+        self.chart.legend().setFont(QtGui.QFont('Arial', 12))
+        self.chart.legend().setMarkerShape(2)
 
-        sunBtn = QPushButton('sun', self)
-        sunBtn.setGeometry(73,374,79,28)
-        sunBtn.setStyleSheet("QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
-        monBtn = QPushButton('mon', self)
-        monBtn.setGeometry(152,374,79,28)
-        monBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
-        tueBtn = QPushButton('tue', self)
-        tueBtn.setGeometry(231,374,79,28)
-        tueBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
-        wedBtn = QPushButton('wed', self)
-        wedBtn.setGeometry(310,374,79,28)
-        wedBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
-        thuBtn = QPushButton('thu', self)
-        thuBtn.setGeometry(389,374,79,28)
-        thuBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
-        friBtn = QPushButton('fri', self)
-        friBtn.setGeometry(468,374,79,28)
-        friBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
-        satBtn = QPushButton('sat', self)
-        satBtn.setGeometry(547,374,79,28)
-        satBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                                  "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                                  "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
-        self.prevSender = sunBtn
-        sunBtn.clicked.connect(self.Actions)
-        monBtn.clicked.connect(self.Actions)
-        tueBtn.clicked.connect(self.Actions)
-        wedBtn.clicked.connect(self.Actions)
-        thuBtn.clicked.connect(self.Actions)
-        satBtn.clicked.connect(self.Actions)
-        friBtn.clicked.connect(self.Actions)
-    def Actions(self):
+        self.chartview = QChartView(self.chart, self)
+        self.chartview.setGeometry(0,0, 580, 318)
+        self.chartview.move(60, 410)
+        self.chartview.setRenderHint(QPainter.Antialiasing)
+        self.chartview.update()
+
+    def updateChart(self):
         sender = self.sender()
-        sender.setStyleSheet("background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F")
-        self.prevSender.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                                      "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                                      "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-                                      )
+        sender.setStyleSheet(
+            "background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F")
+        self.prevSender.setStyleSheet(
+            "QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+            "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+            "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+            )
         if self.prevSender == sender:
             sender.setStyleSheet(
                 "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
@@ -241,3 +176,129 @@ class Statistics(QMainWindow):
                 "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
                 )
         self.prevSender = sender
+        week = 0
+        if sender == self.monBtn:
+            week = 0
+        if sender == self.tueBtn:
+            week = 1
+            self.backLabel.setGeometry(377,520,100,100)
+        if sender == self.wedBtn:
+            week = 2
+        if sender == self.thuBtn:
+            week = 3
+        if sender == self.friBtn:
+            week = 4
+        if sender == self.satBtn:
+            week = 5
+        if sender == self.sunBtn:
+            week = 6
+        self.series.clear()
+        sum_work = 0
+        sum_sport = 0
+        sum_other = 0
+        sum_study = 0
+        self.cur.execute("SELECT week, tag, time FROM stats")
+        res = self.cur.fetchall()
+        for row in res:
+            if row[0] == week:
+                if row[1] == 'work':
+                    sum_work = sum_work + row[2]
+                if row[1] == 'study':
+                    sum_study = sum_study + row[2]
+                if row[1] == 'other':
+                    sum_other = sum_other + row[2]
+                if row[1] == 'sport':
+                    sum_sport = sum_sport + row[2]
+
+            print(row[0], row[1], row[2])
+        minute_work, seconds_work = divmod(sum_work, 60)
+        minute_study, seconds_study = divmod(sum_study, 60)
+        minute_sport, seconds_sport = divmod(sum_sport, 60)
+        minute_other, seconds_other = divmod(sum_other, 60)
+
+        self.series.append(f'<b><font color="#FA7F9D">Sport {minute_sport}m {seconds_sport}s</font></b>', sum_sport).setColor(QtGui.QColor("#FA7F9D"))
+        self.series.append(f'<b><font color="#97ACF9">Work {minute_work}m {seconds_work}s</font></b>', sum_work).setColor(QtGui.QColor("#97ACF9"))
+        self.series.append(f'<b><font color="#FADA7F">Study {minute_study}m {seconds_study}s</font></b>', sum_study).setColor(QtGui.QColor("#FADA7F"))
+        self.series.append(f'<b><font color="#8CFA9C">Other {minute_other}m {seconds_other}s</font></b>', sum_other).setColor(QtGui.QColor("#8CFA9C"))
+        self.series.setHoleSize(0.4)
+        self.chartview.update()
+
+
+    def FrameWeek(self):
+        frame = QFrame(self)
+        frame.setFrameShape(QFrame.NoFrame)
+        frame.setGeometry(66,370,568,36)
+        frame.setStyleSheet("background-color:#A597AB; border-radius: 10px")
+
+        self.monBtn = QPushButton('mon', self)
+        self.monBtn.setGeometry(73,374,79,28)
+        self.monBtn.setStyleSheet("QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+        self.tueBtn = QPushButton('tue', self)
+        self.tueBtn.setGeometry(152,374,79,28)
+        self.tueBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+        self.wedBtn = QPushButton('wed', self)
+        self.wedBtn.setGeometry(231,374,79,28)
+        self.wedBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+        self.thuBtn = QPushButton('thu', self)
+        self.thuBtn.setGeometry(310,374,79,28)
+        self.thuBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+        self.friBtn = QPushButton('fri', self)
+        self.friBtn.setGeometry(389,374,79,28)
+        self.friBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+        self.satBtn = QPushButton('sat', self)
+        self.satBtn.setGeometry(468,374,79,28)
+        self.satBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+        self.sunBtn = QPushButton('sun', self)
+        self.sunBtn.setGeometry(547,374,79,28)
+        self.sunBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                                  "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                                  "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+        self.prevSender = self.monBtn
+        self.sunBtn.clicked.connect(self.updateChart)
+        self.monBtn.clicked.connect(self.updateChart)
+        self.tueBtn.clicked.connect(self.updateChart)
+        self.wedBtn.clicked.connect(self.updateChart)
+        self.thuBtn.clicked.connect(self.updateChart)
+        self.satBtn.clicked.connect(self.updateChart)
+        self.friBtn.clicked.connect(self.updateChart)
+    # def Actions(self):
+    #     sender = self.sender()
+    #     sender.setStyleSheet("background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F")
+    #     self.prevSender.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+    #                                   "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+    #                                   "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+    #                                   )
+    #     if sender == self.monBtn:
+    #         self.create_donutchart(0)
+    #     if sender == self.tueBtn:
+    #         self.create_donutchart(1)
+    #     if sender == self.wedBtn:
+    #         self.create_donutchart(2)
+    #     if sender == self.thuBtn:
+    #         self.create_donutchart(3)
+    #     if sender == self.friBtn:
+    #         self.create_donutchart(4)
+    #     if sender == self.satBtn:
+    #         self.create_donutchart(5)
+    #     if sender == self.sunBtn:
+    #         self.create_donutchart(6)
+    #
+    #     if self.prevSender == sender:
+    #         sender.setStyleSheet(
+    #             "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+    #             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+    #             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+    #             )
+    #     self.prevSender = sender
