@@ -1,4 +1,4 @@
-import sys, random
+import sys, random, sqlite3
 
 import yaml, datetime, os.path
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -17,12 +17,15 @@ class Statistics(QMainWindow):
         self.setWindowIcon(QtGui.QIcon('source/cat.ico'))
         self.setStyleSheet("background-color: #E5DBE9")
         self.prevSender = None
-
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
         self.Graph()
         self.create_donutchart()
         self.BackLabel()
         self.FrameWeek()
+        self.cleanTable()
         self.InitWindow()
+
     def InitWindow(self):
         self.setWindowTitle(self.title)
         self.setGeometry(650,50,700,762)
@@ -96,50 +99,61 @@ class Statistics(QMainWindow):
         chartView = QChartView(chart, self)
         chartView.setGeometry(0, 0, 580, 318)
         chartView.move(60, 32)
+    def cleanTable(self):
+        self.cur.execute("SELECT week, day, month, year, data FROM stats")
+        res = self.cur.fetchall()
+        for row in res:
+            count_left_elem_week = datetime.date.today().weekday()
+            left_border = datetime.date.today().day - count_left_elem_week
+            if ((row[1] < left_border) or (row[2] < datetime.date.today().month) or (row[3] < datetime.date.today().year)):
+                self.cur.execute(f"DELETE FROM stats WHERE data='{row[4]}'")
+                self.data_base.commit()
+            print(row[0], row[1], row[2], row[3], row[4])
+
     def create_donutchart(self):
         sum = 0
-        print (datetime.date.today().day-7)
-        with open('Details.yaml') as f:
-                templates = yaml.safe_load(f)
-        for k in templates:
-            for key_word in k:
-                # print(key_word)
-                if key_word['tag'] == 'other':
-                    if(key_word['date']<datetime.date.today()):
-                        print("сравнило!!!")
-                        temp = key_word
-                        pr = k
-                        # print(k)
-                        print(temp)
-                        if os.path.exists('Temp.yaml'):
-                            with open('Temp.yaml', 'r') as f:
-                                yaml_temp_date = yaml.safe_load(f)
-                            yaml_temp_date.append(pr)
-                            with open('Temp.yaml', 'w') as f:
-                                yaml.dump(yaml_temp_date, f)
-                        else:
-                            with open('Temp.yaml', 'w') as f:
-                                yaml.dump(pr,f)
-                            for i in yaml_temp_date:
-                                print(i)
-                        # print(yaml_temp_date)
-                            # if yaml.safe_load(f) == key_word:
-                            #     temp = yaml.safe_load(f)
-                        # print(temp)
-                # print(key_word['date'])
-                #Важно
-                # if key_word['tag'] == 'work' and key_word['week'] == 0:
-                #     if key_word['date'] == datetime.date.today().day:
-                #         print(key_word)
-                #     sum = sum + key_word['time']
-
-
-                # print(key_word['tag'])
-                # for name in key_word:
-                #     if name == 'tag':
-                #         print(key_word.values())
-
-        print(templates)
+        # print (datetime.date.today().day-7)
+        # with open('Details.yaml') as f:
+        #         templates = yaml.safe_load(f)
+        # for k in templates:
+        #     for key_word in k:
+        #         # print(key_word)
+        #         if key_word['tag'] == 'other':
+        #             if(key_word['date']<datetime.date.today()):
+        #                 print("сравнило!!!")
+        #                 temp = key_word
+        #                 pr = k
+        #                 # print(k)
+        #                 print(temp)
+        #                 # if os.path.exists('Temp.yaml'):
+        #                 #     with open('Temp.yaml', 'r') as f:
+        #                 #         yaml_temp_date = yaml.safe_load(f)
+        #                 #     yaml_temp_date.append(pr)
+        #                 #     with open('Temp.yaml', 'w') as f:
+        #                 #         yaml.dump(yaml_temp_date, f)
+        #                 # else:
+        #                 #     with open('Temp.yaml', 'w') as f:
+        #                 #         yaml.dump(pr,f)
+        #                 #     for i in yaml_temp_date:
+        #                 #         print(i)
+        #                 # print(yaml_temp_date)
+        #                     # if yaml.safe_load(f) == key_word:
+        #                     #     temp = yaml.safe_load(f)
+        #                 # print(temp)
+        #         # print(key_word['date'])
+        #         #Важно
+        #         # if key_word['tag'] == 'work' and key_word['week'] == 0:
+        #         #     if key_word['date'] == datetime.date.today().day:
+        #         #         print(key_word)
+        #         #     sum = sum + key_word['time']
+        #
+        #
+        #         # print(key_word['tag'])
+        #         # for name in key_word:
+        #         #     if name == 'tag':
+        #         #         print(key_word.values())
+        #
+        # print(templates)
         series = QPieSeries()
         series.setHoleSize(0.4)
 

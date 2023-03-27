@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtChart import *
 from PyQt5.QtCore import *
-import yaml, datetime
+import yaml, datetime, sqlite3
 class Timer(QMainWindow):
     def __init__(self):
 
@@ -20,7 +20,21 @@ class Timer(QMainWindow):
         self.Frame_Timer()
         self.CreateTimer()
         self.choose_tag()
+        self.sqlRequest()
         self.InitWindow()
+    def sqlRequest(self):
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
+        self.cur.execute("""CREATE TABLE IF NOT EXISTS stats(
+                tag TEXT,
+                time INT,
+                week INT,
+                year INT,
+                month INT,
+                day INT,
+                data TEXT);
+        """)
+        self.data_base.commit()
 
     def choose_tag(self):
         self.labelTag = QLabel(self)
@@ -332,12 +346,15 @@ class Timer(QMainWindow):
             name_tag = 'other'
         if self.prevSenderTag == self.label_study:
             name_tag = 'study'
-        details = [{'tag': name_tag, 'week': datetime.date.today().weekday(), 'time': (self.all_count_timer - self.count), 'date': datetime.date.today()}]
-        with open('Details.yaml', 'r') as f:
-            yaml_data = yaml.safe_load(f)
-        yaml_data.append(details)
-        with open('Details.yaml', 'w') as f:
-            yaml.dump(yaml_data, f)
+        # details = [{'tag': name_tag, 'week': datetime.date.today().weekday(), 'time': (self.all_count_timer - self.count), 'date': datetime.date.today()}]
+        details = (name_tag,self.all_count_timer - self.count, datetime.date.today().weekday(), datetime.date.today().year, datetime.date.today().month, datetime.date.today().day,datetime.date.today())
+        self.cur.execute("INSERT INTO stats VALUES(?, ?, ?, ?, ?, ?, ?);", details)
+        self.data_base.commit()
+        # with open('Details.yaml', 'r') as f:
+        #     yaml_data = yaml.safe_load(f)
+        # yaml_data.append(details)
+        # with open('Details.yaml', 'w') as f:
+        #     yaml.dump(yaml_data, f)
         self.sliderTimer.setEnabled(True)
         self.start_btn.setEnabled(True)
         self.sliderTimer.setValue(0)
