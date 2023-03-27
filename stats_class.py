@@ -1,6 +1,6 @@
 import sys, random
 
-import yaml
+import yaml, datetime, os.path
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -98,13 +98,42 @@ class Statistics(QMainWindow):
         chartView.move(60, 32)
     def create_donutchart(self):
         sum = 0
+        print (datetime.date.today().day-7)
         with open('Details.yaml') as f:
                 templates = yaml.safe_load(f)
         for k in templates:
             for key_word in k:
-                if key_word['tag'] == 'work' and key_word['week'] == 0:
-                    sum = sum + key_word['time']
-        print(sum)
+                # print(key_word)
+                if key_word['tag'] == 'other':
+                    if(key_word['date']<datetime.date.today()):
+                        print("сравнило!!!")
+                        temp = key_word
+                        pr = k
+                        # print(k)
+                        print(temp)
+                        if os.path.exists('Temp.yaml'):
+                            with open('Temp.yaml', 'r') as f:
+                                yaml_temp_date = yaml.safe_load(f)
+                            yaml_temp_date.append(pr)
+                            with open('Temp.yaml', 'w') as f:
+                                yaml.dump(yaml_temp_date, f)
+                        else:
+                            with open('Temp.yaml', 'w') as f:
+                                yaml.dump(pr,f)
+                            for i in yaml_temp_date:
+                                print(i)
+                        # print(yaml_temp_date)
+                            # if yaml.safe_load(f) == key_word:
+                            #     temp = yaml.safe_load(f)
+                        # print(temp)
+                # print(key_word['date'])
+                #Важно
+                # if key_word['tag'] == 'work' and key_word['week'] == 0:
+                #     if key_word['date'] == datetime.date.today().day:
+                #         print(key_word)
+                #     sum = sum + key_word['time']
+
+
                 # print(key_word['tag'])
                 # for name in key_word:
                 #     if name == 'tag':
