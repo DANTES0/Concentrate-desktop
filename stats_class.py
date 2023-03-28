@@ -136,18 +136,31 @@ class Statistics(QMainWindow):
             if row[1] == 'sport' and row[0] == 6:
                 sum_sportSun = sum_sportSun + row[2]
 
-            self.set1.append(
-                [sum_sportM, sum_sportTue, sum_sportWed, sum_sportThu, sum_sportFri, sum_sportSat, sum_sportSun])
-            self.set2.append([sum_workM, sum_workTue, sum_workWed, sum_workThu, sum_workFri, sum_workSat, sum_workSun])
-            self.set3.append(
-                [sum_studyM, sum_studyTue, sum_studyWed, sum_studyThu, sum_studyFri, sum_studySat, sum_studySun])
-            self.set4.append(
-                [sum_otherM, sum_otherTue, sum_otherWed, sum_otherThu, sum_otherFri, sum_otherSat, sum_otherSun])
-            self.seriesG.append(self.set1)
-            self.seriesG.append(self.set2)
-            self.seriesG.append(self.set3)
-            self.seriesG.append(self.set4)
+            self.chartG.removeSeries(self.seriesG)
+
+            set1 = QBarSet('<b><font color="#FA7F9D">Sport</font></b>')
+            set2 = QBarSet('<b><font color="#97ACF9">Work</font></b>')
+            set3 = QBarSet('<b><font color="#FADA7F">Study</font></b>')
+            set4 = QBarSet('<b><font color="#8CFA9C">Other</font></b>')
+
+            self.seriesG.clear()
+            set1.append([sum_sportM, sum_sportTue, sum_sportWed, sum_sportThu, sum_sportFri, sum_sportSat, sum_sportSun])
+            set2.append([sum_workM, sum_workTue, sum_workWed, sum_workThu, sum_workFri, sum_workSat, sum_workSun])
+            set3.append([sum_studyM, sum_studyTue, sum_studyWed, sum_studyThu, sum_studyFri, sum_studySat, sum_studySun])
+            set4.append([sum_otherM, sum_otherTue, sum_otherWed, sum_otherThu, sum_otherFri, sum_otherSat, sum_otherSun])
+            set1.setColor(QtGui.QColor("#FA7F9D"))
+            set2.setColor(QtGui.QColor("#97ACF9"))
+            set3.setColor(QtGui.QColor("#FADA7F"))
+            set4.setColor(QtGui.QColor("#8CFA9C"))
+            # seriesG = QStackedBarSeries()
+            self.seriesG.append(set1)
+            self.seriesG.append(set2)
+            self.seriesG.append(set3)
+            self.seriesG.append(set4)
+            self.chartG.addSeries(self.seriesG)
+            self.chartG.update()
             self.chartViewG.update()
+
 
     def Graph(self):
         sum_workM = 0
@@ -306,6 +319,7 @@ class Statistics(QMainWindow):
         self.chartViewG = QChartView(self.chartG, self)
         self.chartViewG.setGeometry(0, 0, 580, 318)
         self.chartViewG.move(60, 32)
+        self.chartViewG.update()
     def cleanTable(self):
         self.cur.execute("SELECT week, day, month, year, data FROM stats")
         res = self.cur.fetchall()
@@ -472,7 +486,7 @@ class Statistics(QMainWindow):
                                   "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
                                   "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
         self.prevSender = self.monBtn
-        self.sunBtn.clicked.connect(self.updateChart)
+        self.sunBtn.clicked.connect(self.updateGraph)
         self.monBtn.clicked.connect(self.updateChart)
         self.tueBtn.clicked.connect(self.updateChart)
         self.wedBtn.clicked.connect(self.updateChart)
