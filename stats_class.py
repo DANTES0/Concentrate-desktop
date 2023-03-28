@@ -40,43 +40,246 @@ class Statistics(QMainWindow):
         ConcentrationLabel = QLabel("Concentration time", self)
         ConcentrationLabel.setGeometry(83,13,227,29)
         ConcentrationLabel.setStyleSheet("background-color: transparent; font: bold 24px; font-family: Inter; color: #29002F")
+
+    def updateGraph(self):
+        sum_workM = 0
+        sum_workTue = 0
+        sum_workWed = 0
+        sum_workThu = 0
+        sum_workFri = 0
+        sum_workSat = 0
+        sum_workSun = 0
+        sum_sportM = 0
+        sum_sportTue = 0
+        sum_sportWed = 0
+        sum_sportThu = 0
+        sum_sportFri = 0
+        sum_sportSat = 0
+        sum_sportSun = 0
+        sum_otherM = 0
+        sum_otherTue = 0
+        sum_otherWed = 0
+        sum_otherThu = 0
+        sum_otherFri = 0
+        sum_otherSat = 0
+        sum_otherSun = 0
+        sum_studyM = 0
+        sum_studyTue = 0
+        sum_studyWed = 0
+        sum_studyThu = 0
+        sum_studyFri = 0
+        sum_studySat = 0
+        sum_studySun = 0
+        self.cur.execute("SELECT week, tag, time FROM stats")
+        res = self.cur.fetchall()
+        for row in res:
+            if row[1] == 'work' and row[0] == 0:
+                sum_workM = sum_workM + row[2]
+            if row[1] == 'study' and row[0] == 0:
+                sum_studyM = sum_studyM + row[2]
+            if row[1] == 'other' and row[0] == 0:
+                sum_otherM = sum_otherM + row[2]
+            if row[1] == 'sport' and row[0] == 0:
+                sum_sportM = sum_sportM + row[2]
+
+            if row[1] == 'work' and row[0] == 1:
+                sum_workTue = sum_workTue + row[2]
+            if row[1] == 'study' and row[0] == 1:
+                sum_studyTue = sum_studyTue + row[2]
+            if row[1] == 'other' and row[0] == 1:
+                sum_otherTue = sum_otherTue + row[2]
+            if row[1] == 'sport' and row[0] == 1:
+                sum_sportTue = sum_sportTue + row[2]
+
+            if row[1] == 'work' and row[0] == 2:
+                sum_workWed = sum_workWed + row[2]
+            if row[1] == 'study' and row[0] == 2:
+                sum_studyWed = sum_studyWed + row[2]
+            if row[1] == 'other' and row[0] == 2:
+                sum_otherWed = sum_otherWed + row[2]
+            if row[1] == 'sport' and row[0] == 2:
+                sum_sportWed = sum_sportWed + row[2]
+
+            if row[1] == 'work' and row[0] == 3:
+                sum_workThu = sum_workThu + row[2]
+            if row[1] == 'study' and row[0] == 3:
+                sum_studyThu = sum_studyThu + row[2]
+            if row[1] == 'other' and row[0] == 3:
+                sum_otherThu = sum_otherThu + row[2]
+            if row[1] == 'sport' and row[0] == 3:
+                sum_sportThu = sum_sportThu + row[2]
+
+            if row[1] == 'work' and row[0] == 4:
+                sum_workFri = sum_workFri + row[2]
+            if row[1] == 'study' and row[0] == 4:
+                sum_studyFri = sum_studyFri + row[2]
+            if row[1] == 'other' and row[0] == 4:
+                sum_otherFri = sum_otherFri + row[2]
+            if row[1] == 'sport' and row[0] == 4:
+                sum_sportFri = sum_sportFri + row[2]
+
+            if row[1] == 'work' and row[0] == 5:
+                sum_workSat = sum_workSat + row[2]
+            if row[1] == 'study' and row[0] == 5:
+                sum_studySat = sum_studySat + row[2]
+            if row[1] == 'other' and row[0] == 5:
+                sum_otherSat = sum_otherSat + row[2]
+            if row[1] == 'sport' and row[0] == 5:
+                sum_sportSat = sum_sportSat + row[2]
+
+            if row[1] == 'work' and row[0] == 6:
+                sum_workSun = sum_workSun + row[2]
+            if row[1] == 'study' and row[0] == 6:
+                sum_studySun = sum_studySun + row[2]
+            if row[1] == 'other' and row[0] == 6:
+                sum_otherSun = sum_otherSun + row[2]
+            if row[1] == 'sport' and row[0] == 6:
+                sum_sportSun = sum_sportSun + row[2]
+
+            self.set1.append(
+                [sum_sportM, sum_sportTue, sum_sportWed, sum_sportThu, sum_sportFri, sum_sportSat, sum_sportSun])
+            self.set2.append([sum_workM, sum_workTue, sum_workWed, sum_workThu, sum_workFri, sum_workSat, sum_workSun])
+            self.set3.append(
+                [sum_studyM, sum_studyTue, sum_studyWed, sum_studyThu, sum_studyFri, sum_studySat, sum_studySun])
+            self.set4.append(
+                [sum_otherM, sum_otherTue, sum_otherWed, sum_otherThu, sum_otherFri, sum_otherSat, sum_otherSun])
+            self.chartViewG.update()
+
     def Graph(self):
+        sum_workM = 0
+        sum_workTue = 0
+        sum_workWed = 0
+        sum_workThu = 0
+        sum_workFri = 0
+        sum_workSat = 0
+        sum_workSun = 0
+        sum_sportM = 0
+        sum_sportTue = 0
+        sum_sportWed = 0
+        sum_sportThu = 0
+        sum_sportFri = 0
+        sum_sportSat = 0
+        sum_sportSun = 0
+        sum_otherM = 0
+        sum_otherTue = 0
+        sum_otherWed = 0
+        sum_otherThu = 0
+        sum_otherFri = 0
+        sum_otherSat = 0
+        sum_otherSun = 0
+        sum_studyM = 0
+        sum_studyTue = 0
+        sum_studyWed = 0
+        sum_studyThu = 0
+        sum_studyFri = 0
+        sum_studySat = 0
+        sum_studySun = 0
+        self.cur.execute("SELECT week, tag, time FROM stats")
+        res = self.cur.fetchall()
+        for row in res:
+            if row[1] == 'work' and row[0] == 0:
+                sum_workM = sum_workM + row[2]
+            if row[1] == 'study' and row[0] == 0:
+                sum_studyM = sum_studyM + row[2]
+            if row[1] == 'other' and row[0] == 0:
+                sum_otherM = sum_otherM + row[2]
+            if row[1] == 'sport' and row[0] == 0:
+                sum_sportM = sum_sportM + row[2]
+
+            if row[1] == 'work' and row[0] == 1:
+                sum_workTue = sum_workTue + row[2]
+            if row[1] == 'study' and row[0] == 1:
+                sum_studyTue = sum_studyTue + row[2]
+            if row[1] == 'other' and row[0] == 1:
+                sum_otherTue = sum_otherTue + row[2]
+            if row[1] == 'sport' and row[0] == 1:
+                sum_sportTue = sum_sportTue + row[2]
+
+            if row[1] == 'work' and row[0] == 2:
+                sum_workWed = sum_workWed + row[2]
+            if row[1] == 'study' and row[0] == 2:
+                sum_studyWed = sum_studyWed + row[2]
+            if row[1] == 'other' and row[0] == 2:
+                sum_otherWed = sum_otherWed + row[2]
+            if row[1] == 'sport' and row[0] == 2:
+                sum_sportWed = sum_sportWed + row[2]
+
+            if row[1] == 'work' and row[0] == 3:
+                sum_workThu = sum_workThu + row[2]
+            if row[1] == 'study' and row[0] == 3:
+                sum_studyThu = sum_studyThu + row[2]
+            if row[1] == 'other' and row[0] == 3:
+                sum_otherThu = sum_otherThu + row[2]
+            if row[1] == 'sport' and row[0] == 3:
+                sum_sportThu = sum_sportThu + row[2]
+
+            if row[1] == 'work' and row[0] == 4:
+                sum_workFri = sum_workFri + row[2]
+            if row[1] == 'study' and row[0] == 4:
+                sum_studyFri = sum_studyFri + row[2]
+            if row[1] == 'other' and row[0] == 4:
+                sum_otherFri = sum_otherFri + row[2]
+            if row[1] == 'sport' and row[0] == 4:
+                sum_sportFri = sum_sportFri + row[2]
+
+            if row[1] == 'work' and row[0] == 5:
+                sum_workSat = sum_workSat + row[2]
+            if row[1] == 'study' and row[0] == 5:
+                sum_studySat = sum_studySat + row[2]
+            if row[1] == 'other' and row[0] == 5:
+                sum_otherSat = sum_otherSat + row[2]
+            if row[1] == 'sport' and row[0] == 5:
+                sum_sportSat = sum_sportSat + row[2]
+
+            if row[1] == 'work' and row[0] == 6:
+                sum_workSun = sum_workSun + row[2]
+            if row[1] == 'study' and row[0] == 6:
+                sum_studySun = sum_studySun + row[2]
+            if row[1] == 'other' and row[0] == 6:
+                sum_otherSun = sum_otherSun + row[2]
+            if row[1] == 'sport' and row[0] == 6:
+                sum_sportSun = sum_sportSun + row[2]
+
+
+
+
         self.set1 = QBarSet('<b><font color="#FA7F9D">Sport</font></b>')
         self.set2 = QBarSet('<b><font color="#97ACF9">Work</font></b>')
         self.set3 = QBarSet('<b><font color="#FADA7F">Study</font></b>')
-        self.set4 = QBarSet('<b><font color="#8CFA9C">Meditation</font></b>')
+        self.set4 = QBarSet('<b><font color="#8CFA9C">Other</font></b>')
 
-        self.set1.append([random.randint(0, 10) for i in range(7)])
-        self.set2.append([random.randint(0, 10) for i in range(7)])
-        self.set3.append([random.randint(0, 10) for i in range(7)])
-        self.set4.append([random.randint(0, 10) for i in range(7)])
+        # self.set1.append([random.randint(0, 10) for i in range(7)])
+        self.set1.append([sum_sportM, sum_sportTue, sum_sportWed, sum_sportThu, sum_sportFri, sum_sportSat, sum_sportSun])
+        self.set2.append([sum_workM, sum_workTue, sum_workWed, sum_workThu, sum_workFri, sum_workSat, sum_workSun])
+        self.set3.append([sum_studyM, sum_studyTue, sum_studyWed, sum_studyThu, sum_studyFri, sum_studySat, sum_studySun])
+        self.set4.append([sum_otherM, sum_otherTue, sum_otherWed, sum_otherThu, sum_otherFri, sum_otherSat, sum_otherSun])
         self.set1.setColor(QtGui.QColor("#FA7F9D"))
         self.set2.setColor(QtGui.QColor("#97ACF9"))
         self.set3.setColor(QtGui.QColor("#FADA7F"))
         self.set4.setColor(QtGui.QColor("#8CFA9C"))
 
-        series = QStackedBarSeries()
-        series.append(self.set1)
-        series.append(self.set2)
-        series.append(self.set3)
-        series.append(self.set4)
+        self.seriesG = QStackedBarSeries()
+        self.seriesG.append(self.set1)
+        self.seriesG.append(self.set2)
+        self.seriesG.append(self.set3)
+        self.seriesG.append(self.set4)
 
-        chart = QChart()
-        chart.setMaximumSize(700, 400)
-        chart.addSeries(series)
-        chart.setTitle(f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤㅤ20% from last week</font></b>'
+        self.chartG = QChart()
+        self.chartG.setMaximumSize(700, 400)
+        self.chartG.addSeries(self.seriesG)
+        self.chartG.setTitle(f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤㅤ20% from last week</font></b>'
                        '<br align="left"><b><font face="Inter" size="5" color="#29002F">ㅤ3 h 10 min</font></b></br>')
-        chart.setAnimationOptions(QChart.AllAnimations)
-        chart.setBackgroundRoundness(30)
-        chart.setDropShadowEnabled(True)
+        self.chartG.setAnimationOptions(QChart.AllAnimations)
+        self.chartG.setBackgroundRoundness(30)
+        self.chartG.setDropShadowEnabled(True)
 
-        months = ('<b><font face="Inter" color="#6E6E6E" size="4">Sun</font></b>',
-                  '<b><font face="Inter" color="#6E6E6E" size="4">Mon</font></b>',
+        months = ('<b><font face="Inter" color="#6E6E6E" size="4">Mon</font></b>',
                   '<b><font face="Inter" color="#6E6E6E" size="4">Tue</font></b>',
                   '<b><font face="Inter" color="#6E6E6E" size="4">Wed</font></b>',
                   '<b><font face="Inter" color="#6E6E6E" size="4">Thu</font></b>',
                   '<b><font face="Inter" color="#6E6E6E" size="4">Fri</font></b>',
-                  '<b><font face="Inter" color="#6E6E6E" size="4">Sat</font></b>')
+                  '<b><font face="Inter" color="#6E6E6E" size="4">Sat</font></b>',
+                  '<b><font face="Inter" color="#6E6E6E" size="4">Sun</font></b>')
 
         axisX = QBarCategoryAxis()
         axisX.append(months)
@@ -89,16 +292,16 @@ class Statistics(QMainWindow):
         axisY.setTickCount(3)
         axisY.setMinorTickCount(1)
 
-        chart.addAxis(axisX, Qt.AlignBottom)
-        chart.addAxis(axisY, Qt.AlignRight)
-        chart.legend().setVisible(True)
-        chart.legend().setFont(QtGui.QFont('Arial', 12))
-        chart.legend().setAlignment(Qt.AlignBottom)
-        chart.legend().setMarkerShape(2)
+        self.chartG.addAxis(axisX, Qt.AlignBottom)
+        self.chartG.addAxis(axisY, Qt.AlignRight)
+        self.chartG.legend().setVisible(True)
+        self.chartG.legend().setFont(QtGui.QFont('Arial', 12))
+        self.chartG.legend().setAlignment(Qt.AlignBottom)
+        self.chartG.legend().setMarkerShape(2)
 
-        chartView = QChartView(chart, self)
-        chartView.setGeometry(0, 0, 580, 318)
-        chartView.move(60, 32)
+        self.chartViewG = QChartView(self.chartG, self)
+        self.chartViewG.setGeometry(0, 0, 580, 318)
+        self.chartViewG.move(60, 32)
     def cleanTable(self):
         self.cur.execute("SELECT week, day, month, year, data FROM stats")
         res = self.cur.fetchall()
@@ -108,7 +311,6 @@ class Statistics(QMainWindow):
             if ((row[1] < left_border) or (row[2] < datetime.date.today().month) or (row[3] < datetime.date.today().year)):
                 self.cur.execute(f"DELETE FROM stats WHERE data='{row[4]}'")
                 self.data_base.commit()
-            # print(row[0], row[1], row[2], row[3], row[4])
 
     def create_donutchart(self, week):
         sum_work = 0

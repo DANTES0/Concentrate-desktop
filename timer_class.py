@@ -198,13 +198,10 @@ class Timer(QMainWindow):
                     name_tag = 'other'
                 if self.prevSenderTag == self.label_study:
                     name_tag = 'study'
-                details = [{'tag': name_tag, 'week': datetime.date.today().weekday(),
-                            'time': (self.all_count_timer - self.count), 'date': datetime.date.today()}]
-                with open('Details.yaml', 'r') as f:
-                    yaml_data = yaml.safe_load(f)
-                yaml_data.append(details)
-                with open('Details.yaml', 'w') as f:
-                    yaml.dump(yaml_data, f)
+                details = (name_tag, self.all_count_timer - self.count, datetime.date.today().weekday(),datetime.date.today().year, datetime.date.today().month, datetime.date.today().day,datetime.date.today())
+                self.cur.execute("INSERT INTO stats VALUES(?, ?, ?, ?, ?, ?, ?);", details)
+                self.data_base.commit()
+
                 self.sliderTimer.setEnabled(True)
                 self.start_btn.setEnabled(True)
                 self.animationTimer = QPropertyAnimation(self.lableTimer, b"geometry")
