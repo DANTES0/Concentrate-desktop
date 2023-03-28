@@ -143,6 +143,10 @@ class Statistics(QMainWindow):
                 [sum_studyM, sum_studyTue, sum_studyWed, sum_studyThu, sum_studyFri, sum_studySat, sum_studySun])
             self.set4.append(
                 [sum_otherM, sum_otherTue, sum_otherWed, sum_otherThu, sum_otherFri, sum_otherSat, sum_otherSun])
+            self.seriesG.append(self.set1)
+            self.seriesG.append(self.set2)
+            self.seriesG.append(self.set3)
+            self.seriesG.append(self.set4)
             self.chartViewG.update()
 
     def Graph(self):
