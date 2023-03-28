@@ -19,6 +19,7 @@ class Statistics(QMainWindow):
         self.prevSender = None
         self.data_base = sqlite3.connect('details.db')
         self.cur = self.data_base.cursor()
+        print('@E@!$@!$!$@$!$$!$$~')
         self.cleanTable()
         self.Graph()
         self.create_donutchart(0)
@@ -348,7 +349,7 @@ class Statistics(QMainWindow):
                 if row[1] == 'sport':
                     sum_sport = sum_sport + row[2]
 
-            print(row[0], row[1], row[2])
+            # print(row[0], row[1], row[2])
         minute_work, seconds_work = divmod(sum_work, 60)
         minute_study, seconds_study = divmod(sum_study, 60)
         minute_sport, seconds_sport = divmod(sum_sport, 60)
@@ -441,6 +442,7 @@ class Statistics(QMainWindow):
         self.series.append(f'<b><font color="#FADA7F">Study {minute_study}m {seconds_study}s</font></b>', sum_study).setColor(QtGui.QColor("#FADA7F"))
         self.series.append(f'<b><font color="#8CFA9C">Other {minute_other}m {seconds_other}s</font></b>', sum_other).setColor(QtGui.QColor("#8CFA9C"))
         self.series.setHoleSize(0.4)
+        self.updateGraph()
         self.chartview.update()
 
 
@@ -486,7 +488,7 @@ class Statistics(QMainWindow):
                                   "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
                                   "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
         self.prevSender = self.monBtn
-        self.sunBtn.clicked.connect(self.updateGraph)
+        self.sunBtn.clicked.connect(self.updateChart)
         self.monBtn.clicked.connect(self.updateChart)
         self.tueBtn.clicked.connect(self.updateChart)
         self.wedBtn.clicked.connect(self.updateChart)
