@@ -29,6 +29,7 @@ class widgets(QMainWindow):
         self.setWindowIcon(QtGui.QIcon("source/cat.ico"))
         self.setGeometry(650, 50, 700, 850)
         self.setFixedSize(QSize(700, 850))
+        #self.setWindowFlags(Qt.WindowCloseButtonHint)  #hide CLOSE button
         self.show()
     def FrameBtn(self):
         frame = QFrame(self)
