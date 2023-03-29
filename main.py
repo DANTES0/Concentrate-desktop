@@ -56,6 +56,8 @@ class widgets(QMainWindow):
         self.stats = Statistics()
         self.widget.addWidget(self.stats)
         self.widget.setCurrentIndex(1)
+        self.stats.updateGraph()
+        self.stats.show()
 
 app = QtWidgets.QApplication(sys.argv)
 window = widgets()
