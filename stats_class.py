@@ -19,7 +19,6 @@ class Statistics(QMainWindow):
         self.prevSender = None
         self.data_base = sqlite3.connect('details.db')
         self.cur = self.data_base.cursor()
-        print('@E@!$@!$!$@$!$$!$$~')
         self.cleanTable()
         self.Graph()
         self.create_donutchart(0)
@@ -145,19 +144,22 @@ class Statistics(QMainWindow):
             set4 = QBarSet('<b><font color="#8CFA9C">Other</font></b>')
 
             self.seriesG.clear()
+
             set1.append([sum_sportM, sum_sportTue, sum_sportWed, sum_sportThu, sum_sportFri, sum_sportSat, sum_sportSun])
             set2.append([sum_workM, sum_workTue, sum_workWed, sum_workThu, sum_workFri, sum_workSat, sum_workSun])
             set3.append([sum_studyM, sum_studyTue, sum_studyWed, sum_studyThu, sum_studyFri, sum_studySat, sum_studySun])
             set4.append([sum_otherM, sum_otherTue, sum_otherWed, sum_otherThu, sum_otherFri, sum_otherSat, sum_otherSun])
+
             set1.setColor(QtGui.QColor("#FA7F9D"))
             set2.setColor(QtGui.QColor("#97ACF9"))
             set3.setColor(QtGui.QColor("#FADA7F"))
             set4.setColor(QtGui.QColor("#8CFA9C"))
-            # seriesG = QStackedBarSeries()
+
             self.seriesG.append(set1)
             self.seriesG.append(set2)
             self.seriesG.append(set3)
             self.seriesG.append(set4)
+
             self.chartG.addSeries(self.seriesG)
             self.chartG.update()
             self.chartViewG.update()
@@ -266,7 +268,6 @@ class Statistics(QMainWindow):
         self.set3 = QBarSet('<b><font color="#FADA7F">Study</font></b>')
         self.set4 = QBarSet('<b><font color="#8CFA9C">Other</font></b>')
 
-        # self.set1.append([random.randint(0, 10) for i in range(7)])
         self.set1.append([sum_sportM, sum_sportTue, sum_sportWed, sum_sportThu, sum_sportFri, sum_sportSat, sum_sportSun])
         self.set2.append([sum_workM, sum_workTue, sum_workWed, sum_workThu, sum_workFri, sum_workSat, sum_workSun])
         self.set3.append([sum_studyM, sum_studyTue, sum_studyWed, sum_studyThu, sum_studyFri, sum_studySat, sum_studySun])
@@ -349,7 +350,6 @@ class Statistics(QMainWindow):
                 if row[1] == 'sport':
                     sum_sport = sum_sport + row[2]
 
-            # print(row[0], row[1], row[2])
         minute_work, seconds_work = divmod(sum_work, 60)
         minute_study, seconds_study = divmod(sum_study, 60)
         minute_sport, seconds_sport = divmod(sum_sport, 60)
@@ -431,7 +431,6 @@ class Statistics(QMainWindow):
                 if row[1] == 'sport':
                     sum_sport = sum_sport + row[2]
 
-            print(row[0], row[1], row[2])
         minute_work, seconds_work = divmod(sum_work, 60)
         minute_study, seconds_study = divmod(sum_study, 60)
         minute_sport, seconds_sport = divmod(sum_sport, 60)
@@ -495,32 +494,3 @@ class Statistics(QMainWindow):
         self.thuBtn.clicked.connect(self.updateChart)
         self.satBtn.clicked.connect(self.updateChart)
         self.friBtn.clicked.connect(self.updateChart)
-    # def Actions(self):
-    #     sender = self.sender()
-    #     sender.setStyleSheet("background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F")
-    #     self.prevSender.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-    #                                   "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-    #                                   "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-    #                                   )
-    #     if sender == self.monBtn:
-    #         self.create_donutchart(0)
-    #     if sender == self.tueBtn:
-    #         self.create_donutchart(1)
-    #     if sender == self.wedBtn:
-    #         self.create_donutchart(2)
-    #     if sender == self.thuBtn:
-    #         self.create_donutchart(3)
-    #     if sender == self.friBtn:
-    #         self.create_donutchart(4)
-    #     if sender == self.satBtn:
-    #         self.create_donutchart(5)
-    #     if sender == self.sunBtn:
-    #         self.create_donutchart(6)
-    #
-    #     if self.prevSender == sender:
-    #         sender.setStyleSheet(
-    #             "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-    #             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-    #             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-    #             )
-    #     self.prevSender = sender
