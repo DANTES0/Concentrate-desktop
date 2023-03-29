@@ -168,7 +168,7 @@ class Timer(QMainWindow):
         self.start_btn.setGeometry(208, 500, 127, 50)
         self.start_btn.clicked.connect(self.start_action)
         self.start_btn.setStyleSheet("border-radius: 25px; background-color:#9CC152; color:#ffffff; "
-                                     "font-family:Inter; font:24px; font-weight:bold")
+                                     "font-family:Inter; font:24px; font-weight:bold;")
 
         self.stop_btn = QPushButton("Stop", self)
         self.stop_btn.move(70, 250)
