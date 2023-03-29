@@ -152,6 +152,23 @@ class Statistics(QMainWindow):
             set2.setColor(QtGui.QColor("#97ACF9"))
             set3.setColor(QtGui.QColor("#FADA7F"))
             set4.setColor(QtGui.QColor("#8CFA9C"))
+
+            self.cur.execute("SELECT time FROM stats")
+            averges = 0
+            times = self.cur.fetchall()
+            for time in times:
+                averges += time[0]
+            averges /= 7
+            print(averges)
+            round(averges, 0)
+            print(averges)
+            aver_min = 0
+            aver_sec = 0
+            aver_min, aver_sec = divmod(averges, 60)
+            self.chartG.setTitle(
+                f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤㅤ20% from last week</font></b>'
+                f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
+
             # seriesG = QStackedBarSeries()
             self.seriesG.append(set1)
             self.seriesG.append(set2)
