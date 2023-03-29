@@ -7,6 +7,7 @@ from PyQt5.QtCore import *
 from stats_class import Statistics
 from timer_class import Timer
 from Cat_Room import Cat_Room
+from Task_class import Task
 
 class widgets(QMainWindow):
     def __init__(self):
@@ -17,9 +18,11 @@ class widgets(QMainWindow):
         self.widget = QtWidgets.QStackedWidget(self)
         self.widget.setGeometry(0, 88, 700, 762)
         self.timer = Timer()
+        self.Task = Task()
         self.stats = Statistics()
         self.widget.addWidget(self.timer)
         self.widget.addWidget(self.stats)
+        self.widget.addWidget(self.Task)
         self.InitWindow()
 
     def InitWindow(self):
@@ -40,6 +43,7 @@ class widgets(QMainWindow):
         TaskButton = QPushButton('Task',self)
         TaskButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         TaskButton.setGeometry(208,24,127,50)
+        TaskButton.clicked.connect(self.gotoTask)
         StatisticsButton = QPushButton('Statistics',self)
         StatisticsButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         StatisticsButton.setGeometry(365, 24, 127, 50)
@@ -65,6 +69,11 @@ class widgets(QMainWindow):
         self.room = Cat_Room()
         self.widget.addWidget(self.room)
         self.widget.setCurrentIndex(3)
+
+    def gotoTask(self):
+        self.Task = Task()
+        self.widget.addWidget(self.Task)
+        self.widget.setCurrentIndex(2)
 
 
 app = QtWidgets.QApplication(sys.argv)
