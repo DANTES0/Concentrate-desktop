@@ -63,6 +63,7 @@ class CatRoom(QMainWindow):
         self.mywidget.cat_name_6.close()
         self.mywidget.cat_name_7.close()
         self.mywidget.cat_name_8.close()
+        self.mywidget.cat_buy_1.close()
         self.storeButton_load.show()
         self.mywidget.storeButton_exit.hide()
     def init_Ui(self):
@@ -125,9 +126,17 @@ class CatRoom(QMainWindow):
         #  текст для кнопки 1
         self.mywidget.cat_name_1 = QLabel(self)
         self.mywidget.cat_name_1.setGeometry(137, 105, 100, 40)
+
         self.mywidget.cat_name_1.setText("Sleeper")
         self.mywidget.cat_name_1.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 23px; line-height: 15px; text-align: center;")
         self.mywidget.cat_name_1.show()
+
+        #  кнопка покупки кота 1
+        self.mywidget.cat_buy_1 = QPushButton(self)
+        self.mywidget.cat_buy_1.setGeometry(137, 230, 97, 31)
+        self.mywidget.cat_buy_1.setText("1000")
+        self.mywidget.cat_buy_1.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 17px; line-height: 15px; text-align: center;")
+        self.mywidget.cat_buy_1.show()
 
         #  тень кнопки 2
         self.mywidget.shadow_2 = QLabel()
@@ -189,7 +198,7 @@ class CatRoom(QMainWindow):
         self.mywidget.shadow_4 = QLabel()
         self.mywidget.shadow_4.setGeometry(116, 311, 152, 180)
         self.mywidget.shadow_4.setParent(self)
-        self.mywidget.shadow_4.setStyleSheet("background:#613795; border-radius: 30px;")
+        self.mywidget.shadow_4.setStyleSheet("background:#454781; border-radius: 30px;")
         self.mywidget.shadow_4.show()
 
         #  кнопка 4
@@ -217,7 +226,7 @@ class CatRoom(QMainWindow):
         self.mywidget.shadow_5 = QLabel()
         self.mywidget.shadow_5.setGeometry(280, 311, 152, 180)
         self.mywidget.shadow_5.setParent(self)
-        self.mywidget.shadow_5.setStyleSheet("background:#613795; border-radius: 30px;")
+        self.mywidget.shadow_5.setStyleSheet("background:#454781; border-radius: 30px;")
         self.mywidget.shadow_5.show()
 
         # кнопка 5
@@ -245,7 +254,7 @@ class CatRoom(QMainWindow):
         self.mywidget.shadow_6 = QLabel()
         self.mywidget.shadow_6.setGeometry(444, 311, 152, 180)
         self.mywidget.shadow_6.setParent(self)
-        self.mywidget.shadow_6.setStyleSheet("background:#613795; border-radius: 30px;")
+        self.mywidget.shadow_6.setStyleSheet("background:#454781; border-radius: 30px;")
         self.mywidget.shadow_6.show()
 
         #  кнопка 6
@@ -273,7 +282,7 @@ class CatRoom(QMainWindow):
         self.mywidget.shadow_7 = QLabel()
         self.mywidget.shadow_7.setGeometry(193, 521, 152, 180)
         self.mywidget.shadow_7.setParent(self)
-        self.mywidget.shadow_7.setStyleSheet("background:#ad1717; border-radius: 30px;")
+        self.mywidget.shadow_7.setStyleSheet("background:#81455E; border-radius: 30px;")
         self.mywidget.shadow_7.show()
 
         #  кнопка 7
@@ -301,7 +310,7 @@ class CatRoom(QMainWindow):
         self.mywidget.shadow_8 = QLabel()
         self.mywidget.shadow_8.setGeometry(357, 521, 152, 180)
         self.mywidget.shadow_8.setParent(self)
-        self.mywidget.shadow_8.setStyleSheet("background:#ad1717; border-radius: 30px;")
+        self.mywidget.shadow_8.setStyleSheet("background:#81455E; border-radius: 30px;")
         self.mywidget.shadow_8.show()
 
         #  кнопка 8
@@ -315,7 +324,7 @@ class CatRoom(QMainWindow):
         pixmap = QPixmap('source/Kirill.png')
         self.mywidget.cat_8.setPixmap(pixmap)
         self.mywidget.cat_8.setGeometry(365, 560, 128, 80)
-        self.mywidget.cat_8.setStyleSheet("background:transparent")
+        self.mywidget.cat_8.setStyleSheet("background:transparent;")
         self.mywidget.cat_8.show()
 
         #  текст для кнопки 8
