@@ -6,6 +6,7 @@ from PyQt5.QtChart import *
 from PyQt5.QtCore import *
 from stats_class import Statistics
 from timer_class import Timer
+from Cat_Room import Cat_Room
 
 class widgets(QMainWindow):
     def __init__(self):
@@ -46,6 +47,7 @@ class widgets(QMainWindow):
         CatRoomButton = QPushButton('Cat room',self)
         CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         CatRoomButton.setGeometry(522,24,127,50)
+        CatRoomButton.clicked.connect(self.gotoRoom)
 
     def gotoTimer(self):
         self.timer = Timer()
@@ -58,6 +60,12 @@ class widgets(QMainWindow):
         self.widget.setCurrentIndex(1)
         self.stats.updateGraph()
         self.stats.show()
+
+    def gotoRoom(self):
+        self.room = Cat_Room()
+        self.widget.addWidget(self.room)
+        self.widget.setCurrentIndex(3)
+
 
 app = QtWidgets.QApplication(sys.argv)
 window = widgets()

@@ -1,6 +1,5 @@
 import sys, random, sqlite3
-
-import yaml, datetime, os.path
+import  datetime, os.path
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -282,11 +281,24 @@ class Statistics(QMainWindow):
         self.seriesG.append(self.set3)
         self.seriesG.append(self.set4)
 
+        self.cur.execute("SELECT time FROM stats")
+        averges = 0
+        times = self.cur.fetchall()
+        for time in times:
+            averges += time[0]
+        averges /= 7
+        print(averges)
+        round(averges, 0)
+        print(averges)
+        aver_min = 0
+        aver_sec = 0
+        aver_min, aver_sec = divmod(averges, 60)
+
         self.chartG = QChart()
         self.chartG.setMaximumSize(700, 400)
         self.chartG.addSeries(self.seriesG)
         self.chartG.setTitle(f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤㅤ20% from last week</font></b>'
-                       '<br align="left"><b><font face="Inter" size="5" color="#29002F">ㅤ3 h 10 min</font></b></br>')
+                       f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
         self.chartG.setAnimationOptions(QChart.AllAnimations)
         self.chartG.setBackgroundRoundness(30)
         self.chartG.setDropShadowEnabled(True)

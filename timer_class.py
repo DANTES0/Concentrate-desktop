@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtChart import *
 from PyQt5.QtCore import *
-import yaml, datetime, sqlite3
+import datetime, sqlite3
 class Timer(QMainWindow):
     def __init__(self):
 
