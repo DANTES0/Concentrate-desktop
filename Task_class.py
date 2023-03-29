@@ -17,6 +17,7 @@ class Task(QMainWindow):
         self.setStyleSheet("background-color: #E5DBE9")
         self.add_task()
         self.cat()
+        self.TaskList()
         self.InitWindow()
     def InitWindow(self):
         self.setWindowTitle(self.title)
@@ -25,7 +26,8 @@ class Task(QMainWindow):
     def add_task(self):
         self.labelTask = QLineEdit(self)
         self.labelTask.setGeometry(51, 209, 598, 50)
-        self.labelTask.setStyleSheet("background: #ffffff; border-radius: 25px;")
+        self.labelTask.setStyleSheet("background: #ffffff; border-radius: 25px;padding: 0px 45px; font-family:Inter; font:24px; font-weight:bold;")
+        self.labelTask.setPlaceholderText(" Add new task")
 
         self.labelPlus = QPushButton(self)
         self.labelPlus.setGeometry(61, 218, 29, 29)
@@ -34,8 +36,14 @@ class Task(QMainWindow):
         Icon = QIcon(pixmap)
         self.labelPlus.setIcon(Icon)
 
+
     def cat(self):
         self.labelCat = QLabel(self)
         pixmap = QPixmap('source/TaskCat.png')
         self.labelCat.setPixmap(pixmap)
         self.labelCat.setGeometry(213, 0, 254, 208)
+
+    def TaskList(self):
+        self.labelTaskList = QLabel("  Task list", self)
+        self.labelTaskList.setGeometry(51, 314, 127, 50)
+        self.labelTaskList.setStyleSheet("background: #8350AA; border-radius: 25px; font-family:Inter; font:24px; font-weight:bold; color:#ffffff;  ")
