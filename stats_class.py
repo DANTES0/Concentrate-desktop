@@ -26,6 +26,15 @@ class Statistics(QMainWindow):
         self.FrameWeek()
         self.InitWindow()
 
+    def SqlAverage(self):
+        self.data_average = sqlite3.connect('details.db')
+        self.curent = self.data_base.cursor()
+        self.cur.execute("""CREATE TABLE IF NOT EXISTS average (
+                lastweekmin INT,
+                lastweeksec INT);
+        """)
+        self.data_base.commit()
+
     def InitWindow(self):
         self.setWindowTitle(self.title)
         self.setGeometry(650,50,700,762)

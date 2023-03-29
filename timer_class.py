@@ -36,6 +36,8 @@ class Timer(QMainWindow):
         """)
         self.data_base.commit()
 
+
+
     def choose_tag(self):
         self.labelTag = QLabel(self)
         self.labelTag.setGeometry(183,590,333,92)
