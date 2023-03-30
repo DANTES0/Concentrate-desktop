@@ -67,7 +67,7 @@ class Task(QMainWindow):
         self.line += 1
         self.taskListHell.setText(self.labelTask.text())
         self.labelTask.setText('')
-        print(self.taskListHell.objectName())
+        # print(self.taskListHell.objectName())
 
         self.circle = QLabel(self)
         self.circle.setGeometry(69, height + 20, 9, 9)
@@ -92,7 +92,7 @@ class Task(QMainWindow):
     def actionClose(self):
         sender = self.sender()
         self.prevSender = sender
-        print(str(self.sender().objectName()))
+        print(int(self.sender().objectName())+1)
         try:
             if self.sender().objectName() == '2':
                 res = self.findChild(QObject, '0')
