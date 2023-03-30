@@ -92,21 +92,32 @@ class Task(QMainWindow):
     def actionClose(self):
         sender = self.sender()
         self.prevSender = sender
+        first_lab = int(sender.objectName()) - 2
         print(int(self.sender().objectName())+1)
         try:
             if self.sender().objectName() == '2':
-                res = self.findChild(QObject, '0')
-                res.deleteLater()
-                res = self.findChild(QObject, '2')
-                res.deleteLater()
-                res = self.findChild(QObject,'1')
-                res.deleteLater()
-                res = self.findChild(QObject, '3')
-                res.setGeometry(51,371,598,50)
-                res = self.findChild(QObject, '4')
-                res.setGeometry(69,371+20, 9, 9 )
-                res = self.findChild(QObject, '5')
-                res.setGeometry(606,371+10, 29, 29)
+                for i in range(first_lab, self.line+1):
+
+                    res = self.findChild(QObject, str(first_lab))
+                    res.deleteLater()
+                    res = self.findChild(QObject, str(i))
+                    res.setObjectName(str(first_lab))
+                    first_lab += 1
+                    self.line -= 1
+                    self.height = self.height - 10
+                    # res = self.findChild(QObject, '0')
+                    # res.deleteLater()
+                    # res = self.findChild(QObject, '1')
+                    # res.deleteLater()
+                    # res = self.findChild(QObject, '2')
+                    # res.deleteLater()
+                # res = self.findChild(QObject, '3')
+                # res.setGeometry(51,371,598,50)
+                # res = self.findChild(QObject, '4')
+                # res.setGeometry(69,371+20, 9, 9 )
+                # res = self.findChild(QObject, '5')
+                # res.setGeometry(606,371+10, 29, 29)
+
             # if self.sender().objectName() == '4':
             #     res = self.findChild(QObject, '3')
             #     res.deleteLater()
