@@ -64,6 +64,13 @@ class CatRoom(QMainWindow):
         self.mywidget.cat_name_7.close()
         self.mywidget.cat_name_8.close()
         self.mywidget.cat_buy_1.close()
+        self.mywidget.cat_buy_2.close()
+        self.mywidget.cat_buy_3.close()
+        self.mywidget.cat_buy_4.close()
+        self.mywidget.cat_buy_5.close()
+        self.mywidget.cat_buy_6.close()
+        self.mywidget.cat_buy_7.close()
+        self.mywidget.cat_buy_8.close()
         self.storeButton_load.show()
         self.mywidget.storeButton_exit.hide()
     def init_Ui(self):
@@ -126,16 +133,22 @@ class CatRoom(QMainWindow):
         #  текст для кнопки 1
         self.mywidget.cat_name_1 = QLabel(self)
         self.mywidget.cat_name_1.setGeometry(137, 105, 100, 40)
-
         self.mywidget.cat_name_1.setText("Sleeper")
-        self.mywidget.cat_name_1.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 23px; line-height: 15px; text-align: center;")
+        self.mywidget.cat_name_1.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal; "
+                                               "font-weight: 700; font-size: 23px; line-height: 15px; "
+                                               "text-align: center;")
         self.mywidget.cat_name_1.show()
 
         #  кнопка покупки кота 1
         self.mywidget.cat_buy_1 = QPushButton(self)
-        self.mywidget.cat_buy_1.setGeometry(137, 230, 97, 31)
+        self.mywidget.cat_buy_1.setGeometry(137, 234, 97, 31)
+        self.mywidget.cat_buy_1.setIcon(QIcon("source/Coin.png"))
         self.mywidget.cat_buy_1.setText("1000")
-        self.mywidget.cat_buy_1.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 17px; line-height: 15px; text-align: center;")
+        self.mywidget.cat_buy_1.setLayoutDirection(Qt.RightToLeft)
+        self.mywidget.cat_buy_1.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;"
+                                              "font-family: 'Inter'; font-style: normal; font-weight: 700; "
+                                              "font-size: 15px; line-height: 15px; text-align: center; "
+                                              "padding: 0px 15px 0px 5px")
         self.mywidget.cat_buy_1.show()
 
         #  тень кнопки 2
@@ -163,8 +176,22 @@ class CatRoom(QMainWindow):
         self.mywidget.cat_name_2 = QLabel(self)
         self.mywidget.cat_name_2.setGeometry(316, 105, 100, 40)
         self.mywidget.cat_name_2.setText("Jokey")
-        self.mywidget.cat_name_2.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 23px; line-height: 15px; text-align: center;")
+        self.mywidget.cat_name_2.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal; "
+                                               "font-weight: 700; font-size: 23px; line-height: 15px; "
+                                               "text-align: center;")
         self.mywidget.cat_name_2.show()
+
+        #  кнопка покупки кота 2
+        self.mywidget.cat_buy_2 = QPushButton(self)
+        self.mywidget.cat_buy_2.setGeometry(302, 234, 97, 31)
+        self.mywidget.cat_buy_2.setIcon(QIcon("source/Coin.png"))
+        self.mywidget.cat_buy_2.setText("1000")
+        self.mywidget.cat_buy_2.setLayoutDirection(Qt.RightToLeft)
+        self.mywidget.cat_buy_2.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;"
+                                              "font-family: 'Inter'; font-style: normal; font-weight: 700; "
+                                              "font-size: 15px; line-height: 15px; text-align: center; "
+                                              "padding: 0px 15px 0px 5px")
+        self.mywidget.cat_buy_2.show()
 
         #  тень кнопки 3
         self.mywidget.shadow_3 = QLabel()
@@ -191,8 +218,22 @@ class CatRoom(QMainWindow):
         self.mywidget.cat_name_3 = QLabel(self)
         self.mywidget.cat_name_3.setGeometry(481, 105, 100, 40)
         self.mywidget.cat_name_3.setText("Frisky")
-        self.mywidget.cat_name_3.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 23px; line-height: 15px; text-align: center;")
+        self.mywidget.cat_name_3.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal;"
+                                               "font-weight: 700; font-size: 23px; line-height: 15px;"
+                                               " text-align: center;")
         self.mywidget.cat_name_3.show()
+
+        #  кнопка покупки кота 3
+        self.mywidget.cat_buy_3 = QPushButton(self)
+        self.mywidget.cat_buy_3.setGeometry(467, 234, 97, 31)
+        self.mywidget.cat_buy_3.setIcon(QIcon("source/Coin.png"))
+        self.mywidget.cat_buy_3.setText("1000")
+        self.mywidget.cat_buy_3.setLayoutDirection(Qt.RightToLeft)
+        self.mywidget.cat_buy_3.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;"
+                                              "font-family: 'Inter'; font-style: normal; font-weight: 700; "
+                                              "font-size: 15px; line-height: 15px; text-align: center; "
+                                              "padding: 0px 15px 0px 5px")
+        self.mywidget.cat_buy_3.show()
 
         #  тень кнопки 4
         self.mywidget.shadow_4 = QLabel()
@@ -219,8 +260,22 @@ class CatRoom(QMainWindow):
         self.mywidget.cat_name_4 = QLabel(self)
         self.mywidget.cat_name_4.setGeometry(136, 310, 100, 40)
         self.mywidget.cat_name_4.setText("Dreamer")
-        self.mywidget.cat_name_4.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 23px; line-height: 15px; text-align: center;")
+        self.mywidget.cat_name_4.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal;"
+                                               " font-weight: 700; font-size: 23px; line-height: 15px;"
+                                               " text-align: center;")
         self.mywidget.cat_name_4.show()
+
+        #  кнопка покупки кота 4
+        self.mywidget.cat_buy_4 = QPushButton(self)
+        self.mywidget.cat_buy_4.setGeometry(137, 442, 97, 31)
+        self.mywidget.cat_buy_4.setIcon(QIcon("source/Coin.png"))
+        self.mywidget.cat_buy_4.setText("1000")
+        self.mywidget.cat_buy_4.setLayoutDirection(Qt.RightToLeft)
+        self.mywidget.cat_buy_4.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;"
+                                              "font-family: 'Inter'; font-style: normal; font-weight: 700; "
+                                              "font-size: 15px; line-height: 15px; text-align: center; "
+                                              "padding: 0px 15px 0px 5px")
+        self.mywidget.cat_buy_4.show()
 
         #  тень кнопки 5
         self.mywidget.shadow_5 = QLabel()
@@ -247,8 +302,22 @@ class CatRoom(QMainWindow):
         self.mywidget.cat_name_5 = QLabel(self)
         self.mywidget.cat_name_5.setGeometry(318, 310, 100, 40)
         self.mywidget.cat_name_5.setText("Fluffy")
-        self.mywidget.cat_name_5.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 23px; line-height: 15px; text-align: center;")
+        self.mywidget.cat_name_5.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal;"
+                                               " font-weight: 700; font-size: 23px; line-height: 15px;"
+                                               " text-align: center;")
         self.mywidget.cat_name_5.show()
+
+        #  кнопка покупки кота 5
+        self.mywidget.cat_buy_5 = QPushButton(self)
+        self.mywidget.cat_buy_5.setGeometry(302, 442, 97, 31)
+        self.mywidget.cat_buy_5.setIcon(QIcon("source/Coin.png"))
+        self.mywidget.cat_buy_5.setText("1000")
+        self.mywidget.cat_buy_5.setLayoutDirection(Qt.RightToLeft)
+        self.mywidget.cat_buy_5.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;"
+                                              "font-family: 'Inter'; font-style: normal; font-weight: 700; "
+                                              "font-size: 15px; line-height: 15px; text-align: center; "
+                                              "padding: 0px 15px 0px 5px")
+        self.mywidget.cat_buy_5.show()
 
         #  тень кнопки 6
         self.mywidget.shadow_6 = QLabel()
@@ -275,8 +344,22 @@ class CatRoom(QMainWindow):
         self.mywidget.cat_name_6 = QLabel(self)
         self.mywidget.cat_name_6.setGeometry(464, 310, 100, 40)
         self.mywidget.cat_name_6.setText("Mr.Chief")
-        self.mywidget.cat_name_6.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 23px; line-height: 15px; text-align: center;")
+        self.mywidget.cat_name_6.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal;"
+                                               " font-weight: 700; font-size: 23px; line-height: 15px;"
+                                               " text-align: center;")
         self.mywidget.cat_name_6.show()
+
+        #  кнопка покупки кота 6
+        self.mywidget.cat_buy_6 = QPushButton(self)
+        self.mywidget.cat_buy_6.setGeometry(467, 442, 97, 31)
+        self.mywidget.cat_buy_6.setIcon(QIcon("source/Coin.png"))
+        self.mywidget.cat_buy_6.setText("1000")
+        self.mywidget.cat_buy_6.setLayoutDirection(Qt.RightToLeft)
+        self.mywidget.cat_buy_6.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;"
+                                              "font-family: 'Inter'; font-style: normal; font-weight: 700; "
+                                              "font-size: 15px; line-height: 15px; text-align: center; "
+                                              "padding: 0px 15px 0px 5px")
+        self.mywidget.cat_buy_6.show()
 
         #  тень кнопки 7
         self.mywidget.shadow_7 = QLabel()
@@ -295,7 +378,7 @@ class CatRoom(QMainWindow):
         self.mywidget.cat_7 = QLabel(self)
         pixmap = QPixmap('source/Prince.png')
         self.mywidget.cat_7.setPixmap(pixmap)
-        self.mywidget.cat_7.setGeometry(220, 560, 90, 90)
+        self.mywidget.cat_7.setGeometry(220, 553, 90, 90)
         self.mywidget.cat_7.setStyleSheet("background:transparent")
         self.mywidget.cat_7.show()
 
@@ -303,8 +386,22 @@ class CatRoom(QMainWindow):
         self.mywidget.cat_name_7 = QLabel(self)
         self.mywidget.cat_name_7.setGeometry(228, 515, 100, 40)
         self.mywidget.cat_name_7.setText("Prince")
-        self.mywidget.cat_name_7.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 23px; line-height: 15px; text-align: center;")
+        self.mywidget.cat_name_7.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal;"
+                                               " font-weight: 700; font-size: 23px; line-height: 15px;"
+                                               " text-align: center;")
         self.mywidget.cat_name_7.show()
+
+        #  кнопка покупки кота 7
+        self.mywidget.cat_buy_7 = QPushButton(self)
+        self.mywidget.cat_buy_7.setGeometry(217, 650, 97, 31)
+        self.mywidget.cat_buy_7.setIcon(QIcon("source/Coin.png"))
+        self.mywidget.cat_buy_7.setText("1000")
+        self.mywidget.cat_buy_7.setLayoutDirection(Qt.RightToLeft)
+        self.mywidget.cat_buy_7.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;"
+                                              "font-family: 'Inter'; font-style: normal; font-weight: 700; "
+                                              "font-size: 15px; line-height: 15px; text-align: center; "
+                                              "padding: 0px 15px 0px 5px")
+        self.mywidget.cat_buy_7.show()
 
         #  тень кнопки 8
         self.mywidget.shadow_8 = QLabel()
@@ -331,19 +428,20 @@ class CatRoom(QMainWindow):
         self.mywidget.cat_name_8 = QLabel(self)
         self.mywidget.cat_name_8.setGeometry(402, 515, 100, 40)
         self.mywidget.cat_name_8.setText("Kirill")
-        self.mywidget.cat_name_8.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 23px; line-height: 15px; text-align: center;")
+        self.mywidget.cat_name_8.setStyleSheet("background: transparent; font-family: 'Inter'; font-style: normal;"
+                                               " font-weight: 700; font-size: 23px; line-height: 15px;"
+                                               " text-align: center;")
         self.mywidget.cat_name_8.show()
 
-        #  пояснение 1
-        # self.mywidget.cats_group_1 = QLabel(self)
-        # self.mywidget.cats_group_1.setGeometry(91, 545, 93, 56)
-        # self.mywidget.cats_group_1.setText("regular\n   cats")
-        # self.mywidget.cats_group_1.setStyleSheet("background: #D9D9D9; border: 2.5px dashed #455D81; border-radius: 25px; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 20px; line-height: 15px; text-align: center;")
-        # self.mywidget.cats_group_1.show()
-
-        #  пояснение 2
-        # self.mywidget.cats_group_1 = QLabel(self)
-        # self.mywidget.cats_group_1.setGeometry(91, 620, 93, 56)
-        # self.mywidget.cats_group_1.setText("   rare\n   cats")
-        # self.mywidget.cats_group_1.setStyleSheet("background: #D9D9D9; border: 2.5px dashed #814545; border-radius: 25px; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 20px; line-height: 15px; text-align: center;")
-        # self.mywidget.cats_group_1.show()
+        #  кнопка покупки кота 8
+        self.mywidget.cat_buy_8 = QPushButton(self)
+        self.mywidget.cat_buy_8.setGeometry(380, 650, 97, 31)
+        self.mywidget.cat_buy_8.setIcon(QIcon("source/Coin.png"))
+        self.mywidget.cat_buy_8.setText("1000")
+        self.mywidget.cat_buy_8.setLayoutDirection(Qt.RightToLeft)
+        self.mywidget.cat_buy_8.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;"
+                                              "font-family: 'Inter'; font-style: normal; font-weight: 700; "
+                                              "font-size: 15px; line-height: 15px; text-align: center; "
+                                              "padding: 0px 15px 0px 5px")
+        #"QPushButton:hover{transform: scale(10)}"
+        self.mywidget.cat_buy_8.show()
