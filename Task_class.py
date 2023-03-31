@@ -98,6 +98,7 @@ class Task(QMainWindow):
         flag_line = 0
         flag_circle = 0
         flag_btn = 0
+        flag_height = 0
         try:
             # if self.sender().objectName() == '2':
             for i in range(int(self.sender().objectName())+1, self.line):
