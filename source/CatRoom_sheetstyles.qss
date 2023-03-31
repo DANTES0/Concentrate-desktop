@@ -1,0 +1,31 @@
+QPushButton#buy_cat_button{
+    background: #D8B5E9;
+    border: 1.5px dashed #29002F;
+    border-radius: 15px;
+    font-family: 'Inter'; font-style: normal; font-weight: 700;
+    font-size: 15px; line-height: 15px; text-align: center;
+    padding: 0px 15px 0px 5px;
+}
+
+QPushButton#buy_cat_button_hover{
+    background: #5ee672;
+    border: 1.5px dashed #29002F;
+    border-radius: 15px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 15px;
+    text-align: center;
+    padding: 0px 20px 0px 5px;
+}
+
+QLabel#cat_name{
+    background: transparent;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 23px;
+    line-height: 15px;
+    text-align: center;
+}
