@@ -64,7 +64,7 @@ class Task(QMainWindow):
 
         self.taskListHell = QLabel(self)
         self.taskListHell.setGeometry(51, height, 598, 50)
-        self.taskListHell.setStyleSheet("background:#ffffff; border-radius:24px;")
+        self.taskListHell.setStyleSheet("background: #ffffff; border-radius: 25px;padding: 0px 45px; font-family:Inter; font:24px; font-weight:bold;")
         self.taskListHell.setObjectName(f'{self.line}')
         self.line += 1
         self.taskListHell.setText(self.labelTask.text())
