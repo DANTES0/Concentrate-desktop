@@ -54,7 +54,6 @@ class widgets(QMainWindow):
         CatRoomButton = QPushButton('Cat room',self)
         CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         CatRoomButton.setGeometry(522,24,127,50)
-        CatRoomButton.clicked.connect(self.gotoRoom)
 
     def gotoTimer(self):
         self.timer = Timer()
@@ -97,10 +96,6 @@ class widgets(QMainWindow):
                 self.cur = self.data_base.cursor()
                 self.cur.execute(f"DELETE FROM stats WHERE data='{row[4]}'")
                 self.data_base.commit()
-    def gotoRoom(self):
-        self.room = Cat_Room()
-        self.widget.addWidget(self.room)
-        self.widget.setCurrentIndex(3)
 
     def gotoTask(self):
         self.Task = Task()
