@@ -123,10 +123,10 @@ class Timer(QMainWindow):
         self.smallEllipse.setStyleSheet("background:#E5DBE9; border-radius:190px;")
 
         self.pic_label_timer = QLabel(self)
-        pixmap = QPixmap('source/Time_Cat.png')
-        self.pic_label_timer.setPixmap(pixmap)
-        self.pic_label_timer.setGeometry(246, 60, 197, 254)
+        pixmap = QPixmap('source/cat_with_big_balls.png')
         self.pic_label_timer.setStyleSheet("background:transparent")
+        self.pic_label_timer.setPixmap(pixmap)
+        self.pic_label_timer.setGeometry(209, 90, 285, 254)
 
     def CreateTimer(self):
         self.start = False
@@ -242,10 +242,13 @@ class Timer(QMainWindow):
                 self.animationBigLabelTimer.setEndValue(QRect(138, 14, 428, 428))
                 self.animationBigLabelTimer.start()
 
+                self.movie.stop()
+                self.pic_label_timer.setPixmap(QPixmap('source/cat_with_big_balls.png'))
+
                 self.animationPicLabelTimer = QPropertyAnimation(self.pic_label_timer, b"geometry")
                 self.animationPicLabelTimer.setDuration(1000)
-                self.animationPicLabelTimer.setStartValue(QRect(246, 110, 197, 254))
-                self.animationPicLabelTimer.setEndValue(QRect(246, 60, 197, 254))
+                self.animationPicLabelTimer.setStartValue(QRect(209, 140, 285, 254))
+                self.animationPicLabelTimer.setEndValue(QRect(209, 90, 285, 254))
                 self.animationPicLabelTimer.start()
 
                 self.labelTag.show()
@@ -312,10 +315,14 @@ class Timer(QMainWindow):
             self.animationBigLabelTimer.setEndValue(QRect(138, 64, 428, 428))
             self.animationBigLabelTimer.start()
 
+            self.movie = QMovie('source/2.gif')
+            self.pic_label_timer.setMovie(self.movie)
+            self.movie.start()
+
             self.animationPicLabelTimer = QPropertyAnimation(self.pic_label_timer, b"geometry")
             self.animationPicLabelTimer.setDuration(1000)
-            self.animationPicLabelTimer.setStartValue(QRect(246, 60, 197, 254))
-            self.animationPicLabelTimer.setEndValue(QRect(246, 110, 197, 254))
+            self.animationPicLabelTimer.setStartValue(QRect(209, 90, 285, 254))
+            self.animationPicLabelTimer.setEndValue(QRect(209, 140, 285, 254))
             self.animationPicLabelTimer.start()
             #***********************************
             self.start = True
@@ -395,10 +402,12 @@ class Timer(QMainWindow):
         self.animationBigLabelTimer.setEndValue(QRect(138, 14, 428, 428))
         self.animationBigLabelTimer.start()
 
+        self.movie.stop()
+        self.pic_label_timer.setPixmap(QPixmap('source/cat_with_big_balls.png'))
         self.animationPicLabelTimer = QPropertyAnimation(self.pic_label_timer, b"geometry")
         self.animationPicLabelTimer.setDuration(1000)
-        self.animationPicLabelTimer.setStartValue(QRect(246, 110, 197, 254))
-        self.animationPicLabelTimer.setEndValue(QRect(246, 60, 197, 254))
+        self.animationPicLabelTimer.setStartValue(QRect(209, 140, 285, 254))
+        self.animationPicLabelTimer.setEndValue(QRect(209, 90, 285, 254))
         self.animationPicLabelTimer.start()
         #***************************
         self.labelTag.show()

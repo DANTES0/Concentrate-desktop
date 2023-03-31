@@ -224,15 +224,14 @@ class Statistics(QMainWindow):
             self.data_base.commit()
             self.data_base.close()
             procent = procent*-1
-            if(procent < 0):
+            if (procent < 0):
                 self.chartG.setTitle(
-                    f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤdown{int(procent*-1)} % from last week</font></b>'
+                    f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤ<img src="source/down_arrow.png"> {int(procent * -1)} % from last week</font></b>'
                     f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
             else:
                 self.chartG.setTitle(
-                    f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤupㅤ{int(procent)} % from last week</font></b>'
+                    f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤ<img src="source/up_arrow.png"> {int(procent)} % from last week</font></b>'
                     f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
-
 
             # seriesG = QStackedBarSeries()
             self.seriesG.append(set1)
@@ -395,8 +394,15 @@ class Statistics(QMainWindow):
         self.chartG = QChart()
         self.chartG.setMaximumSize(700, 400)
         self.chartG.addSeries(self.seriesG)
-        self.chartG.setTitle(f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤㅤ{int(procent*-1)} % from last week</font></b>'
-                       f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
+        procent = procent*-1
+        if (procent < 0):
+            self.chartG.setTitle(
+                f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤ<img src="source/down_arrow.png"> {int(procent * -1)} % from last week</font></b>'
+                f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
+        else:
+            self.chartG.setTitle(
+                f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤ<img src="source/up_arrow.png"> {int(procent)} % from last week</font></b>'
+                f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
         self.chartG.setAnimationOptions(QChart.AllAnimations)
         self.chartG.setBackgroundRoundness(30)
         self.chartG.setDropShadowEnabled(True)
