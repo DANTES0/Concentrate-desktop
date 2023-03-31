@@ -73,7 +73,7 @@ class Task(QMainWindow):
         self.circle.setGeometry(69, height + 20, 9, 9)
         self.circle.setStyleSheet("background:#8350AA; border-radius: 4px")
         self.circle.setObjectName(f'{self.line}')
-        self.line+=1
+        self.line += 1
 
         self.acceptBtn = QPushButton(self)
         self.acceptBtn.setGeometry(606, height + 10, 29, 29)
@@ -93,18 +93,52 @@ class Task(QMainWindow):
         sender = self.sender()
         self.prevSender = sender
         first_lab = int(sender.objectName()) - 2
-        print(int(self.sender().objectName())+1)
+        print(int(self.sender().objectName()))
+        flag_first = 0
+        flag_line = 0
+        flag_circle = 0
+        flag_btn = 0
         try:
-            if self.sender().objectName() == '2':
-                for i in range(first_lab, self.line+1):
-
+            # if self.sender().objectName() == '2':
+            for i in range(int(self.sender().objectName())+1, self.line):
+                print(f'Общий лайн {self.line}')
+                if flag_first < 3:
                     res = self.findChild(QObject, str(first_lab))
                     res.deleteLater()
+                    flag_first+=1
+                if flag_line == 0:
                     res = self.findChild(QObject, str(i))
+                    print(f'Наш height = {self.height}')
+                    print(f' Меняем --> {res.objectName()}')
                     res.setObjectName(str(first_lab))
+                    print (f'на это {first_lab}')
+                    flag_line = 1
+                    self.height = self.height - 57
+                    res.setGeometry(51, self.height, 598, 50)
                     first_lab += 1
-                    self.line -= 1
-                    self.height = self.height - 10
+                    continue
+                if flag_circle == 0:
+                    res = self.findChild(QObject, str(i))
+                    print(f'Наш height = {self.height}')
+                    print(f' Меняем --> {res.objectName()}')
+                    res.setObjectName(str(first_lab))
+                    print(f'на это {first_lab}')
+                    res.setGeometry(69, self.height+20, 9, 9)
+                    first_lab += 1
+                    flag_circle = 1
+                    continue
+                if flag_btn == 0:
+                    res = self.findChild(QObject, str(i))
+                    print(f'Наш height = {self.height}')
+                    print(f' Меняем --> {res.objectName()}')
+                    res.setObjectName(str(first_lab))
+                    print(f'на это {first_lab}')
+                    res.setGeometry(606, self.height + 10, 29, 29)
+                    first_lab += 1
+                    flag_line = 0
+                    flag_circle = 0
+                    flag_btn = 0
+
                     # res = self.findChild(QObject, '0')
                     # res.deleteLater()
                     # res = self.findChild(QObject, '1')
