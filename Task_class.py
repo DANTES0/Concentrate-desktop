@@ -12,6 +12,7 @@ class Task(QMainWindow):
         super().__init__()
         self.height = 314
         self.line = 0
+        self.very_temp_line = 0
         self.prevSender = None
         self.title = "Meow concentration"
         self.scene = QGraphicsScene()
@@ -42,8 +43,9 @@ class Task(QMainWindow):
         self.labelPlus.clicked.connect(self.action)
 
     def action(self):
-        self.height = self.height+57
-        self.TaskAdd(self.height)
+        if self.line != 18:
+            self.height = self.height+57
+            self.TaskAdd(self.height)
 
 
     def cat(self):
@@ -99,46 +101,87 @@ class Task(QMainWindow):
         flag_circle = 0
         flag_btn = 0
         flag_height = 0
+        temp_height = 0
+        temp_line = 0
         try:
-            # if self.sender().objectName() == '2':
-            for i in range(int(self.sender().objectName())+1, self.line):
-                print(f'Общий лайн {self.line}')
-                if flag_first < 3:
+            if self.sender().objectName() == '2':
+                temp_height = 371
+
+            if self.sender().objectName() == '5':
+                temp_height = 428
+
+            if self.sender().objectName() == '8':
+                temp_height = 485
+
+            if self.sender().objectName() == '11':
+                temp_height = 542
+
+            if self.sender().objectName() == '14':
+                temp_height = 599
+
+            if self.sender().objectName() == '17':
+                temp_height = 656
+
+            temp_line = self.line
+
+            if int(self.sender().objectName()) == self.line - 1:
+                for j in range(0,3):
                     res = self.findChild(QObject, str(first_lab))
                     res.deleteLater()
-                    flag_first+=1
-                if flag_line == 0:
-                    res = self.findChild(QObject, str(i))
-                    print(f'Наш height = {self.height}')
-                    print(f' Меняем --> {res.objectName()}')
-                    res.setObjectName(str(first_lab))
-                    print (f'на это {first_lab}')
-                    flag_line = 1
-                    self.height = self.height - 57
-                    res.setGeometry(51, self.height, 598, 50)
                     first_lab += 1
-                    continue
-                if flag_circle == 0:
-                    res = self.findChild(QObject, str(i))
-                    print(f'Наш height = {self.height}')
-                    print(f' Меняем --> {res.objectName()}')
-                    res.setObjectName(str(first_lab))
-                    print(f'на это {first_lab}')
-                    res.setGeometry(69, self.height+20, 9, 9)
-                    first_lab += 1
-                    flag_circle = 1
-                    continue
-                if flag_btn == 0:
-                    res = self.findChild(QObject, str(i))
-                    print(f'Наш height = {self.height}')
-                    print(f' Меняем --> {res.objectName()}')
-                    res.setObjectName(str(first_lab))
-                    print(f'на это {first_lab}')
-                    res.setGeometry(606, self.height + 10, 29, 29)
-                    first_lab += 1
-                    flag_line = 0
-                    flag_circle = 0
-                    flag_btn = 0
+                    # self.line -= 1
+                    self.line -=1
+                    self.height = temp_height - 57
+            else:
+                for i in range(int(self.sender().objectName())+1, self.line):
+                    print(f'Общий лайн {self.line}')
+                    if flag_first < 3:
+                        res = self.findChild(QObject, str(first_lab))
+                        res.deleteLater()
+                        flag_first+=1
+                        temp_line -= 1
+                    if flag_line == 0:
+                        res = self.findChild(QObject, str(i))
+                        print(f'Наш height = {self.height}')
+                        print(f' Меняем --> {res.objectName()}')
+                        res.setObjectName(str(first_lab))
+                        print (f'на это {first_lab}')
+                        flag_line = 1
+                        self.height = self.height - 57
+                        res.setGeometry(51, temp_height, 598, 50)
+                        first_lab += 1
+                        # temp_line += 1
+                        continue
+                    if flag_circle == 0:
+                        res = self.findChild(QObject, str(i))
+                        print(f'Наш height = {self.height}')
+                        print(f' Меняем --> {res.objectName()}')
+                        res.setObjectName(str(first_lab))
+                        print(f'на это {first_lab}')
+                        res.setGeometry(69, temp_height+20, 9, 9)
+                        first_lab += 1
+                        flag_circle = 1
+                        # temp_line += 1
+                        continue
+                    if flag_btn == 0:
+                        res = self.findChild(QObject, str(i))
+                        print(f'Наш height = {self.height}')
+                        print(f' Меняем --> {res.objectName()}')
+                        res.setObjectName(str(first_lab))
+                        print(f'на это {first_lab}')
+                        res.setGeometry(606, temp_height + 10, 29, 29)
+                        first_lab += 1
+                        flag_line = 0
+                        flag_circle = 0
+                        flag_btn = 0
+                        temp_height = temp_height + 57
+                        # temp_line += 1
+                        self.height = temp_height - 57
+                        print(f'Общий лайн {self.line}')
+                        self.line = temp_line
+                        print(f'temp_height{temp_height}')
+                        print(f'Наш height по идее должен равняться = {self.height}')
+                        print(f'Другой лайн{temp_line}')
 
                     # res = self.findChild(QObject, '0')
                     # res.deleteLater()
