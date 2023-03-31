@@ -16,24 +16,54 @@ class Statistics(QMainWindow):
         self.setWindowIcon(QtGui.QIcon('source/cat.ico'))
         self.setStyleSheet("background-color: #E5DBE9")
         self.prevSender = None
-        self.data_base = sqlite3.connect('details.db')
-        self.cur = self.data_base.cursor()
+        #self.flag = True
+        # self.data_base = sqlite3.connect('details.db')
+        # self.cur = self.data_base.cursor()
+        # self.data_average = sqlite3.connect('details.db')
+        # self.curent = self.data_average.cursor()
+        self.sqlRequest()
+        #self.sqlAverage()
         print('@E@!$@!$!$@$!$$!$$~')
-        self.cleanTable()
+        #self.cleanTable()
         self.Graph()
         self.create_donutchart(0)
         self.BackLabel()
         self.FrameWeek()
         self.InitWindow()
 
-    def SqlAverage(self):
-        self.data_average = sqlite3.connect('details.db')
-        self.curent = self.data_base.cursor()
-        self.cur.execute("""CREATE TABLE IF NOT EXISTS average (
-                lastweekmin INT,
-                lastweeksec INT);
+    def sqlRequest(self):
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
+        self.cur.execute("""CREATE TABLE IF NOT EXISTS stats(
+                tag TEXT,
+                time INT,
+                week INT,
+                year INT,
+                month INT,
+                day INT,
+                data TEXT);
         """)
         self.data_base.commit()
+        self.cur.execute("""CREATE TABLE IF NOT EXISTS average (
+                lastmin INT,
+                lastsec INT,
+                thismin INT,
+                thissec INT);
+            """)
+        self.data_base.commit()
+        self.data_base.close()
+
+    # def sqlAverage(self):
+    #     self.data_average = sqlite3.connect('details.db')
+    #     self.curent = self.data_average.cursor()
+    #     self.curent.execute("""CREATE TABLE IF NOT EXISTS average (
+    #             lastmin INT,
+    #             lastsec INT,
+    #             thismin INT,
+    #             thissec INT);
+    #     """)
+    #     self.data_average.commit()
+    #     self.data_average.close()
 
     def InitWindow(self):
         self.setWindowTitle(self.title)
@@ -79,6 +109,8 @@ class Statistics(QMainWindow):
         sum_studyFri = 0
         sum_studySat = 0
         sum_studySun = 0
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
         self.cur.execute("SELECT week, tag, time FROM stats")
         res = self.cur.fetchall()
         for row in res:
@@ -145,6 +177,8 @@ class Statistics(QMainWindow):
             if row[1] == 'sport' and row[0] == 6:
                 sum_sportSun = sum_sportSun + row[2]
 
+            self.data_base.close()
+
             self.chartG.removeSeries(self.seriesG)
 
             set1 = QBarSet('<b><font color="#FA7F9D">Sport</font></b>')
@@ -161,22 +195,44 @@ class Statistics(QMainWindow):
             set2.setColor(QtGui.QColor("#97ACF9"))
             set3.setColor(QtGui.QColor("#FADA7F"))
             set4.setColor(QtGui.QColor("#8CFA9C"))
-
+            self.data_base = sqlite3.connect('details.db')
+            self.cur = self.data_base.cursor()
             self.cur.execute("SELECT time FROM stats")
             averges = 0
             times = self.cur.fetchall()
             for time in times:
                 averges += time[0]
             averges /= 7
-            print(averges)
-            round(averges, 0)
-            print(averges)
+            self.data_base.close()
             aver_min = 0
             aver_sec = 0
             aver_min, aver_sec = divmod(averges, 60)
-            self.chartG.setTitle(
-                f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤㅤ20% from last week</font></b>'
-                f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
+            self.data_base = sqlite3.connect('details.db')
+            self.cur = self.data_base.cursor()
+            self.cur.execute("SELECT lastmin, lastsec FROM average")
+            lasts = self.cur.fetchone()
+            self.data_base.close()
+            numbertwo = (aver_min * 60) + aver_sec
+            numberone = (lasts[0] * 60) + lasts[1]
+            try:
+                procent = ((numberone * 100) / numbertwo) - 100
+            except ZeroDivisionError:
+                procent = 0
+            self.data_base = sqlite3.connect('details.db')
+            self.cur = self.data_base.cursor()
+            self.cur.execute(f'UPDATE average SET thismin = {int(aver_min)}, thissec = {int(aver_sec)}')
+            self.data_base.commit()
+            self.data_base.close()
+            procent = procent*-1
+            if(procent < 0):
+                self.chartG.setTitle(
+                    f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤdown{int(procent*-1)} % from last week</font></b>'
+                    f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
+            else:
+                self.chartG.setTitle(
+                    f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤupㅤ{int(procent)} % from last week</font></b>'
+                    f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
+
 
             # seriesG = QStackedBarSeries()
             self.seriesG.append(set1)
@@ -217,6 +273,8 @@ class Statistics(QMainWindow):
         sum_studyFri = 0
         sum_studySat = 0
         sum_studySun = 0
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
         self.cur.execute("SELECT week, tag, time FROM stats")
         res = self.cur.fetchall()
         for row in res:
@@ -283,8 +341,7 @@ class Statistics(QMainWindow):
             if row[1] == 'sport' and row[0] == 6:
                 sum_sportSun = sum_sportSun + row[2]
 
-
-
+            self.data_base.close()
 
         self.set1 = QBarSet('<b><font color="#FA7F9D">Sport</font></b>')
         self.set2 = QBarSet('<b><font color="#97ACF9">Work</font></b>')
@@ -307,23 +364,38 @@ class Statistics(QMainWindow):
         self.seriesG.append(self.set3)
         self.seriesG.append(self.set4)
 
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
         self.cur.execute("SELECT time FROM stats")
         averges = 0
         times = self.cur.fetchall()
         for time in times:
             averges += time[0]
         averges /= 7
-        print(averges)
-        round(averges, 0)
-        print(averges)
-        aver_min = 0
-        aver_sec = 0
+        self.data_base.close()
         aver_min, aver_sec = divmod(averges, 60)
+
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
+        self.cur.execute("SELECT lastmin, lastsec FROM average")
+        lasts = self.cur.fetchone()
+        self.data_base.close()
+        numbertwo = (aver_min * 60) + aver_sec
+        numberone = (lasts[0] * 60) + lasts[1]
+        try:
+            procent = ((numberone * 100) / numbertwo) - 100
+        except ZeroDivisionError:
+            procent = 0
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
+        self.cur.execute(f'UPDATE average SET thismin = {int(aver_min)}, thissec = {int(aver_sec)}')
+        self.data_base.commit()
+        self.data_base.close()
 
         self.chartG = QChart()
         self.chartG.setMaximumSize(700, 400)
         self.chartG.addSeries(self.seriesG)
-        self.chartG.setTitle(f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤㅤ20% from last week</font></b>'
+        self.chartG.setTitle(f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤㅤ{int(procent*-1)} % from last week</font></b>'
                        f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
         self.chartG.setAnimationOptions(QChart.AllAnimations)
         self.chartG.setBackgroundRoundness(30)
@@ -359,21 +431,46 @@ class Statistics(QMainWindow):
         self.chartViewG.setGeometry(0, 0, 580, 318)
         self.chartViewG.move(60, 32)
         self.chartViewG.update()
-    def cleanTable(self):
-        self.cur.execute("SELECT week, day, month, year, data FROM stats")
-        res = self.cur.fetchall()
-        for row in res:
-            count_left_elem_week = datetime.date.today().weekday()
-            left_border = datetime.date.today().day - count_left_elem_week
-            if ((row[1] < left_border) or (row[2] < datetime.date.today().month) or (row[3] < datetime.date.today().year)):
-                self.cur.execute(f"DELETE FROM stats WHERE data='{row[4]}'")
-                self.data_base.commit()
+
+    # def cleanTable(self):
+    #     if(self.flag == True):
+    #         print("зашли в тейбл")
+    #         self.flag = False
+    #     self.data_base = sqlite3.connect('details.db')
+    #     self.cur = self.data_base.cursor()
+    #     self.cur.execute("SELECT week, day, month, year, data FROM stats")
+    #     res = self.cur.fetchall()
+    #     self.data_base.close()
+    #     if(res == []):
+    #         print("зашли в обновление average")
+    #         self.data_base = sqlite3.connect('details.db')
+    #         self.cur = self.data_base.cursor()
+    #         self.cur.execute("SELECT thismin, thissec FROM average")
+    #         aver = self.cur.fetchone()
+    #         print("aver")
+    #         print(aver)
+    #         self.data_base.close()
+    #         self.data_base = sqlite3.connect('details.db')
+    #         self.cur = self.data_base.cursor()
+    #         self.cur.execute(f'UPDATE average SET lastmin ={aver[0]} , lastsec = {aver[1]}')
+    #         self.data_base.commit()
+    #         self.data_base.close()
+    #     for row in res:
+    #         count_left_elem_week = datetime.date.today().weekday()
+    #         left_border = datetime.date.today().day - count_left_elem_week
+    #         if ((row[1] < left_border) or (row[2] < datetime.date.today().month) or (row[3] < datetime.date.today().year)):
+    #             self.data_base = sqlite3.connect('details.db')
+    #             self.cur = self.data_base.cursor()
+    #             self.cur.execute(f"DELETE FROM stats WHERE data='{row[4]}'")
+    #             self.data_base.commit()
 
     def create_donutchart(self, week):
         sum_work = 0
         sum_sport = 0
         sum_other = 0
         sum_study = 0
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
         self.cur.execute("SELECT week, tag, time FROM stats")
         res = self.cur.fetchall()
         for row in res:
@@ -386,7 +483,7 @@ class Statistics(QMainWindow):
                     sum_other = sum_other + row[2]
                 if row[1] == 'sport':
                     sum_sport = sum_sport + row[2]
-
+        self.data_base.close()
             # print(row[0], row[1], row[2])
         minute_work, seconds_work = divmod(sum_work, 60)
         minute_study, seconds_study = divmod(sum_study, 60)
@@ -456,6 +553,8 @@ class Statistics(QMainWindow):
         sum_sport = 0
         sum_other = 0
         sum_study = 0
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
         self.cur.execute("SELECT week, tag, time FROM stats")
         res = self.cur.fetchall()
         for row in res:
@@ -468,8 +567,8 @@ class Statistics(QMainWindow):
                     sum_other = sum_other + row[2]
                 if row[1] == 'sport':
                     sum_sport = sum_sport + row[2]
-
-            print(row[0], row[1], row[2])
+        self.data_base.close()
+       #     print(row[0], row[1], row[2])
         minute_work, seconds_work = divmod(sum_work, 60)
         minute_study, seconds_study = divmod(sum_study, 60)
         minute_sport, seconds_sport = divmod(sum_sport, 60)

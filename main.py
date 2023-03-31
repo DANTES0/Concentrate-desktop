@@ -1,8 +1,9 @@
-import sys, random
+import sys, random, sqlite3
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtChart import *
+import  datetime, os.path
 from PyQt5.QtCore import *
 from stats_class import Statistics
 from timer_class import Timer
@@ -14,6 +15,8 @@ class widgets(QMainWindow):
         self.scene = QGraphicsScene()
         self.view = QGraphicsView(self.scene)
         self.FrameBtn()
+        self.flag = True
+        self.cleanTable()
         self.widget = QtWidgets.QStackedWidget(self)
         self.widget.setGeometry(0, 88, 700, 762)
         self.timer = Timer()
@@ -61,6 +64,35 @@ class widgets(QMainWindow):
         self.stats.updateGraph()
         self.stats.show()
 
+    def cleanTable(self):
+        print("зашли в тейбл")
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
+        self.cur.execute("SELECT week, day, month, year, data FROM stats")
+        res = self.cur.fetchall()
+        self.data_base.close()
+        if(res == []):
+            print("зашли в обновление average")
+            self.data_base = sqlite3.connect('details.db')
+            self.cur = self.data_base.cursor()
+            self.cur.execute("SELECT thismin, thissec FROM average")
+            aver = self.cur.fetchone()
+            print("aver")
+            print(aver)
+            self.data_base.close()
+            self.data_base = sqlite3.connect('details.db')
+            self.cur = self.data_base.cursor()
+            self.cur.execute(f'UPDATE average SET lastmin ={aver[0]} , lastsec = {aver[1]}')
+            self.data_base.commit()
+            self.data_base.close()
+        for row in res:
+            count_left_elem_week = datetime.date.today().weekday()
+            left_border = datetime.date.today().day - count_left_elem_week
+            if ((row[1] < left_border) or (row[2] < datetime.date.today().month) or (row[3] < datetime.date.today().year)):
+                self.data_base = sqlite3.connect('details.db')
+                self.cur = self.data_base.cursor()
+                self.cur.execute(f"DELETE FROM stats WHERE data='{row[4]}'")
+                self.data_base.commit()
     def gotoRoom(self):
         self.room = Cat_Room()
         self.widget.addWidget(self.room)
