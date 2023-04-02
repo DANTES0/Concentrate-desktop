@@ -7,6 +7,7 @@ import  datetime, os.path
 from PyQt5.QtCore import *
 from stats_class import Statistics
 from timer_class import Timer
+from catRoom_class import CatRoom
 from Cat_Room import Cat_Room
 from Task_class import Task
 
@@ -23,9 +24,11 @@ class widgets(QMainWindow):
         self.timer = Timer()
         self.Task = Task()
         self.stats = Statistics()
+        self.catRoom = CatRoom()
         self.widget.addWidget(self.timer)
         self.widget.addWidget(self.stats)
         self.widget.addWidget(self.Task)
+        self.widget.addWidget(self.catRoom)
         self.InitWindow()
 
     def InitWindow(self):
@@ -33,6 +36,7 @@ class widgets(QMainWindow):
         self.setWindowIcon(QtGui.QIcon("source/cat.ico"))
         self.setGeometry(650, 50, 700, 850)
         self.setFixedSize(QSize(700, 850))
+        #self.setWindowFlags(Qt.WindowCloseButtonHint)  #hide CLOSE button
         self.show()
     def FrameBtn(self):
         frame = QFrame(self)
@@ -54,6 +58,7 @@ class widgets(QMainWindow):
         CatRoomButton = QPushButton('Cat room',self)
         CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
         CatRoomButton.setGeometry(522,24,127,50)
+        CatRoomButton.clicked.connect(self.gotoCatRoom)
 
     def gotoTimer(self):
         self.timer = Timer()
@@ -102,6 +107,11 @@ class widgets(QMainWindow):
         self.widget.addWidget(self.Task)
         self.widget.setCurrentIndex(2)
 
+    def gotoCatRoom(self):
+        print(self.widget.currentIndex())
+        self.catRoom = CatRoom()
+        self.widget.addWidget(self.catRoom)
+        self.widget.setCurrentIndex(3)
 
 app = QtWidgets.QApplication(sys.argv)
 window = widgets()
