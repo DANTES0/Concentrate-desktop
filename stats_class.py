@@ -419,7 +419,7 @@ class Statistics(QMainWindow):
         maxY = 12
 
         axisY.setRange(minY, maxY)
-        axisY.setLabelFormat('<b><font face="Inter" color="#6E6E6E" size="4">%dh</font></b>')
+        axisY.setLabelFormat(f'<b><font face="Inter" color="#6E6E6E" size="4">%dh</font></b>')
         axisY.setTickCount(3)
         axisY.setMinorTickCount(1)
 
@@ -435,37 +435,7 @@ class Statistics(QMainWindow):
         self.chartViewG.move(60, 32)
         self.chartViewG.update()
 
-    # def cleanTable(self):
-    #     if(self.flag == True):
-    #         print("зашли в тейбл")
-    #         self.flag = False
-    #     self.data_base = sqlite3.connect('details.db')
-    #     self.cur = self.data_base.cursor()
-    #     self.cur.execute("SELECT week, day, month, year, data FROM stats")
-    #     res = self.cur.fetchall()
-    #     self.data_base.close()
-    #     if(res == []):
-    #         print("зашли в обновление average")
-    #         self.data_base = sqlite3.connect('details.db')
-    #         self.cur = self.data_base.cursor()
-    #         self.cur.execute("SELECT thismin, thissec FROM average")
-    #         aver = self.cur.fetchone()
-    #         print("aver")
-    #         print(aver)
-    #         self.data_base.close()
-    #         self.data_base = sqlite3.connect('details.db')
-    #         self.cur = self.data_base.cursor()
-    #         self.cur.execute(f'UPDATE average SET lastmin ={aver[0]} , lastsec = {aver[1]}')
-    #         self.data_base.commit()
-    #         self.data_base.close()
-    #     for row in res:
-    #         count_left_elem_week = datetime.date.today().weekday()
-    #         left_border = datetime.date.today().day - count_left_elem_week
-    #         if ((row[1] < left_border) or (row[2] < datetime.date.today().month) or (row[3] < datetime.date.today().year)):
-    #             self.data_base = sqlite3.connect('details.db')
-    #             self.cur = self.data_base.cursor()
-    #             self.cur.execute(f"DELETE FROM stats WHERE data='{row[4]}'")
-    #             self.data_base.commit()
+
 
     def create_donutchart(self, week):
         sum_work = 0

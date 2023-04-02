@@ -117,9 +117,13 @@ class widgets(QMainWindow):
             self.data_base.close()
             self.data_base = sqlite3.connect('details.db')
             self.cur = self.data_base.cursor()
-            self.cur.execute(f'UPDATE average SET lastmin ={aver[0]} , lastsec = {aver[1]}')
-            self.data_base.commit()
-            self.data_base.close()
+            if(aver[0]!=0 or aver[1]!= 0):
+                self.cur.execute(f'UPDATE average SET lastmin ={aver[0]} , lastsec = {aver[1]}')
+                self.data_base.commit()
+                self.data_base.close()
+            else:
+                self.data_base.close()
+
 
 
 app = QtWidgets.QApplication(sys.argv)

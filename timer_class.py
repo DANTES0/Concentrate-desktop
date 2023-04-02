@@ -19,6 +19,7 @@ class Timer(QMainWindow):
         self.CreateTimer()
         self.choose_tag()
         self.sqlRequest()
+        self.money_tag()
         self.InitWindow()
     def sqlRequest(self):
         self.data_base = sqlite3.connect('details.db')
@@ -33,8 +34,25 @@ class Timer(QMainWindow):
                 data TEXT);
         """)
         self.data_base.commit()
+        self.data_base.close()
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
+        self.cur.execute("""CREATE TABLE IF NOT EXISTS money(
+                money INT);
+        """)
+        self.data_base.commit()
+        self.data_base.close()
 
-
+    def money_tag(self):
+        self.data_base = sqlite3.connect("details.db")
+        self.cur = self.data_base.cursor()
+        self.cur.execute("SELECT money FROM money")
+        money = self.cur.fetchone()
+        self.data_base.close()
+        self.moneyLable = QLabel(self)
+        self.moneyLable.setGeometry(600, 7, 93, 41)
+        self.moneyLable.setStyleSheet("background: #8350AA; border-radius: 20px; font-family: Inter; font:bold 24px; color: #FFFFFF; padding: 0px 2px")
+        self.moneyLable.setText(f'{str(money[0])} <a> <img src = "source/Coin.png"> </a>')
 
     def choose_tag(self):
         self.labelTag = QLabel(self)
@@ -199,8 +217,29 @@ class Timer(QMainWindow):
                 if self.prevSenderTag == self.label_study:
                     name_tag = 'study'
                 details = (name_tag, self.all_count_timer - self.count, datetime.date.today().weekday(),datetime.date.today().year, datetime.date.today().month, datetime.date.today().day,datetime.date.today())
+                self.data_base = sqlite3.connect('details.db')
+                self.cur = self.data_base.cursor()
                 self.cur.execute("INSERT INTO stats VALUES(?, ?, ?, ?, ?, ?, ?);", details)
                 self.data_base.commit()
+                self.data_base.close()
+
+                self.data_base = sqlite3.connect("details.db")
+                self.cur = self.data_base.cursor()
+                self.cur.execute('SELECT money FROM money')
+                temp = self.cur.fetchone()
+                self.data_base.close()
+                time = self.all_count_timer - self.count
+                money = temp[0]
+                # обработка начисления монет
+                if(time<=3600):
+                    money = money + 0.05*time
+                elif(time>3600):
+                    money = money + 180 + (time - 3600)*0.1
+                self.data_base = sqlite3.connect("details.db")
+                self.cur = self.data_base.cursor()
+                self.cur.execute(f'UPDATE money SET money={int(money)}')
+                self.data_base.commit()
+                self.data_base.close()
 
                 self.sliderTimer.setEnabled(True)
                 self.start_btn.setEnabled(True)
@@ -351,8 +390,34 @@ class Timer(QMainWindow):
         if self.prevSenderTag == self.label_study:
             name_tag = 'study'
         details = (name_tag,self.all_count_timer - self.count, datetime.date.today().weekday(), datetime.date.today().year, datetime.date.today().month, datetime.date.today().day,datetime.date.today())
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
         self.cur.execute("INSERT INTO stats VALUES(?, ?, ?, ?, ?, ?, ?);", details)
         self.data_base.commit()
+        self.data_base.close()
+
+        self.data_base = sqlite3.connect("details.db")
+        self.cur = self.data_base.cursor()
+        self.cur.execute('SELECT money FROM money')
+        temp = self.cur.fetchone()
+        self.data_base.close()
+        time = self.all_count_timer - self.count
+        money = temp[0]
+        print(f'time = {time}')
+        # обработка начисления монет
+        if (time <= 3600):
+            print("зашел в первый if")
+            money = money+ 0.05 * time
+        elif (time > 3600):
+            money = money + 180 + (time - 3600) * 0.1
+
+        self.data_base = sqlite3.connect("details.db")
+        self.cur = self.data_base.cursor()
+        self.cur.execute(f'UPDATE money SET money={int(money)}')
+        self.data_base.commit()
+        self.data_base.close()
+
+
         self.sliderTimer.setEnabled(True)
         self.start_btn.setEnabled(True)
         self.sliderTimer.setValue(0)
