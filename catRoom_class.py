@@ -6,55 +6,35 @@ from PyQt5.QtCore import *
 class Shop_item(QWidget):
     def __init__(self, xcor: int, ycor: int, cat_image_path: str, price: int, cat_name: str, shadow_color: str):
         super().__init__()
-
         self.based = QFrame(self)
         self.based.setGeometry(xcor, ycor, 155, 189)
         self.based.setStyleSheet("background: #000000;")
-
         self.based.shadow = QLabel(self)
         self.based.shadow.setParent(self.based)
         self.based.shadow.setGeometry(3, 9, 152, 180)
         self.based.shadow.setStyleSheet(f"background: {shadow_color}; border-radius: 30px")
-
         self.based.shop_item_bg = QLabel(self)
         self.based.shop_item_bg.setParent(self.based)
         self.based.shop_item_bg.setGeometry(0, 0, 146, 180)
         self.based.shop_item_bg.setStyleSheet("background: #FFFFFF; border-radius: 30px")
-
-        self.based.shop_item_bg.widget = QWidget()
-        self.based.shop_item_bg.widget.setGeometry(0, 0, 146, 180)
-        self.based.shop_item_bg.widget.setParent(self.based.shop_item_bg)
-
-        self.based.shop_item_bg.widget.layout = QVBoxLayout()
-        self.based.shop_item_bg.widget.layout.setAlignment(Qt.AlignHCenter)
-        self.based.shop_item_bg.widget.layout.setContentsMargins(0, 0, 0, 0)
-        self.based.shop_item_bg.widget.layout.setSpacing(10)
-        self.based.shop_item_bg.widget.layout.setParent(self.based.shop_item_bg.widget)
-
         self.based.shop_item_bg.cat_image = QLabel(self)
         self.based.shop_item_bg.cat_image.setParent(self.based.shop_item_bg)
         img = QPixmap(cat_image_path)
         self.based.shop_item_bg.cat_image.setPixmap(img)
+        self.based.shop_item_bg.cat_image.setGeometry(1, 38, 143, 95)
         self.based.shop_item_bg.cat_image.setStyleSheet("background: transparent;")
-
+        self.based.shop_item_bg.cat_image.setAlignment(Qt.AlignCenter)
+        #self.based.shop_item_bg.cat_image.move(self.based.shop_item_bg.rect().center())
         self.based.shop_item_bg.cat_name = QLabel(self)
         self.based.shop_item_bg.cat_name.setParent(self.based.shop_item_bg)
+        self.based.shop_item_bg.cat_name.setGeometry(0, 8, 146, 26)
         self.based.shop_item_bg.cat_name.setText(cat_name)
         self.based.shop_item_bg.cat_name.setObjectName("cat_name")
         self.based.shop_item_bg.cat_name.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
-
-        self.based.shop_item_bg.buy_cat_button = Buy_cat_button(price)
-        self.based.shop_item_bg.buy_cat_button.setParent(self.based.shop_item_bg)
-        # self.based.shop_item_bg.buy_cat_button.setObjectName("buy_cat_button")
-        # self.based.shop_item_bg.buy_cat_button.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
-
-        self.based.shop_item_bg.widget.layout.addStretch()
-        self.based.shop_item_bg.widget.layout.addWidget(self.based.shop_item_bg.cat_name)
-        self.based.shop_item_bg.widget.layout.addWidget(self.based.shop_item_bg.cat_image)
-        self.based.shop_item_bg.widget.layout.addWidget(self.based.shop_item_bg.buy_cat_button)
-        self.based.shop_item_bg.widget.layout.addStretch()
-
-        self.based.shop_item_bg.widget.setLayout(self.based.shop_item_bg.widget.layout)
+        self.based.shop_item_bg.cat_name.setAlignment(Qt.AlignCenter)
+        self.buy_cat_button = Buy_cat_button(price)
+        self.buy_cat_button.setParent(self.based.shop_item_bg)
+        self.buy_cat_button.show()
     def makeParent(self, object: QWidget):
         self.setParent(object)
 class MyItem(QPushButton):
@@ -146,8 +126,8 @@ class Buy_cat_button(QPushButton):
     def __init__(self, price: int):
         #*args, **kwargs
         super().__init__()
-        self.xcor = 0  #24
-        self.ycor = 0  #138
+        self.xcor = 24
+        self.ycor = 138
         self.xsize = 97
         self.ysize = 31
         self.price = price
@@ -155,10 +135,10 @@ class Buy_cat_button(QPushButton):
         self.setIcon(QIcon("source/Coin.png"))
         self.setLayoutDirection(Qt.RightToLeft)
         self.setText(str(self.price))
-        self.setObjectName("buy_cat_button")
-        self.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
-        #self.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 15px 0px 5px;")
-        self.setSizePolicy(QSizePolicy.Minimum , QSizePolicy.Fixed)
+        #self.setObjectName("buy_cat_button")
+        #self.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
+        self.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 15px 0px 5px;")
+        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.clicked.connect(self.aboba)
         # Animation
         self.zoom_factor = 1.1
@@ -171,8 +151,7 @@ class Buy_cat_button(QPushButton):
 
     def enterEvent(self, event: QEvent) -> None:
         #self.resize_obj()
-        #self.setGeometry(self.xcor, self.ycor, self.xsize, self.ysize)
-        #self.setFixedSize(QtCore.QSize(97, 31))
+        self.setGeometry(self.xcor, self.ycor, self.xsize, self.ysize)
         initial_rect = self.geometry()
         final_rect = QRect(
             0,
@@ -185,19 +164,18 @@ class Buy_cat_button(QPushButton):
         self.anim.setEndValue(final_rect)
 
         self.setText("BUY")
-        self.setObjectName("buy_cat_button_hover")
-        self.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
-        #self.setStyleSheet("background: #5ee672; border: 1.5px dashed #29002F; border-radius: 15px; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 16px; line-height: 15px; text-align: center; padding: 0px 20px 0px 5px;")
+        #self.setObjectName("buy_cat_button_hover")
+        #self.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
+        self.setStyleSheet("background: #5ee672; border: 1.5px dashed #29002F; border-radius: 15px; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 16px; line-height: 15px; text-align: center; padding: 0px 20px 0px 5px;")
         self.anim.setDirection(QAbstractAnimation.Forward)
         self.anim.start()
     def leaveEvent(self, event: QEvent) -> None:
-        #self.setFixedSize(QtCore.QSize(97, 31))
         #self.resize_obj()
-        #self.setGeometry(self.xcor, self.ycor, self.xsize, self.ysize)
+        self.setGeometry(self.xcor, self.ycor, self.xsize, self.ysize)
         self.setText(str(self.price))
-        self.setObjectName("buy_cat_button")
-        self.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
-        #self.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 15px 0px 5px;")
+        #self.setObjectName("buy_cat_button")
+        #self.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
+        self.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 15px 0px 5px;")
         self.anim.setDirection(QAbstractAnimation.Backward)
         self.anim.start()
 class CatRoom(QMainWindow):
@@ -280,17 +258,17 @@ class CatRoom(QMainWindow):
         self.mywidget.setStyleSheet("background:#D9D9D9; border-radius: 60px;")
         self.mywidget.show()
 
-        self.cat_1 = Shop_item(0, 0, "source/Sleeper.png", 5642, "Sleeper", "#454781")
+        self.cat_1 = Shop_item(0, 0, "source/Sleeper.png", 5642, "Sleeper", "#456B81")
         self.cat_1.makeParent(self.mywidget)
         self.cat_1.show()
         self.cat_1.setGeometry(30, 36, 155, 189)
 
-        self.cat_2 = Shop_item(0, 0, "source/Jokey.png", 5642, "Jokey", "#454781")
+        self.cat_2 = Shop_item(0, 0, "source/Jokey.png", 5642, "Jokey", "#456B81")
         self.cat_2.makeParent(self.mywidget)
         self.cat_2.show()
         self.cat_2.setGeometry(194, 36, 155, 189)
 
-        self.cat_3 = Shop_item(0, 0, "source/Frisky.png", 5642, "     Frisky", "#454781")
+        self.cat_3 = Shop_item(0, 0, "source/Frisky.png", 5642, "Frisky", "#456B81")
         self.cat_3.makeParent(self.mywidget)
         self.cat_3.show()
         self.cat_3.setGeometry(358, 36, 155, 189)
@@ -305,7 +283,7 @@ class CatRoom(QMainWindow):
         self.cat_5.show()
         self.cat_5.setGeometry(194, 235, 155, 189)
 
-        self.cat_6 = Shop_item(0, 0, "source/Mr_Chief.png", 2345, "Mr.Chief", "#81455E")
+        self.cat_6 = Shop_item(0, 0, "source/Mr_Chief.png", 2345, "Mr.Chief", "#454781")
         self.cat_6.makeParent(self.mywidget)
         self.cat_6.show()
         self.cat_6.setGeometry(358, 235, 155, 189)
