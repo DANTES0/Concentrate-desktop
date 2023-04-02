@@ -181,17 +181,14 @@ class Buy_cat_button(QPushButton):
 class CatRoom(QMainWindow):
     def __init__(self):
         super().__init__()  # super() lets you avoid referring to the base class explicitly
-        self.title = "Meow concentration"
         self.scene = QGraphicsScene()
         self.view = QGraphicsView(self.scene)
-        self.setWindowIcon(QtGui.QIcon('source/cat.ico'))
         self.setStyleSheet("background-image: url(source/CatRoomBg.png);")
         self.prevSender = None
 
         self.init_Ui()
         self.InitWindow()
     def InitWindow(self):
-        self.setWindowTitle(self.title)
         self.setGeometry(650, 50, 700, 762)
         self.setFixedSize(QSize(700, 762))
     def storeButton_load_store(self):

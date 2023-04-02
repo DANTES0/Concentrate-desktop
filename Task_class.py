@@ -14,10 +14,8 @@ class Task(QMainWindow):
         self.line = 0
         self.very_temp_line = 0
         self.prevSender = None
-        self.title = "Meow concentration"
         self.scene = QGraphicsScene()
         self.view = QGraphicsView(self.scene)
-        self.setWindowIcon(QtGui.QIcon('source/cat.ico'))
         self.setStyleSheet("background-color: #E5DBE9")
         self.add_task()
         self.cat()
@@ -25,7 +23,6 @@ class Task(QMainWindow):
         # self.TaskAdd(self.height)
         self.InitWindow()
     def InitWindow(self):
-        self.setWindowTitle(self.title)
         self.setGeometry(650,50,700,762)
         self.setFixedSize(QSize(700,762))
     def add_task(self):

@@ -8,8 +8,11 @@ from PyQt5.QtCore import *
 from stats_class import Statistics
 from timer_class import Timer
 from catRoom_class import CatRoom
-from Cat_Room import Cat_Room
 from Task_class import Task
+
+import ctypes
+myappid = 'mycompany.myproduct.subproduct.version' # arbitrary string
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 class widgets(QMainWindow):
     def __init__(self):
@@ -33,7 +36,7 @@ class widgets(QMainWindow):
 
     def InitWindow(self):
         self.setWindowTitle("Meow concentration")
-        self.setWindowIcon(QtGui.QIcon("source/cat.ico"))
+        self.setWindowIcon(QtGui.QIcon("source/icon.ico"))
         self.setGeometry(650, 50, 700, 850)
         self.setFixedSize(QSize(700, 850))
         #self.setWindowFlags(Qt.WindowCloseButtonHint)  #hide CLOSE button
@@ -72,6 +75,17 @@ class widgets(QMainWindow):
         self.stats.updateGraph()
         self.stats.show()
 
+    def gotoTask(self):
+        self.Task = Task()
+        self.widget.addWidget(self.Task)
+        self.widget.setCurrentIndex(2)
+
+    def gotoCatRoom(self):
+        print(self.widget.currentIndex())
+        self.catRoom = CatRoom()
+        self.widget.addWidget(self.catRoom)
+        self.widget.setCurrentIndex(3)
+
     def cleanTable(self):
         print("зашли в тейбл")
         self.data_base = sqlite3.connect('details.db')
@@ -102,16 +116,6 @@ class widgets(QMainWindow):
                 self.cur.execute(f"DELETE FROM stats WHERE data='{row[4]}'")
                 self.data_base.commit()
 
-    def gotoTask(self):
-        self.Task = Task()
-        self.widget.addWidget(self.Task)
-        self.widget.setCurrentIndex(2)
-
-    def gotoCatRoom(self):
-        print(self.widget.currentIndex())
-        self.catRoom = CatRoom()
-        self.widget.addWidget(self.catRoom)
-        self.widget.setCurrentIndex(3)
 
 app = QtWidgets.QApplication(sys.argv)
 window = widgets()

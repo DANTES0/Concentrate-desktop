@@ -10,10 +10,8 @@ class Statistics(QMainWindow):
     def __init__(self):
 
         super().__init__()
-        self.title = "Meow concentration"
         self.scene = QGraphicsScene()
         self.view= QGraphicsView(self.scene)
-        self.setWindowIcon(QtGui.QIcon('source/cat.ico'))
         self.setStyleSheet("background-color: #E5DBE9")
         self.prevSender = None
         #self.flag = True
@@ -66,7 +64,6 @@ class Statistics(QMainWindow):
     #     self.data_average.close()
 
     def InitWindow(self):
-        self.setWindowTitle(self.title)
         self.setGeometry(650,50,700,762)
         self.setFixedSize(QSize(700,762))
     def BackLabel(self):

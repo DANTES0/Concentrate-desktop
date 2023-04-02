@@ -9,10 +9,8 @@ class Timer(QMainWindow):
     def __init__(self):
 
         super().__init__()
-        self.title = "Meow concentration"
         self.scene = QGraphicsScene()
         self.view= QGraphicsView(self.scene)
-        self.setWindowIcon(QtGui.QIcon('source/cat.ico'))
         self.setStyleSheet("background-color: #E5DBE9")
 
         self.prevSenderTag = None
@@ -352,15 +350,9 @@ class Timer(QMainWindow):
             name_tag = 'other'
         if self.prevSenderTag == self.label_study:
             name_tag = 'study'
-        # details = [{'tag': name_tag, 'week': datetime.date.today().weekday(), 'time': (self.all_count_timer - self.count), 'date': datetime.date.today()}]
         details = (name_tag,self.all_count_timer - self.count, datetime.date.today().weekday(), datetime.date.today().year, datetime.date.today().month, datetime.date.today().day,datetime.date.today())
         self.cur.execute("INSERT INTO stats VALUES(?, ?, ?, ?, ?, ?, ?);", details)
         self.data_base.commit()
-        # with open('Details.yaml', 'r') as f:
-        #     yaml_data = yaml.safe_load(f)
-        # yaml_data.append(details)
-        # with open('Details.yaml', 'w') as f:
-        #     yaml.dump(yaml_data, f)
         self.sliderTimer.setEnabled(True)
         self.start_btn.setEnabled(True)
         self.sliderTimer.setValue(0)
@@ -431,6 +423,5 @@ class Timer(QMainWindow):
         print(self.count)
 
     def InitWindow(self):
-        self.setWindowTitle(self.title)
         self.setGeometry(650, 50, 700, 762)
         self.setFixedSize(QSize(700, 762))
