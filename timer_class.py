@@ -4,22 +4,38 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtChart import *
 from PyQt5.QtCore import *
-import yaml, datetime
+import datetime, sqlite3
 class Timer(QMainWindow):
     def __init__(self):
 
         super().__init__()
-        self.title = "Meow concentration"
         self.scene = QGraphicsScene()
         self.view= QGraphicsView(self.scene)
-        self.setWindowIcon(QtGui.QIcon('source/cat.ico'))
         self.setStyleSheet("background-color: #E5DBE9")
 
         self.prevSenderTag = None
+        print (datetime.date.today().weekday())
         self.Frame_Timer()
         self.CreateTimer()
         self.choose_tag()
+        self.sqlRequest()
         self.InitWindow()
+    def sqlRequest(self):
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
+        self.cur.execute("""CREATE TABLE IF NOT EXISTS stats(
+                tag TEXT,
+                time INT,
+                week INT,
+                year INT,
+                month INT,
+                day INT,
+                data TEXT);
+        """)
+        self.data_base.commit()
+
+
+
     def choose_tag(self):
         self.labelTag = QLabel(self)
         self.labelTag.setGeometry(183,590,333,92)
@@ -69,6 +85,8 @@ class Timer(QMainWindow):
         self.label_study.clicked.connect(self.Action_Tag)
         self.label_sport.clicked.connect(self.Action_Tag)
         self.label_other.clicked.connect(self.Action_Tag)
+
+
     def Action_Tag(self):
         sender = self.sender()
         self.prevSenderTag = sender
@@ -92,6 +110,8 @@ class Timer(QMainWindow):
             self.label_sport_circle.setStyleSheet("background:#979797; border-radius:5px")
             self.label_study_circle.setStyleSheet("background:#979797; border-radius:5px")
             self.label_work_circle.setStyleSheet("background:#979797; border-radius:5px")
+
+
     def Frame_Timer(self):
         self.bigEllipse = QLabel(self)
         self.bigEllipse.setGeometry(138, 14, 428, 428)
@@ -101,10 +121,11 @@ class Timer(QMainWindow):
         self.smallEllipse.setStyleSheet("background:#E5DBE9; border-radius:190px;")
 
         self.pic_label_timer = QLabel(self)
-        pixmap = QPixmap('source/Time_Cat.png')
-        self.pic_label_timer.setPixmap(pixmap)
-        self.pic_label_timer.setGeometry(246, 60, 197, 254)
+        pixmap = QPixmap('source/cat_with_big_balls.png')
         self.pic_label_timer.setStyleSheet("background:transparent")
+        self.pic_label_timer.setPixmap(pixmap)
+        self.pic_label_timer.setGeometry(209, 90, 285, 254)
+
     def CreateTimer(self):
         self.start = False
         self.count = 0
@@ -147,7 +168,7 @@ class Timer(QMainWindow):
         self.start_btn.setGeometry(208, 500, 127, 50)
         self.start_btn.clicked.connect(self.start_action)
         self.start_btn.setStyleSheet("border-radius: 25px; background-color:#9CC152; color:#ffffff; "
-                                     "font-family:Inter; font:24px; font-weight:bold")
+                                     "font-family:Inter; font:24px; font-weight:bold;")
 
         self.stop_btn = QPushButton("Stop", self)
         self.stop_btn.move(70, 250)
@@ -159,6 +180,7 @@ class Timer(QMainWindow):
         self.timer = QTimer(self)
         self.time = QTime(0, 0, 0)
         self.timer.timeout.connect(self.showTime)
+
     def showTime(self):
         if self.start:
             self.count -= 1
@@ -176,13 +198,10 @@ class Timer(QMainWindow):
                     name_tag = 'other'
                 if self.prevSenderTag == self.label_study:
                     name_tag = 'study'
-                details = [{'tag': name_tag, 'week': datetime.date.today().weekday(),
-                            'time': (self.all_count_timer - self.count), 'date': datetime.date.today()}]
-                with open('Details.yaml', 'r') as f:
-                    yaml_data = yaml.safe_load(f)
-                yaml_data.append(details)
-                with open('Details.yaml', 'w') as f:
-                    yaml.dump(yaml_data, f)
+                details = (name_tag, self.all_count_timer - self.count, datetime.date.today().weekday(),datetime.date.today().year, datetime.date.today().month, datetime.date.today().day,datetime.date.today())
+                self.cur.execute("INSERT INTO stats VALUES(?, ?, ?, ?, ?, ?, ?);", details)
+                self.data_base.commit()
+
                 self.sliderTimer.setEnabled(True)
                 self.start_btn.setEnabled(True)
                 self.animationTimer = QPropertyAnimation(self.lableTimer, b"geometry")
@@ -221,10 +240,13 @@ class Timer(QMainWindow):
                 self.animationBigLabelTimer.setEndValue(QRect(138, 14, 428, 428))
                 self.animationBigLabelTimer.start()
 
+                self.movie.stop()
+                self.pic_label_timer.setPixmap(QPixmap('source/cat_with_big_balls.png'))
+
                 self.animationPicLabelTimer = QPropertyAnimation(self.pic_label_timer, b"geometry")
                 self.animationPicLabelTimer.setDuration(1000)
-                self.animationPicLabelTimer.setStartValue(QRect(246, 110, 197, 254))
-                self.animationPicLabelTimer.setEndValue(QRect(246, 60, 197, 254))
+                self.animationPicLabelTimer.setStartValue(QRect(209, 140, 285, 254))
+                self.animationPicLabelTimer.setEndValue(QRect(209, 90, 285, 254))
                 self.animationPicLabelTimer.start()
 
                 self.labelTag.show()
@@ -238,6 +260,7 @@ class Timer(QMainWindow):
                 self.label_sport_circle.show()
                 self.label_1.show()
                 self.pic_label.show()
+
     def start_action(self):
         if self.count != 0:
             # 0 - Monday(Понедельник);
@@ -290,10 +313,14 @@ class Timer(QMainWindow):
             self.animationBigLabelTimer.setEndValue(QRect(138, 64, 428, 428))
             self.animationBigLabelTimer.start()
 
+            self.movie = QMovie('source/2.gif')
+            self.pic_label_timer.setMovie(self.movie)
+            self.movie.start()
+
             self.animationPicLabelTimer = QPropertyAnimation(self.pic_label_timer, b"geometry")
             self.animationPicLabelTimer.setDuration(1000)
-            self.animationPicLabelTimer.setStartValue(QRect(246, 60, 197, 254))
-            self.animationPicLabelTimer.setEndValue(QRect(246, 110, 197, 254))
+            self.animationPicLabelTimer.setStartValue(QRect(209, 90, 285, 254))
+            self.animationPicLabelTimer.setEndValue(QRect(209, 140, 285, 254))
             self.animationPicLabelTimer.start()
             #***********************************
             self.start = True
@@ -312,6 +339,7 @@ class Timer(QMainWindow):
             self.pic_label.hide()
             if self.count == 0:
                 self.start = False
+
     def stop_action(self):
         self.start = False
         if self.prevSenderTag == self.label_work:
@@ -322,12 +350,9 @@ class Timer(QMainWindow):
             name_tag = 'other'
         if self.prevSenderTag == self.label_study:
             name_tag = 'study'
-        details = [{'tag': name_tag, 'week': datetime.date.today().weekday(), 'time': (self.all_count_timer - self.count), 'date': datetime.date.today()}]
-        with open('Details.yaml', 'r') as f:
-            yaml_data = yaml.safe_load(f)
-        yaml_data.append(details)
-        with open('Details.yaml', 'w') as f:
-            yaml.dump(yaml_data, f)
+        details = (name_tag,self.all_count_timer - self.count, datetime.date.today().weekday(), datetime.date.today().year, datetime.date.today().month, datetime.date.today().day,datetime.date.today())
+        self.cur.execute("INSERT INTO stats VALUES(?, ?, ?, ?, ?, ?, ?);", details)
+        self.data_base.commit()
         self.sliderTimer.setEnabled(True)
         self.start_btn.setEnabled(True)
         self.sliderTimer.setValue(0)
@@ -369,10 +394,12 @@ class Timer(QMainWindow):
         self.animationBigLabelTimer.setEndValue(QRect(138, 14, 428, 428))
         self.animationBigLabelTimer.start()
 
+        self.movie.stop()
+        self.pic_label_timer.setPixmap(QPixmap('source/cat_with_big_balls.png'))
         self.animationPicLabelTimer = QPropertyAnimation(self.pic_label_timer, b"geometry")
         self.animationPicLabelTimer.setDuration(1000)
-        self.animationPicLabelTimer.setStartValue(QRect(246, 110, 197, 254))
-        self.animationPicLabelTimer.setEndValue(QRect(246, 60, 197, 254))
+        self.animationPicLabelTimer.setStartValue(QRect(209, 140, 285, 254))
+        self.animationPicLabelTimer.setEndValue(QRect(209, 90, 285, 254))
         self.animationPicLabelTimer.start()
         #***************************
         self.labelTag.show()
@@ -387,13 +414,14 @@ class Timer(QMainWindow):
         self.label_1.show()
         self.pic_label.show()
         self.count = 0
+
     def UpdateLabel(self, value):
         self.count = value
         m, s = divmod(self.count, 60)
         min_sec_format = '{:02d}:{:02d}'.format(m, s)
         self.lableTimer.setText(str(min_sec_format))
         print(self.count)
+
     def InitWindow(self):
-        self.setWindowTitle(self.title)
         self.setGeometry(650, 50, 700, 762)
         self.setFixedSize(QSize(700, 762))
