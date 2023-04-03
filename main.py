@@ -168,8 +168,15 @@ class widgets(QMainWindow):
     def InitWindow(self):
         self.setWindowTitle("Meow concentration")
         self.setWindowIcon(QtGui.QIcon("source/icon.ico"))
+
         self.setGeometry(650, 50, 700, 850)
         self.setFixedSize(QSize(700, 850))
+
+        qtRectangle = self.frameGeometry()
+        centerPoint = QDesktopWidget().availableGeometry().center()
+        qtRectangle.moveCenter(centerPoint)
+        self.move(qtRectangle.topLeft())
+
         self.show()
     def cleanTable(self):
         print("зашли в тейбл")
