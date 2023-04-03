@@ -185,15 +185,31 @@ class CatRoom(QMainWindow):
         self.view = QGraphicsView(self.scene)
         self.setStyleSheet("background-image: url(source/CatRoomBg.png);")
         self.prevSender = None
+        self.data_base = sqlite3.connect("details.db")
+        self.cur = self.data_base.cursor()
+        self.cur.execute("SELECT money FROM money")
+        self.moneyExpo = self.cur.fetchone()
+        self.data_base.close()
         self.init_Ui()
-        self.money_tag()
+        # self.money_tag()
+        # timer = QTimer(self)
+        # timer.timeout.connect(self.MoneyUpdate)
+        # self.moneyLable.setText(str(self.moneyExpo[0]))
+        print(f'Конструкторская {self.moneyExpo}')
+        # timer.start(1500)
+        # self.MoneyUpdate()
         self.InitWindow()
+
+    def MoneyUpdate(self):
+        self.moneyLable.setText(str(self.moneyExpo[0]))
+        print(self.moneyExpo)
     def InitWindow(self):
         self.setGeometry(650, 50, 700, 762)
         self.setFixedSize(QSize(700, 762))
     def storeButton_load_store(self):
         print("'Enter Store' button clicked!")
         self.storeButton_load.hide()
+        # self.moneyLable.setText('123')
         self.load_store()
     def storeButton_exit_store(self):
         #  закрытие всех виджетов магазина
@@ -210,10 +226,11 @@ class CatRoom(QMainWindow):
         self.cat_8.close()
         self.storeButton_load.show()
         self.mywidget.storeButton_exit.hide()
+        self.mywidget.moneyLable.hide()
     def init_Ui(self):
         #  ининициализация кнопки для входа в магазин
         self.storeButton_load = MyItem(self)
-        self.storeButton_load.xcor = 559
+        self.storeButton_load.xcor = 650
         self.storeButton_load.ycor = 8
         self.storeButton_load.xsize = 41
         self.storeButton_load.ysize = 41
@@ -224,52 +241,52 @@ class CatRoom(QMainWindow):
         self.storeButton_load.resize_obj()
         self.storeButton_load.show()
 
-    def money_tag(self):
-        self.data_base = sqlite3.connect("details.db")
-        self.cur = self.data_base.cursor()
-        self.cur.execute("SELECT money FROM money")
-        money = self.cur.fetchone()
-        self.data_base.close()
-        self.moneyLable = QPushButton(self)
-        self.moneyLable.setGeometry(600, 7, 93, 41)
-        self.moneyLable.setIcon(QIcon("source/Coin.png"))
-        self.moneyLable.setLayoutDirection(Qt.RightToLeft)
-        self.moneyLable.setText(str(money[0]))
-        # self.moneyLable.setStyleSheet("background: #8350AA; border-radius: 20px; font-family: Inter; font:bold 24px; color: #FFFFFF; padding: 0 0px 0 0px;line-height: 15px;")
-        # self.moneyLable.setText(f'<p align="center" style="text-align: middle;"><h2><font size="3">{str(money[0])}</font></h2></p> <img src = "source/Coin.png" width="22" height="22" align="middle" hspace="100">')
-        # self.moneyLable.setText(f'{money[0]} <img src = "source/Coin.png" align="middle">')
-        self.moneyLable.setStyleSheet("background: #8350AA;border-radius: 20px;font-family: 'Inter'; font-style: normal; color:#ffffff; font-weight: 700; font-size: 22px; line-height: 15px; text-align: center;padding: 0px 10px 0px 5px;")
-        self.moneyLable.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        if money[0] >= 100 and money[0] <= 999:
-            self.storeButton_load.xcor = 555
-            self.storeButton_load.ycor = 8
-            self.storeButton_load.xsize = 41
-            self.storeButton_load.ysize = 41
-            self.storeButton_load.setGeometry(self.storeButton_load.xcor,self.storeButton_load.ycor,self.storeButton_load.xsize,self.storeButton_load.ysize)
-        if money[0]<100:
-            self.storeButton_load.xcor = 579
-            self.storeButton_load.ycor = 8
-            self.storeButton_load.xsize = 41
-            self.storeButton_load.ysize = 41
-            self.storeButton_load.setGeometry(self.storeButton_load.xcor, self.storeButton_load.ycor,
-                                              self.storeButton_load.xsize, self.storeButton_load.ysize)
-            self.moneyLable.setGeometry(626, 7, 67, 41)
-        if money[0]>999:
-            self.storeButton_load.xcor = 549
-            self.storeButton_load.ycor = 8
-            self.storeButton_load.xsize = 41
-            self.storeButton_load.ysize = 41
-            self.storeButton_load.setGeometry(self.storeButton_load.xcor, self.storeButton_load.ycor,
-                                              self.storeButton_load.xsize, self.storeButton_load.ysize)
-            self.moneyLable.setGeometry(596, 7, 97, 41)
-        if money[0]>9999:
-            self.storeButton_load.xcor = 535
-            self.storeButton_load.ycor = 8
-            self.storeButton_load.xsize = 41
-            self.storeButton_load.ysize = 41
-            self.storeButton_load.setGeometry(self.storeButton_load.xcor, self.storeButton_load.ycor,
-                                              self.storeButton_load.xsize, self.storeButton_load.ysize)
-            self.moneyLable.setGeometry(582,7,111,41)
+    # def money_tag(self):
+    #     self.data_base = sqlite3.connect("details.db")
+    #     self.cur = self.data_base.cursor()
+    #     self.cur.execute("SELECT money FROM money")
+    #     money = self.cur.fetchone()
+    #     self.data_base.close()
+    #     self.moneyLable = QPushButton(self)
+    #     self.moneyLable.setGeometry(600, 7, 93, 41)
+    #     self.moneyLable.setIcon(QIcon("source/Coin.png"))
+    #     self.moneyLable.setLayoutDirection(Qt.RightToLeft)
+    #     self.moneyLable.setText(str(money[0]))
+    #     # self.moneyLable.setStyleSheet("background: #8350AA; border-radius: 20px; font-family: Inter; font:bold 24px; color: #FFFFFF; padding: 0 0px 0 0px;line-height: 15px;")
+    #     # self.moneyLable.setText(f'<p align="center" style="text-align: middle;"><h2><font size="3">{str(money[0])}</font></h2></p> <img src = "source/Coin.png" width="22" height="22" align="middle" hspace="100">')
+    #     # self.moneyLable.setText(f'{money[0]} <img src = "source/Coin.png" align="middle">')
+    #     self.moneyLable.setStyleSheet("background: #8350AA;border-radius: 20px;font-family: 'Inter'; font-style: normal; color:#ffffff; font-weight: 700; font-size: 22px; line-height: 15px; text-align: center;padding: 0px 10px 0px 5px;")
+    #     self.moneyLable.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+    #     if money[0] >= 100 and money[0] <= 999:
+    #         self.storeButton_load.xcor = 555
+    #         self.storeButton_load.ycor = 8
+    #         self.storeButton_load.xsize = 41
+    #         self.storeButton_load.ysize = 41
+    #         self.storeButton_load.setGeometry(self.storeButton_load.xcor,self.storeButton_load.ycor,self.storeButton_load.xsize,self.storeButton_load.ysize)
+    #     if money[0]<100:
+    #         self.storeButton_load.xcor = 579
+    #         self.storeButton_load.ycor = 8
+    #         self.storeButton_load.xsize = 41
+    #         self.storeButton_load.ysize = 41
+    #         self.storeButton_load.setGeometry(self.storeButton_load.xcor, self.storeButton_load.ycor,
+    #                                           self.storeButton_load.xsize, self.storeButton_load.ysize)
+    #         self.moneyLable.setGeometry(626, 7, 67, 41)
+    #     if money[0]>999:
+    #         self.storeButton_load.xcor = 549
+    #         self.storeButton_load.ycor = 8
+    #         self.storeButton_load.xsize = 41
+    #         self.storeButton_load.ysize = 41
+    #         self.storeButton_load.setGeometry(self.storeButton_load.xcor, self.storeButton_load.ycor,
+    #                                           self.storeButton_load.xsize, self.storeButton_load.ysize)
+    #         self.moneyLable.setGeometry(596, 7, 97, 41)
+    #     if money[0]>9999:
+    #         self.storeButton_load.xcor = 535
+    #         self.storeButton_load.ycor = 8
+    #         self.storeButton_load.xsize = 41
+    #         self.storeButton_load.ysize = 41
+    #         self.storeButton_load.setGeometry(self.storeButton_load.xcor, self.storeButton_load.ycor,
+    #                                           self.storeButton_load.xsize, self.storeButton_load.ysize)
+    #         self.moneyLable.setGeometry(582,7,111,41)
     def load_store(self):
         #  фрейм серого фона для магазина
         self.mywidget = QFrame()
@@ -291,23 +308,34 @@ class CatRoom(QMainWindow):
         self.mywidget.storeButton_exit.resize_obj()
         self.mywidget.storeButton_exit.show()
 
+
         self.data_base = sqlite3.connect("details.db")
         self.cur = self.data_base.cursor()
         self.cur.execute("SELECT money FROM money")
         money = self.cur.fetchone()
         self.data_base.close()
 
+        self.mywidget.moneyLable = QPushButton(self)
+        self.mywidget.moneyLable.setGeometry(600, 7, 93, 41)
+        self.mywidget.moneyLable.setIcon(QIcon("source/Coin.png"))
+        self.mywidget.moneyLable.setLayoutDirection(Qt.RightToLeft)
+        self.mywidget.moneyLable.setText(str(money[0]))
+        self.mywidget.moneyLable.setStyleSheet(
+            "background: #8350AA;border-radius: 20px;font-family: 'Inter'; font-style: normal; color:#ffffff; font-weight: 700; font-size: 22px; line-height: 15px; text-align: center;padding: 0px 10px 0px 5px;")
+        self.mywidget.moneyLable.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.mywidget.moneyLable.show()
+
         if money[0] >= 100 and money[0] <= 999:
             self.mywidget.storeButton_exit.xcor = 555
             self.mywidget.storeButton_exit.ycor = 8
             self.mywidget.storeButton_exit.xsize = 41
             self.mywidget.storeButton_exit.ysize = 41
-            self.storeButton_load.xcor = 555
-            self.storeButton_load.ycor = 8
-            self.storeButton_load.xsize = 41
-            self.storeButton_load.ysize = 41
-            self.storeButton_load.setGeometry(self.storeButton_load.xcor, self.storeButton_load.ycor,
-                                              self.storeButton_load.xsize, self.storeButton_load.ysize)
+            # self.storeButton_load.xcor = 555
+            # self.storeButton_load.ycor = 8
+            # self.storeButton_load.xsize = 41
+            # self.storeButton_load.ysize = 41
+            # self.storeButton_load.setGeometry(self.storeButton_load.xcor, self.storeButton_load.ycor,
+            #                                   self.storeButton_load.xsize, self.storeButton_load.ysize)
             self.mywidget.storeButton_exit.setGeometry(self.mywidget.storeButton_exit.xcor, self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize, self.mywidget.storeButton_exit.ysize)
         if money[0] < 100:
@@ -315,49 +343,53 @@ class CatRoom(QMainWindow):
             self.mywidget.storeButton_exit.ycor = 8
             self.mywidget.storeButton_exit.xsize = 41
             self.mywidget.storeButton_exit.ysize = 41
-            self.storeButton_load.xcor = 579
-            self.storeButton_load.ycor = 8
-            self.storeButton_load.xsize = 41
-            self.storeButton_load.ysize = 41
-            self.storeButton_load.setGeometry(self.storeButton_load.xcor, self.storeButton_load.ycor,
-                                              self.storeButton_load.xsize, self.storeButton_load.ysize)
+
+            # self.storeButton_load.xcor = 579
+            # self.storeButton_load.ycor = 8
+            # self.storeButton_load.xsize = 41
+            # self.storeButton_load.ysize = 41
+            # self.storeButton_load.setGeometry(self.storeButton_load.xcor, self.storeButton_load.ycor,
+            #                                   self.storeButton_load.xsize, self.storeButton_load.ysize)
             self.mywidget.storeButton_exit.setGeometry(self.mywidget.storeButton_exit.xcor,
                                                        self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize,
                                                        self.mywidget.storeButton_exit.ysize)
-            self.moneyLable.setGeometry(626, 7, 67, 41)
+            # self.moneyLable.setGeometry(626, 7, 67, 41)
+            self.mywidget.moneyLable.setGeometry(626, 7, 67, 41)
         if money[0] > 999:
             self.mywidget.storeButton_exit.xcor = 549
             self.mywidget.storeButton_exit.ycor = 8
             self.mywidget.storeButton_exit.xsize = 41
             self.mywidget.storeButton_exit.ysize = 41
-            self.storeButton_load.xcor = 549
-            self.storeButton_load.ycor = 8
-            self.storeButton_load.xsize = 41
-            self.storeButton_load.ysize = 41
-            self.storeButton_load.setGeometry(self.storeButton_load.xcor, self.storeButton_load.ycor,
-                                              self.storeButton_load.xsize, self.storeButton_load.ysize)
+            # self.storeButton_load.xcor = 549
+            # self.storeButton_load.ycor = 8
+            # self.storeButton_load.xsize = 41
+            # self.storeButton_load.ysize = 41
+            # self.storeButton_load.setGeometry(self.storeButton_load.xcor, self.storeButton_load.ycor,
+            #                                   self.storeButton_load.xsize, self.storeButton_load.ysize)
             self.mywidget.storeButton_exit.setGeometry(self.mywidget.storeButton_exit.xcor,
                                                        self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize,
                                                        self.mywidget.storeButton_exit.ysize)
-            self.moneyLable.setGeometry(596, 7, 97, 41)
+            # self.moneyLable.setGeometry(596, 7, 97, 41)
+            self.mywidget.moneyLable.setGeometry(596, 7, 97, 41)
         if money[0] > 9999:
             self.mywidget.storeButton_exit.xcor = 535
             self.mywidget.storeButton_exit.ycor = 8
             self.mywidget.storeButton_exit.xsize = 41
             self.mywidget.storeButton_exit.ysize = 41
-            self.storeButton_load.xcor = 535
-            self.storeButton_load.ycor = 8
-            self.storeButton_load.xsize = 41
-            self.storeButton_load.ysize = 41
-            self.storeButton_load.setGeometry(self.storeButton_load.xcor, self.storeButton_load.ycor,
-                                              self.storeButton_load.xsize, self.storeButton_load.ysize)
+            # self.storeButton_load.xcor = 535
+            # self.storeButton_load.ycor = 8
+            # self.storeButton_load.xsize = 41
+            # self.storeButton_load.ysize = 41
+            # self.storeButton_load.setGeometry(self.storeButton_load.xcor, self.storeButton_load.ycor,
+            #                                   self.storeButton_load.xsize, self.storeButton_load.ysize)
             self.mywidget.storeButton_exit.setGeometry(self.mywidget.storeButton_exit.xcor,
                                                        self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize,
                                                        self.mywidget.storeButton_exit.ysize)
-            self.moneyLable.setGeometry(582, 7, 111, 41)
+            # self.moneyLable.setGeometry(582, 7, 111, 41)
+            self.mywidget.moneyLable.setGeometry(582, 7, 111, 41)
 
         #  серый фон магазина
         self.mywidget.setGeometry(83, 60, 700, 762)

@@ -37,6 +37,7 @@ class widgets(QMainWindow):
         self.FrameBtn()
         self.flag = True
         self.cleanTable()
+        centerPoint = QDesktopWidget().availableGeometry().center()
         self.widget = QtWidgets.QStackedWidget(self)
         self.widget.setGeometry(0, 88, 700, 762)
         self.timer = Timer()
@@ -55,7 +56,7 @@ class widgets(QMainWindow):
     def InitWindow(self):
         self.setWindowTitle("Meow concentration")
         self.setWindowIcon(QtGui.QIcon("source/icon.ico"))
-        self.setGeometry(650, 50, 700, 850)
+        self.setGeometry(660, 50, 700, 850)
         self.setFixedSize(QSize(700, 850))
         #self.setWindowFlags(Qt.WindowCloseButtonHint)  #hide CLOSE button
         self.show()
@@ -96,7 +97,6 @@ class widgets(QMainWindow):
         self.stats = Statistics()
         self.widget.addWidget(self.stats)
         self.widget.setCurrentIndex(1)
-        self.stats.updateGraph()
         self.stats.show()
 
     def gotoTask(self):
