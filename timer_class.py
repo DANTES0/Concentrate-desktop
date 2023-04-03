@@ -5,6 +5,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtChart import *
 from PyQt5.QtCore import *
 import datetime, sqlite3
+from MyItem import MyItem
 class Timer(QMainWindow):
     def __init__(self):
 
@@ -206,6 +207,7 @@ class Timer(QMainWindow):
         self.stop_btn.clicked.connect(self.stop_action)
         self.stop_btn.setStyleSheet("border-radius: 25px; background-color:#FA7B7B; color:#ffffff; "
                                     "font-family:Inter; font:24px; font-weight:bold")
+        self.stop_btn.setDisabled(True)
 
         self.timer = QTimer(self)
         self.time = QTime(0, 0, 0)
@@ -312,6 +314,7 @@ class Timer(QMainWindow):
                 self.label_1.show()
                 self.pic_label.show()
                 self.moneyLable.setText(str(int(money)))
+                self.stop_btn.setDisabled(True)
 
     def start_action(self):
         if self.count != 0:
@@ -327,6 +330,7 @@ class Timer(QMainWindow):
             self.timer.start(1000)
             self.sliderTimer.setEnabled(False)
             self.start_btn.setEnabled(False)
+            self.stop_btn.setDisabled(False)
             #дичь лютая
             self.lableTimer.setGeometry(298,358,115,36)
             self.animationTimer = QPropertyAnimation(self.lableTimer, b"geometry")
@@ -493,6 +497,7 @@ class Timer(QMainWindow):
         self.pic_label.show()
         self.count = 0
         self.moneyLable.setText(str(int(money)))
+        self.stop_btn.setDisabled(True)
         # self.money_tag()
         # self.update()
         # self.moneyLable.update()

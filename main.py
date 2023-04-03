@@ -9,6 +9,7 @@ from stats_class import Statistics
 from timer_class import Timer
 from catRoom_class import CatRoom
 from Task_class import Task
+from MyItem import MyItem
 
 import ctypes
 myappid = 'mycompany.myproduct.subproduct.version' # arbitrary string
@@ -120,6 +121,8 @@ class SlidingStackedWidget(QStackedWidget):
         self.widget(self.m_now).hide()
         self.widget(self.m_now).move(self.m_pnow)
         self.m_active = False
+
+
 class widgets(QMainWindow):
     def __init__(self, parent=None):
         super(widgets, self).__init__(parent)
@@ -147,21 +150,40 @@ class widgets(QMainWindow):
         frame.setGeometry(0, 0, 700, 88)
         frame.setStyleSheet("background-color:#D8B5E9;")
 
-        TimerBtn = QPushButton('Timer', self, pressed=self.slidingStacked.slideIn1)
-        TimerBtn.setGeometry(51, 24, 127, 50)
-        TimerBtn.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        TimerBtn = MyItem('Timer',self, pressed=self.slidingStacked.slideIn1)
+        TimerBtn.xcor = 51
+        TimerBtn.ycor = 24
+        TimerBtn.xsize = 127
+        TimerBtn.ysize = 50
+        TimerBtn.setStyleSheet('background-color:#8350AA; border-radius: 25px;font: bold 24px; font-family: Inter; color: #ffffff')
+        TimerBtn.resize_obj()
 
-        TaskButton = QPushButton('Task', self, pressed=self.slidingStacked.slideIn2)
-        TaskButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
-        TaskButton.setGeometry(208,24,127,50)
+        TaskBtn = MyItem('Task', self, pressed=self.slidingStacked.slideIn2)
+        TaskBtn.xcor = 208
+        TaskBtn.ycor = 24
+        TaskBtn.xsize = 127
+        TaskBtn.ysize = 50
+        TaskBtn.setStyleSheet(
+            'background-color:#8350AA; border-radius: 25px;font: bold 24px; font-family: Inter; color: #ffffff')
+        TaskBtn.resize_obj()
 
-        StatisticsButton = QPushButton('Statistics', self, pressed=self.slidingStacked.slideIn3)
-        StatisticsButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
-        StatisticsButton.setGeometry(365, 24, 127, 50)
+        StatisticsButton = MyItem('Statistics', self, pressed=self.slidingStacked.slideIn3)
+        StatisticsButton.xcor = 365
+        StatisticsButton.ycor = 24
+        StatisticsButton.xsize = 127
+        StatisticsButton.ysize = 50
+        StatisticsButton.setStyleSheet(
+            'background-color:#8350AA; border-radius: 25px;font: bold 24px; font-family: Inter; color: #ffffff')
+        StatisticsButton.resize_obj()
 
-        CatRoomButton = QPushButton('Cat room', self, pressed=self.slidingStacked.slideIn4)
-        CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
-        CatRoomButton.setGeometry(522,24,127,50)
+        CatRoomButton = MyItem('CatRoom', self, pressed=self.slidingStacked.slideIn4)
+        CatRoomButton.xcor = 522
+        CatRoomButton.ycor = 24
+        CatRoomButton.xsize = 127
+        CatRoomButton.ysize = 50
+        CatRoomButton.setStyleSheet(
+            'background-color:#8350AA; border-radius: 25px;font: bold 24px; font-family: Inter; color: #ffffff')
+        CatRoomButton.resize_obj()
 
         self.InitWindow()
 

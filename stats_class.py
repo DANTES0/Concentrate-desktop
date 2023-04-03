@@ -71,7 +71,7 @@ class Statistics(QMainWindow):
         pixmap = QPixmap('source/Cat_1.png')
         self.backLabel.setPixmap(pixmap)
         self.backLabel.setStyleSheet("background-color: transparent")
-        self.backLabel.setGeometry(383,520,100,100)
+        self.backLabel.setGeometry(390,520,100,100)
 
         ConcentrationLabel = QLabel("Concentration time", self)
         ConcentrationLabel.setGeometry(83,13,227,29)
@@ -510,7 +510,7 @@ class Statistics(QMainWindow):
             week = 0
         if sender == self.tueBtn:
             week = 1
-            self.backLabel.setGeometry(377,520,100,100)
+            # self.backLabel.setGeometry(377,520,100,100)
         if sender == self.wedBtn:
             week = 2
         if sender == self.thuBtn:
