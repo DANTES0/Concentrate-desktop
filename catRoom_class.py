@@ -37,6 +37,88 @@ class Shop_item(QWidget):
         self.buy_cat_button.show()
     def makeParent(self, object: QWidget):
         self.setParent(object)
+class Exit_store_button(QPushButton):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.xcor = 0
+        self.ycor = 0
+        self.xsize = 0
+        self.ysize = 0
+
+        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+
+        self.anim = QPropertyAnimation(self, b"geometry")
+        self.anim.setEasingCurve(QEasingCurve.InOutSine)
+        self.anim.setDuration(150)
+
+
+    def enterEvent(self, event: QEvent) -> None:
+        self.resize_obj()
+        initial_rect = self.geometry()
+        final_rect = QRect(
+            0,
+            0,
+            int(initial_rect.width() * self.zoom_factor),
+            int(initial_rect.height() * self.zoom_factor),
+        )
+        final_rect.moveCenter(initial_rect.center())
+        self.anim.setStartValue(initial_rect)
+        self.anim.setEndValue(final_rect)
+        self.setText(self.changed_text)
+        if self.changed_style == True:
+            self.setObjectName("buy_cat_button_hover")
+            self.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
+        self.anim.setDirection(QAbstractAnimation.Forward)
+        self.anim.start()
+    def leaveEvent(self, event: QEvent) -> None:
+        self.resize_obj()
+        self.setText(self.based_text)
+        if self.changed_style == True:
+            self.setObjectName("buy_cat_button")
+            self.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
+        self.anim.setDirection(QAbstractAnimation.Backward)
+        self.anim.start()
+    def resize_obj(self):
+        self.setGeometry(self.xcor, self.ycor, self.xsize, self.ysize)
+    @pyqtProperty(int)
+    def xcor_value(self):
+        return self.xcor
+    @xcor_value.setter
+    def xcor_value(self, value):
+        self.xcor = value
+    @xcor_value.setter
+    def ycor_value(self, value):
+        self.ycor = value
+    @pyqtProperty(int)
+    def xsize_value(self):
+        return self.xsize
+    @xcor_value.setter
+    def xsize_value(self, value):
+        self.xsize = value
+    @pyqtProperty(int)
+    def ysize_value(self):
+        return self.ysize
+    @xcor_value.setter
+    def ysize_value(self, value):
+        self.ysize = value
+    @pyqtProperty(int)
+    def based_text_value(self):
+        return self.based_text
+    @xcor_value.setter
+    def based_text_value(self, value):
+        self.based_text = value
+    @pyqtProperty(int)
+    def changed_text_value(self):
+        return self.changed_text
+    @xcor_value.setter
+    def changed_text_value(self, value):
+        self.changed_text = value
+    @pyqtProperty(bool)
+    def change_style_button(self):
+        return self.changed_style
+    @xcor_value.setter
+    def change_style_button(self, value):
+        self.changed_style = value
 class MyItem(QPushButton):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -199,6 +281,7 @@ class CatRoom(QMainWindow):
         self.load_store()
     def storeButton_exit_store(self):
         #  закрытие всех виджетов магазина
+
         print("'Exit Store' button clicked!")
         self.mywidget.close()
         self.bg.close()
@@ -230,12 +313,24 @@ class CatRoom(QMainWindow):
     def load_store(self):
         #  фрейм серого фона для магазина
         self.mywidget = QFrame()
+
         #  тёмный прозрачный фон магазина
-        self.bg = QFrame()
+        self.bg = QWidget(self)
         self.bg.setGeometry(0, 0, 700, 762)
         self.bg.setFixedSize(QSize(700, 762))
-        self.bg.setStyleSheet("background:#000000; background: rgba(0, 0, 0, 0.6);")
+        self.bg.setStyleSheet("background: rgba(0, 0, 0, 1);")
         self.bg.setParent(self)
+
+
+        self.bg.eff = QGraphicsOpacityEffect(self.bg)
+        self.bg.setGraphicsEffect(self.bg.eff)
+        self.bg.abba = QPropertyAnimation(self.bg.eff, b"opacity")
+        self.bg.abba.setDuration(1700)
+        self.bg.abba.setStartValue(0)
+        self.bg.abba.setEndValue(0.6)
+        self.bg.abba.setEasingCurve(QEasingCurve.OutQuart)
+        self.bg.abba.start(QPropertyAnimation.DeleteWhenStopped)
+        self.bg.abba.setDirection(QAbstractAnimation.Forward)
         self.bg.show()
 
         #  кнопка закрытия магазина
@@ -247,7 +342,6 @@ class CatRoom(QMainWindow):
         self.mywidget.storeButton_exit.clicked.connect(self.storeButton_exit_store)
         self.mywidget.storeButton_exit.resize_obj()
         self.mywidget.storeButton_exit.show()
-
 
         self.data_base = sqlite3.connect("details.db")
         self.cur = self.data_base.cursor()
@@ -270,6 +364,7 @@ class CatRoom(QMainWindow):
             self.mywidget.storeButton_exit.ycor = 8
             self.mywidget.storeButton_exit.xsize = 41
             self.mywidget.storeButton_exit.ysize = 41
+
             self.mywidget.storeButton_exit.setGeometry(self.mywidget.storeButton_exit.xcor, self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize, self.mywidget.storeButton_exit.ysize)
         if money[0] < 100:
@@ -283,10 +378,12 @@ class CatRoom(QMainWindow):
                                                        self.mywidget.storeButton_exit.ysize)
             self.mywidget.moneyLable.setGeometry(626, 7, 67, 41)
         if money[0] > 999:
+
             self.mywidget.storeButton_exit.xcor = 549
             self.mywidget.storeButton_exit.ycor = 8
             self.mywidget.storeButton_exit.xsize = 41
             self.mywidget.storeButton_exit.ysize = 41
+
             self.mywidget.storeButton_exit.setGeometry(self.mywidget.storeButton_exit.xcor,
                                                        self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize,
@@ -297,11 +394,21 @@ class CatRoom(QMainWindow):
             self.mywidget.storeButton_exit.ycor = 8
             self.mywidget.storeButton_exit.xsize = 41
             self.mywidget.storeButton_exit.ysize = 41
+
+            # self.exit_store_button_animation = QPropertyAnimation(self.mywidget.storeButton_exit, b'geometry')
+            # self.exit_store_button_animation.setDuration(1000)
+            # self.exit_store_button_animation.setStartValue(650)
+            # self.exit_store_button_animation.setEndValue(535)
+
+            # self.exit_store_button_animation.start()
+
             self.mywidget.storeButton_exit.setGeometry(self.mywidget.storeButton_exit.xcor,
                                                        self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize,
                                                        self.mywidget.storeButton_exit.ysize)
             self.mywidget.moneyLable.setGeometry(582, 7, 111, 41)
+
+
 
         #  серый фон магазина
         self.mywidget.setGeometry(83, 60, 700, 762)
