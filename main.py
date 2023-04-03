@@ -14,6 +14,21 @@ import ctypes
 myappid = 'mycompany.myproduct.subproduct.version' # arbitrary string
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
+# class MyThread(QtCore.QThread):
+#     mySignal = QtCore.pyqtSignal(int)
+#
+#     def __init__(self, *args, **kwargs):
+#         super().__init__()
+#         self.val = 0
+#
+#     def run(self):
+#         while True:
+#             if self.val > 1:
+#                 self.val = 0
+#             else:
+#                 self.val += 1  # Получаем определённые данные
+#                 self.mySignal.emit(self.val)  # Передаем данные для отображения
+#                 QtCore.QThread.msleep(1)
 class widgets(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -32,6 +47,9 @@ class widgets(QMainWindow):
         self.widget.addWidget(self.stats)
         self.widget.addWidget(self.Task)
         self.widget.addWidget(self.catRoom)
+        # self.thread = MyThread()
+        # self.thread.mySignal.connect(self.timer.money_tag)
+        # self.thread.start()
         self.InitWindow()
 
     def InitWindow(self):
@@ -67,6 +85,12 @@ class widgets(QMainWindow):
         self.timer = Timer()
         self.widget.addWidget(self.timer)
         self.widget.setCurrentIndex(0)
+        self.timer.money_tag()
+        # self.widget.update()
+        # self.update()
+        # QApplication.processEvents()
+        # self.timer.update()
+        # window.update()
     def gotoStats(self):
         print(self.widget.currentIndex())
         self.stats = Statistics()
@@ -125,7 +149,8 @@ class widgets(QMainWindow):
                 self.data_base.close()
 
 
-
 app = QtWidgets.QApplication(sys.argv)
 window = widgets()
 sys.exit(app.exec_())
+
+

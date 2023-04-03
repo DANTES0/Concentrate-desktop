@@ -15,6 +15,7 @@ class Timer(QMainWindow):
 
         self.prevSenderTag = None
         print (datetime.date.today().weekday())
+
         self.Frame_Timer()
         self.CreateTimer()
         self.choose_tag()
@@ -49,11 +50,22 @@ class Timer(QMainWindow):
         self.cur.execute("SELECT money FROM money")
         money = self.cur.fetchone()
         self.data_base.close()
-        self.moneyLable = QLabel(self)
+        self.moneyLable = QPushButton(self)
         self.moneyLable.setGeometry(600, 7, 93, 41)
-        self.moneyLable.setStyleSheet("background: #8350AA; border-radius: 20px; font-family: Inter; font:bold 24px; color: #FFFFFF; padding: 0px 2px")
-        self.moneyLable.setText(f'{str(money[0])} <a> <img src = "source/Coin.png"> </a>')
-
+        self.moneyLable.setIcon(QIcon("source/Coin.png"))
+        self.moneyLable.setLayoutDirection(Qt.RightToLeft)
+        self.moneyLable.setText(str(money[0]))
+        # self.moneyLable.setStyleSheet("background: #8350AA; border-radius: 20px; font-family: Inter; font:bold 24px; color: #FFFFFF; padding: 0 0px 0 0px;line-height: 15px;")
+        # self.moneyLable.setText(f'<p align="center" style="text-align: middle;"><h2><font size="3">{str(money[0])}</font></h2></p> <img src = "source/Coin.png" width="22" height="22" align="middle" hspace="100">')
+        # self.moneyLable.setText(f'{money[0]} <img src = "source/Coin.png" align="middle">')
+        self.moneyLable.setStyleSheet("background: #8350AA;border-radius: 20px;font-family: 'Inter'; font-style: normal; color:#ffffff; font-weight: 700; font-size: 22px; line-height: 15px; text-align: center;padding: 0px 10px 0px 5px;")
+        self.moneyLable.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        if money[0]<100:
+            self.moneyLable.setGeometry(626, 7, 67, 41)
+        if money[0]>999:
+            self.moneyLable.setGeometry(596, 7, 97, 41)
+        if money[0]>9999:
+            self.moneyLable.setGeometry(582,7,111,41)
     def choose_tag(self):
         self.labelTag = QLabel(self)
         self.labelTag.setGeometry(183,590,333,92)
@@ -299,6 +311,7 @@ class Timer(QMainWindow):
                 self.label_sport_circle.show()
                 self.label_1.show()
                 self.pic_label.show()
+                self.moneyLable.setText(str(int(money)))
 
     def start_action(self):
         if self.count != 0:
@@ -479,6 +492,13 @@ class Timer(QMainWindow):
         self.label_1.show()
         self.pic_label.show()
         self.count = 0
+        self.moneyLable.setText(str(int(money)))
+        # self.money_tag()
+        # self.update()
+        # self.moneyLable.update()
+        # self.thread = MyThread()
+        # self.thread.mySignal.connect(self.money_tag)
+        # self.thread.start()
 
     def UpdateLabel(self, value):
         self.count = value
@@ -490,3 +510,16 @@ class Timer(QMainWindow):
     def InitWindow(self):
         self.setGeometry(650, 50, 700, 762)
         self.setFixedSize(QSize(700, 762))
+
+# class MyThread(QtCore.QThread):
+#     mySignal = QtCore.pyqtSignal(int)
+#
+#     def __init__(self, *args, **kwargs):
+#         super().__init__()
+#         self.val = 0
+#
+#     def run(self):
+#         while True:
+#             self.val += 1  # Получаем определённые данные
+#             self.mySignal.emit(self.val)  # Передаем данные для отображения
+#             QtCore.QThread.msleep(1)
