@@ -120,6 +120,92 @@ class SlidingStackedWidget(QStackedWidget):
         self.widget(self.m_now).hide()
         self.widget(self.m_now).move(self.m_pnow)
         self.m_active = False
+
+class MyItem(QPushButton):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.xcor = 0
+        self.ycor = 0
+        self.xsize = 0
+        self.ysize = 0
+        self.based_text = ""
+        self.changed_text = ""
+        self.changed_style = False
+        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+
+        # Animation
+        self.zoom_factor = 1.1
+
+        self.anim = QPropertyAnimation(self, b"geometry")
+        self.anim.setEasingCurve(QEasingCurve.InOutSine)
+        self.anim.setDuration(150)
+    def enterEvent(self, event: QEvent) -> None:
+        self.resize_obj()
+        initial_rect = self.geometry()
+        final_rect = QRect(
+            0,
+            0,
+            int(initial_rect.width() * self.zoom_factor),
+            int(initial_rect.height() * self.zoom_factor),
+        )
+        final_rect.moveCenter(initial_rect.center())
+        self.anim.setStartValue(initial_rect)
+        self.anim.setEndValue(final_rect)
+        # self.setText(self.changed_text)
+        if self.changed_style == True:
+            self.setObjectName("buy_cat_button_hover")
+            self.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
+        self.anim.setDirection(QAbstractAnimation.Forward)
+        self.anim.start()
+    def leaveEvent(self, event: QEvent) -> None:
+        self.resize_obj()
+        # self.setText(self.based_text)
+        if self.changed_style == True:
+            self.setObjectName("buy_cat_button")
+            self.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
+        self.anim.setDirection(QAbstractAnimation.Backward)
+        self.anim.start()
+    def resize_obj(self):
+        self.setGeometry(self.xcor, self.ycor, self.xsize, self.ysize)
+    @pyqtProperty(int)
+    def xcor_value(self):
+        return self.xcor
+    @xcor_value.setter
+    def xcor_value(self, value):
+        self.xcor = value
+    @xcor_value.setter
+    def ycor_value(self, value):
+        self.ycor = value
+    @pyqtProperty(int)
+    def xsize_value(self):
+        return self.xsize
+    @xcor_value.setter
+    def xsize_value(self, value):
+        self.xsize = value
+    @pyqtProperty(int)
+    def ysize_value(self):
+        return self.ysize
+    @xcor_value.setter
+    def ysize_value(self, value):
+        self.ysize = value
+    @pyqtProperty(int)
+    def based_text_value(self):
+        return self.based_text
+    @xcor_value.setter
+    def based_text_value(self, value):
+        self.based_text = value
+    @pyqtProperty(int)
+    def changed_text_value(self):
+        return self.changed_text
+    @xcor_value.setter
+    def changed_text_value(self, value):
+        self.changed_text = value
+    @pyqtProperty(bool)
+    def change_style_button(self):
+        return self.changed_style
+    @xcor_value.setter
+    def change_style_button(self, value):
+        self.changed_style = value
 class widgets(QMainWindow):
     def __init__(self, parent=None):
         super(widgets, self).__init__(parent)
@@ -147,21 +233,40 @@ class widgets(QMainWindow):
         frame.setGeometry(0, 0, 700, 88)
         frame.setStyleSheet("background-color:#D8B5E9;")
 
-        TimerBtn = QPushButton('Timer', self, pressed=self.slidingStacked.slideIn1)
-        TimerBtn.setGeometry(51, 24, 127, 50)
-        TimerBtn.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
+        TimerBtn = MyItem('Timer',self, pressed=self.slidingStacked.slideIn1)
+        TimerBtn.xcor = 51
+        TimerBtn.ycor = 24
+        TimerBtn.xsize = 127
+        TimerBtn.ysize = 50
+        TimerBtn.setStyleSheet('background-color:#8350AA; border-radius: 25px;font: bold 24px; font-family: Inter; color: #ffffff')
+        TimerBtn.resize_obj()
 
-        TaskButton = QPushButton('Task', self, pressed=self.slidingStacked.slideIn2)
-        TaskButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
-        TaskButton.setGeometry(208,24,127,50)
+        TaskBtn = MyItem('Task', self, pressed=self.slidingStacked.slideIn2)
+        TaskBtn.xcor = 208
+        TaskBtn.ycor = 24
+        TaskBtn.xsize = 127
+        TaskBtn.ysize = 50
+        TaskBtn.setStyleSheet(
+            'background-color:#8350AA; border-radius: 25px;font: bold 24px; font-family: Inter; color: #ffffff')
+        TaskBtn.resize_obj()
 
-        StatisticsButton = QPushButton('Statistics', self, pressed=self.slidingStacked.slideIn3)
-        StatisticsButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
-        StatisticsButton.setGeometry(365, 24, 127, 50)
+        StatisticsButton = MyItem('Statistics', self, pressed=self.slidingStacked.slideIn3)
+        StatisticsButton.xcor = 365
+        StatisticsButton.ycor = 24
+        StatisticsButton.xsize = 127
+        StatisticsButton.ysize = 50
+        StatisticsButton.setStyleSheet(
+            'background-color:#8350AA; border-radius: 25px;font: bold 24px; font-family: Inter; color: #ffffff')
+        StatisticsButton.resize_obj()
 
-        CatRoomButton = QPushButton('Cat room', self, pressed=self.slidingStacked.slideIn4)
-        CatRoomButton.setStyleSheet("background-color:#8350AA; border-radius: 25px; font: bold 24px; font-family: Inter; color: #ffffff")
-        CatRoomButton.setGeometry(522,24,127,50)
+        CatRoomButton = MyItem('CatRoom', self, pressed=self.slidingStacked.slideIn4)
+        CatRoomButton.xcor = 522
+        CatRoomButton.ycor = 24
+        CatRoomButton.xsize = 127
+        CatRoomButton.ysize = 50
+        CatRoomButton.setStyleSheet(
+            'background-color:#8350AA; border-radius: 25px;font: bold 24px; font-family: Inter; color: #ffffff')
+        CatRoomButton.resize_obj()
 
         self.InitWindow()
 
