@@ -64,6 +64,8 @@ class Buy_cat_button(QPushButton):
     def aboba(self):
             print("Я РАБОТАЮ")
 
+
+
     def enterEvent(self, event: QEvent) -> None:
         #self.resize_obj()
         self.setGeometry(self.xcor, self.ycor, self.xsize, self.ysize)
@@ -227,42 +229,42 @@ class CatRoom(QMainWindow):
         self.mywidget.setStyleSheet("background:#D9D9D9; border-radius: 60px;")
         self.mywidget.show()
 
-        self.cat_1 = Shop_item(0, 0, "source/Sleeper.png", 5642, "Sleeper", "#456B81")
+        self.cat_1 = Shop_item(0, 0, "source/Sleeper.png", 540, "Sleeper", "#456B81")
         self.cat_1.makeParent(self.mywidget)
         self.cat_1.show()
         self.cat_1.setGeometry(30, 36, 155, 189)
 
-        self.cat_2 = Shop_item(0, 0, "source/Jokey.png", 5642, "Jokey", "#456B81")
+        self.cat_2 = Shop_item(0, 0, "source/Jokey.png", 1080, "Jokey", "#456B81")
         self.cat_2.makeParent(self.mywidget)
         self.cat_2.show()
         self.cat_2.setGeometry(194, 36, 155, 189)
 
-        self.cat_3 = Shop_item(0, 0, "source/Frisky.png", 5642, "Frisky", "#456B81")
+        self.cat_3 = Shop_item(0, 0, "source/Frisky.png", 2160, "Frisky", "#456B81")
         self.cat_3.makeParent(self.mywidget)
         self.cat_3.show()
         self.cat_3.setGeometry(358, 36, 155, 189)
 
-        self.cat_4 = Shop_item(0, 0, "source/Dreamer.png", 5642, "Dreamer", "#454781")
+        self.cat_4 = Shop_item(0, 0, "source/Dreamer.png", 5540, "Dreamer", "#454781")
         self.cat_4.makeParent(self.mywidget)
         self.cat_4.show()
         self.cat_4.setGeometry(29, 235, 155, 189)
 
-        self.cat_5 = Shop_item(0, 0, "source/Fluffy.png", 1234, "Fluffy", "#454781")
+        self.cat_5 = Shop_item(0, 0, "source/Fluffy.png", 9540, "Fluffy", "#454781")
         self.cat_5.makeParent(self.mywidget)
         self.cat_5.show()
         self.cat_5.setGeometry(194, 235, 155, 189)
 
-        self.cat_6 = Shop_item(0, 0, "source/Mr_Chief.png", 2345, "Mr.Chief", "#454781")
+        self.cat_6 = Shop_item(0, 0, "source/Mr_Chief.png", 12540, "Mr.Chief", "#454781")
         self.cat_6.makeParent(self.mywidget)
         self.cat_6.show()
         self.cat_6.setGeometry(358, 235, 155, 189)
 
-        self.cat_7 = Shop_item(0, 0, "source/Prince.png", 1000, "Prince", "#81455E")
+        self.cat_7 = Shop_item(0, 0, "source/Prince.png", 50000, "Prince", "#81455E")
         self.cat_7.makeParent(self.mywidget)
         self.cat_7.show()
         self.cat_7.setGeometry(124, 442, 155, 189)
 
-        self.cat_8 = Shop_item(0, 0, "source/Kirill.png", 5134, "Kirill", "#81455E")
+        self.cat_8 = Shop_item(0, 0, "source/Kirill.png", 99999, "Kirill", "#81455E")
         self.cat_8.makeParent(self.mywidget)
         self.cat_8.show()
         self.cat_8.setGeometry(288, 442, 155, 189)
