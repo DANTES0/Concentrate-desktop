@@ -28,6 +28,7 @@ class CatRoom(QMainWindow):
         # self.money.show()
         self.create_money()
         self.UpdateCat_Room('source/Sleeper_Room.png', 30, 360, 133, 93, 540)
+        self.timer()
         self.InitWindow()
 
     def UpdateCat_Room(self, path, xcor, ycor, xsize, ysize, cat_name):
@@ -66,6 +67,19 @@ class CatRoom(QMainWindow):
         self.mywidget.moneyLable.hide()
     def create_money(self):
         self.money = Money_lable()
+        self.money.setParent(self)
+        self.money.setGeometry(0,0,111,41)
+        self.money.setStyleSheet("background: transparent")
+        # self.money.moneyLable.setText('123')
+        # self.money.show()
+
+    def timer(self):
+        timer = QTimer(self)
+        timer.timeout.connect(self.updateMoney)
+        timer.start(100)
+    def updateMoney(self):
+        self.money.updateM()
+
     def init_Ui(self):
         #  ининициализация кнопки для входа в магазин
         self.storeButton_load = MyItem(self)
@@ -76,6 +90,7 @@ class CatRoom(QMainWindow):
         self.storeButton_load.setStyleSheet("background:#8350AA; border-radius: 10px;")
         self.storeButton_load.setIcon(QIcon('source/store_icon.svg'))
 
+        self.storeButton_load.clicked.connect(self.updateMoney)
         self.storeButton_load.clicked.connect(self.storeButton_load_store)
         self.storeButton_load.resize_obj()
         self.storeButton_load.show()
@@ -116,7 +131,13 @@ class CatRoom(QMainWindow):
         self.cur.execute("SELECT money FROM money")
         money = self.cur.fetchone()
         self.data_base.close()
-
+        #*******************
+        # self.mywidget.money = Money_lable()
+        # self.mywidget.money.setParent(self)
+        # self.mywidget.money.setGeometry(0, 0, 111, 41)
+        # self.mywidget.money.setStyleSheet("background: transparent")
+        # self.mywidget.money.show()
+        #******************************
         self.mywidget.moneyLable = QPushButton(self)
         self.mywidget.moneyLable.setGeometry(600, 7, 93, 41)
         self.mywidget.moneyLable.setIcon(QIcon("source/Coin.png"))
@@ -211,10 +232,3 @@ class CatRoom(QMainWindow):
         self.cat_8.makeParent(self.mywidget)
         self.cat_8.show()
         self.cat_8.setGeometry(288, 442, 155, 189)
-
-        time = QTimer()
-        # time.timeout.connect(self.pomoika2)
-        time.start(1000)
-
-        def pomoika2(self):
-            pass

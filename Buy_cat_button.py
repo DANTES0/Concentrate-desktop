@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from MyItem import MyItem
+from Money import Money_lable
 class Buy_cat_button(QPushButton):
     def __init__(self, price: int):
         #*args, **kwargs
@@ -39,7 +40,6 @@ class Buy_cat_button(QPushButton):
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         # temp = CatRoom()
         self.clicked.connect(self.aboba)
-        self.clicked.connect(self.button_clicked.emit)
         # Animation
         self.zoom_factor = 1.1
 
