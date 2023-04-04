@@ -267,8 +267,28 @@ class CatRoom(QMainWindow):
         self.cur.execute("SELECT money FROM money")
         self.moneyExpo = self.cur.fetchone()
         self.data_base.close()
+
+        #  тёмный прозрачный фон магазина
+        self.bg = QWidget(self)
+        self.bg.setGeometry(0, 0, 700, 762)
+        self.bg.setFixedSize(QSize(700, 762))
+        self.bg.setStyleSheet("background: rgba(0, 0, 0, 1);")
+        # self.bg.setParent(self)
+
+        eff = QGraphicsOpacityEffect(self.bg)
+        self.bg.setGraphicsEffect(eff)
+        self.bg.abba = QPropertyAnimation(eff, b"opacity")
+
+        self.bg.abba.setDuration(800)
+        self.bg.abba.setStartValue(0)
+        self.bg.abba.setEndValue(0.6)
+        self.bg.abba.setEasingCurve(QEasingCurve.OutQuart)
+
+        self.bg.hide()
+
         self.init_Ui()
         self.InitWindow()
+
 
     def MoneyUpdate(self):
         self.moneyLable.setText(str(self.moneyExpo[0]))
@@ -279,14 +299,12 @@ class CatRoom(QMainWindow):
     def storeButton_load_store(self):
         print("'Enter Store' button clicked!")
         self.storeButton_load.hide()
-        # if self.bg.isVisible()==True:
-        #     self.bg.close()
         self.load_store()
     def storeButton_exit_store(self):
         #  закрытие всех виджетов магазина
 
-        self.bg.abba.start(QPropertyAnimation.DeleteWhenStopped)
         self.bg.abba.setDirection(QAbstractAnimation.Backward)
+        self.bg.abba.start()
 
         print("'Exit Store' button clicked!")
         self.mywidget.close()
@@ -303,15 +321,6 @@ class CatRoom(QMainWindow):
         self.mywidget.storeButton_exit.close()
         self.mywidget.moneyLable.close()
 
-        # self.close_bg()
-
-    # def close_bg(self):
-        # close_bg_timer = QTimer()
-        # close_bg_timer.start(2000)
-        # while(close_bg_timer.isActive()):
-        #     pass
-        # time.sleep(2)
-        # self.bg.close()
     def init_Ui(self):
         #  ининициализация кнопки для входа в магазин
         self.storeButton_load = MyItem(self)
@@ -328,27 +337,15 @@ class CatRoom(QMainWindow):
 
     def load_store(self):
         self.storeButton_load.close()
+
+
+        self.bg.abba.setDirection(QAbstractAnimation.Forward)
+        self.bg.abba.start()
+
+        self.bg.show()
+
         #  фрейм серого фона для магазина
         self.mywidget = QFrame()
-
-        #  тёмный прозрачный фон магазина
-        self.bg = QWidget(self)
-        self.bg.setGeometry(0, 0, 700, 762)
-        self.bg.setFixedSize(QSize(700, 762))
-        self.bg.setStyleSheet("background: rgba(0, 0, 0, 1);")
-        self.bg.setParent(self)
-
-
-        eff = QGraphicsOpacityEffect(self.bg)
-        self.bg.setGraphicsEffect(eff)
-        self.bg.abba = QPropertyAnimation(eff, b"opacity")
-        self.bg.abba.setDuration(1700)
-        self.bg.abba.setStartValue(0)
-        self.bg.abba.setEndValue(0.6)
-        self.bg.abba.setEasingCurve(QEasingCurve.OutQuart)
-        self.bg.abba.start()
-        self.bg.abba.setDirection(QAbstractAnimation.Forward)
-        self.bg.show()
 
         #  кнопка закрытия магазина
         self.mywidget.storeButton_exit = MyItem(self)
