@@ -64,14 +64,14 @@ class CatRoom(QMainWindow):
         self.cat_8.close()
         self.storeButton_load.show()
         self.mywidget.storeButton_exit.hide()
-        self.mywidget.moneyLable.hide()
+        # self.mywidget.moneyLable.hide()
+        self.money.setParent(None)
     def create_money(self):
         self.money = Money_lable()
         self.money.setParent(self)
-        self.money.setGeometry(0,0,111,41)
+        self.money.setGeometry(585,7,111,41)
         self.money.setStyleSheet("background: transparent")
-        # self.money.moneyLable.setText('123')
-        # self.money.show()
+        self.money.hide()
 
     def timer(self):
         timer = QTimer(self)
@@ -95,25 +95,15 @@ class CatRoom(QMainWindow):
         self.storeButton_load.resize_obj()
         self.storeButton_load.show()
 
-    def pomoika(self):
-        while True:
-            self.data_base = sqlite3.connect("details.db")
-            self.cur = self.data_base.cursor()
-            self.cur.execute("SELECT money FROM money")
-            money = self.cur.fetchone()
-            self.data_base.close()
-            self.mywidget.moneyLable.setText(str(money[0]))
-
     def load_store(self):
         #  фрейм серого фона для магазина
         self.mywidget = QFrame()
         #  тёмный прозрачный фон магазина
-        self.bg = QFrame()
+        self.bg = QWidget(self)
         self.bg.setGeometry(0, 0, 700, 762)
         self.bg.setFixedSize(QSize(700, 762))
         self.bg.setStyleSheet("background:#000000; background: rgba(0, 0, 0, 0.6);")
         self.bg.setParent(self)
-        self.bg.show()
 
         #  кнопка закрытия магазина
         self.mywidget.storeButton_exit = MyItem(self)
@@ -131,6 +121,9 @@ class CatRoom(QMainWindow):
         self.cur.execute("SELECT money FROM money")
         money = self.cur.fetchone()
         self.data_base.close()
+        self.money.setParent(self.bg)
+        self.money.show()
+        self.bg.show()
         #*******************
         # self.mywidget.money = Money_lable()
         # self.mywidget.money.setParent(self)
@@ -138,15 +131,15 @@ class CatRoom(QMainWindow):
         # self.mywidget.money.setStyleSheet("background: transparent")
         # self.mywidget.money.show()
         #******************************
-        self.mywidget.moneyLable = QPushButton(self)
-        self.mywidget.moneyLable.setGeometry(600, 7, 93, 41)
-        self.mywidget.moneyLable.setIcon(QIcon("source/Coin.png"))
-        self.mywidget.moneyLable.setLayoutDirection(Qt.RightToLeft)
-        self.mywidget.moneyLable.setText(str(money[0]))
-        self.mywidget.moneyLable.setStyleSheet(
-            "background: #8350AA;border-radius: 20px;font-family: 'Inter'; font-style: normal; color:#ffffff; font-weight: 700; font-size: 22px; line-height: 15px; text-align: center;padding: 0px 10px 0px 5px;")
-        self.mywidget.moneyLable.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.mywidget.moneyLable.show()
+        # self.mywidget.moneyLable = QPushButton(self)
+        # self.mywidget.moneyLable.setGeometry(600, 7, 93, 41)
+        # self.mywidget.moneyLable.setIcon(QIcon("source/Coin.png"))
+        # self.mywidget.moneyLable.setLayoutDirection(Qt.RightToLeft)
+        # self.mywidget.moneyLable.setText(str(money[0]))
+        # self.mywidget.moneyLable.setStyleSheet(
+        #     "background: #8350AA;border-radius: 20px;font-family: 'Inter'; font-style: normal; color:#ffffff; font-weight: 700; font-size: 22px; line-height: 15px; text-align: center;padding: 0px 10px 0px 5px;")
+        # self.mywidget.moneyLable.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        # self.mywidget.moneyLable.show()
 
         if money[0] >= 100 and money[0] <= 999:
             self.mywidget.storeButton_exit.xcor = 555
@@ -155,6 +148,7 @@ class CatRoom(QMainWindow):
             self.mywidget.storeButton_exit.ysize = 41
             self.mywidget.storeButton_exit.setGeometry(self.mywidget.storeButton_exit.xcor, self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize, self.mywidget.storeButton_exit.ysize)
+            self.money.setGeometry(600,7,93,41)
         if money[0] < 100:
             self.mywidget.storeButton_exit.xcor = 579
             self.mywidget.storeButton_exit.ycor = 8
@@ -164,7 +158,9 @@ class CatRoom(QMainWindow):
                                                        self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize,
                                                        self.mywidget.storeButton_exit.ysize)
-            self.mywidget.moneyLable.setGeometry(626, 7, 67, 41)
+            self.money.setGeometry(626,7,111,41)
+            # self.money.setGeometry(626, 7, 111, 41)
+            # self.mywidget.moneyLable.setGeometry(626, 7, 67, 41)
         if money[0] > 999:
             self.mywidget.storeButton_exit.xcor = 549
             self.mywidget.storeButton_exit.ycor = 8
@@ -174,7 +170,8 @@ class CatRoom(QMainWindow):
                                                        self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize,
                                                        self.mywidget.storeButton_exit.ysize)
-            self.mywidget.moneyLable.setGeometry(596, 7, 97, 41)
+            # self.mywidget.moneyLable.setGeometry(596, 7, 97, 41)
+            self.money.setGeometry(596,7,97,41)
         if money[0] > 9999:
             self.mywidget.storeButton_exit.xcor = 535
             self.mywidget.storeButton_exit.ycor = 8
@@ -184,7 +181,8 @@ class CatRoom(QMainWindow):
                                                        self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize,
                                                        self.mywidget.storeButton_exit.ysize)
-            self.mywidget.moneyLable.setGeometry(582, 7, 111, 41)
+            # self.mywidget.moneyLable.setGeometry(582, 7, 111, 41)
+            self.money.setGeometry(582,7,111,41)
 
         #  серый фон магазина
         self.mywidget.setGeometry(83, 60, 700, 762)

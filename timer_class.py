@@ -6,6 +6,7 @@ from PyQt5.QtChart import *
 from PyQt5.QtCore import *
 import datetime, sqlite3
 from MyItem import MyItem
+from Money import Money_lable
 class Timer(QMainWindow):
     def __init__(self):
 
@@ -22,6 +23,7 @@ class Timer(QMainWindow):
         self.choose_tag()
         self.sqlRequest()
         self.money_tag()
+        self.Timer()
         self.InitWindow()
     def sqlRequest(self):
         self.data_base = sqlite3.connect('details.db')
@@ -51,22 +53,32 @@ class Timer(QMainWindow):
         self.cur.execute("SELECT money FROM money")
         money = self.cur.fetchone()
         self.data_base.close()
-        self.moneyLable = QPushButton(self)
-        self.moneyLable.setGeometry(600, 7, 93, 41)
-        self.moneyLable.setIcon(QIcon("source/Coin.png"))
-        self.moneyLable.setLayoutDirection(Qt.RightToLeft)
-        self.moneyLable.setText(str(money[0]))
+        self.money = Money_lable()
+        self.money.setParent(self)
+        self.money.setGeometry(600, 7, 98, 41)
+        self.money.setStyleSheet("background:transparent")
+
+    def Timer(self):
+        timer = QTimer(self)
+        timer.timeout.connect(self.updateMoney)
+        timer.start(1000)
+
+    def updateMoney(self):
+        self.money.updateM()
+        # self.money.setIcon(QIcon("source/Coin.png"))
+        # self.money.setLayoutDirection(Qt.RightToLeft)
+        # self.money.setText(str(money[0]))
         # self.moneyLable.setStyleSheet("background: #8350AA; border-radius: 20px; font-family: Inter; font:bold 24px; color: #FFFFFF; padding: 0 0px 0 0px;line-height: 15px;")
         # self.moneyLable.setText(f'<p align="center" style="text-align: middle;"><h2><font size="3">{str(money[0])}</font></h2></p> <img src = "source/Coin.png" width="22" height="22" align="middle" hspace="100">')
         # self.moneyLable.setText(f'{money[0]} <img src = "source/Coin.png" align="middle">')
-        self.moneyLable.setStyleSheet("background: #8350AA;border-radius: 20px;font-family: 'Inter'; font-style: normal; color:#ffffff; font-weight: 700; font-size: 22px; line-height: 15px; text-align: center;padding: 0px 10px 0px 5px;")
-        self.moneyLable.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        if money[0]<100:
-            self.moneyLable.setGeometry(626, 7, 67, 41)
-        if money[0]>999:
-            self.moneyLable.setGeometry(596, 7, 97, 41)
-        if money[0]>9999:
-            self.moneyLable.setGeometry(582,7,111,41)
+        # self.money.setStyleSheet("background: #8350AA;border-radius: 20px;font-family: 'Inter'; font-style: normal; color:#ffffff; font-weight: 700; font-size: 22px; line-height: 15px; text-align: center;padding: 0px 10px 0px 5px;")
+        # self.money.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        # if money[0]<100:
+        #     self.money.setGeometry(626, 7, 67, 41)
+        # if money[0]>999:
+        #     self.money.setGeometry(596, 7, 97, 41)
+        # if money[0]>9999:
+        #     self.money.setGeometry(582,7,111,41)
     def choose_tag(self):
         self.labelTag = QLabel(self)
         self.labelTag.setGeometry(183,590,333,92)
@@ -313,7 +325,7 @@ class Timer(QMainWindow):
                 self.label_sport_circle.show()
                 self.label_1.show()
                 self.pic_label.show()
-                self.moneyLable.setText(str(int(money)))
+                # self.money.setText(str(int(money)))
                 self.stop_btn.setDisabled(True)
 
     def start_action(self):
@@ -496,7 +508,7 @@ class Timer(QMainWindow):
         self.label_1.show()
         self.pic_label.show()
         self.count = 0
-        self.moneyLable.setText(str(int(money)))
+        # self.money.setText(str(int(money)))
         self.stop_btn.setDisabled(True)
         # self.money_tag()
         # self.update()

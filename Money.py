@@ -14,7 +14,7 @@ class Money_lable(QPushButton):
         money = self.cur.fetchone()
         self.data_base.close()
         self.moneyLable = QPushButton(self)
-        self.moneyLable.setGeometry(0, 0, 82, 41)
+        self.moneyLable.setGeometry(0, 0, 93, 41)
         self.moneyLable.setIcon(QIcon("source/Coin.png"))
         self.moneyLable.setLayoutDirection(Qt.RightToLeft)
         self.moneyLable.setText(str(money[0]))
@@ -29,6 +29,7 @@ class Money_lable(QPushButton):
         if money[0] > 999:
             self.moneyLable.setGeometry(0, 0, 97, 41)
             # self.moneyLable.setGeometry(0, 0, 0, 0)
+            # self.moneyLable.setGeometry(596, 7, 97, 41)
         if money[0] > 9999:
             self.moneyLable.setGeometry(0, 0, 111, 41)
             # self.moneyLable.setGeometry(0, 0, 0, 0)
