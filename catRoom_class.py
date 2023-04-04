@@ -286,9 +286,42 @@ class CatRoom(QMainWindow):
 
         self.bg.hide()
 
+        #  фрейм серого фона для магазина
+        self.mywidget = QWidget()
+
+        # eff2 = QGraphic
+        # self.bg.setGraphicsEffect(eff)
+        self.mywidget.store_slide = QPropertyAnimation(self.mywidget, b"geometry")
+        self.mywidget.store_slide.setDuration(1000)
+        self.mywidget.store_slide.setStartValue(QRect(710, 60, 564, 667))
+        self.mywidget.store_slide.setEndValue(QRect(83, 60, 564, 667))
+        self.mywidget.store_slide.setEasingCurve(QEasingCurve.OutQuint)
+
+        self.cat_1 = Shop_item(0, 0, "source/Sleeper.png", 5642, "Sleeper", "#456B81")
+        self.cat_2 = Shop_item(0, 0, "source/Jokey.png", 5642, "Jokey", "#456B81")
+        self.cat_3 = Shop_item(0, 0, "source/Frisky.png", 5642, "Frisky", "#456B81")
+        self.cat_4 = Shop_item(0, 0, "source/Dreamer.png", 5642, "Dreamer", "#454781")
+        self.cat_5 = Shop_item(0, 0, "source/Fluffy.png", 1234, "Fluffy", "#454781")
+        self.cat_6 = Shop_item(0, 0, "source/Mr_Chief.png", 2345, "Mr.Chief", "#454781")
+        self.cat_7 = Shop_item(0, 0, "source/Prince.png", 1000, "Prince", "#81455E")
+        self.cat_8 = Shop_item(0, 0, "source/Kirill.png", 5134, "Kirill", "#81455E")
+
+        self.cat_1.hide()
+        self.cat_2.hide()
+        self.cat_3.hide()
+        self.cat_4.hide()
+        self.cat_5.hide()
+        self.cat_6.hide()
+        self.cat_7.hide()
+        self.cat_8.hide()
+
+        #  кнопка закрытия магазина
+        self.mywidget.storeButton_exit = MyItem(self)
+
+
+
         self.init_Ui()
         self.InitWindow()
-
 
     def MoneyUpdate(self):
         self.moneyLable.setText(str(self.moneyExpo[0]))
@@ -302,21 +335,14 @@ class CatRoom(QMainWindow):
         self.load_store()
     def storeButton_exit_store(self):
         #  закрытие всех виджетов магазина
+        print("'Exit Store' button clicked!")
 
         self.bg.abba.setDirection(QAbstractAnimation.Backward)
         self.bg.abba.start()
 
-        print("'Exit Store' button clicked!")
-        self.mywidget.close()
-        # self.bg.close()
-        self.cat_1.close()
-        self.cat_2.close()
-        self.cat_3.close()
-        self.cat_4.close()
-        self.cat_5.close()
-        self.cat_6.close()
-        self.cat_7.close()
-        self.cat_8.close()
+        self.mywidget.store_slide.setDirection(QAbstractAnimation.Backward)
+        self.mywidget.store_slide.start()
+
         self.storeButton_load.show()
         self.mywidget.storeButton_exit.close()
         self.mywidget.moneyLable.close()
@@ -338,17 +364,10 @@ class CatRoom(QMainWindow):
     def load_store(self):
         self.storeButton_load.close()
 
-
         self.bg.abba.setDirection(QAbstractAnimation.Forward)
         self.bg.abba.start()
 
         self.bg.show()
-
-        #  фрейм серого фона для магазина
-        self.mywidget = QFrame()
-
-        #  кнопка закрытия магазина
-        self.mywidget.storeButton_exit = MyItem(self)
 
         self.mywidget.storeButton_exit.setStyleSheet("background:#8350AA; border-radius: 10px;")
         self.mywidget.storeButton_exit.setIcon(QIcon('source/store_icon.svg'))
@@ -409,64 +428,51 @@ class CatRoom(QMainWindow):
             self.mywidget.storeButton_exit.xsize = 41
             self.mywidget.storeButton_exit.ysize = 41
 
-            # self.exit_store_button_animation = QPropertyAnimation(self.mywidget.storeButton_exit, b'geometry')
-            # self.exit_store_button_animation.setDuration(1000)
-            # self.exit_store_button_animation.setStartValue(650)
-            # self.exit_store_button_animation.setEndValue(535)
-
-            # self.exit_store_button_animation.start()
-
             self.mywidget.storeButton_exit.setGeometry(self.mywidget.storeButton_exit.xcor,
                                                        self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize,
                                                        self.mywidget.storeButton_exit.ysize)
             self.mywidget.moneyLable.setGeometry(582, 7, 111, 41)
 
-
-
         #  серый фон магазина
         self.mywidget.setGeometry(83, 60, 700, 762)
         self.mywidget.setFixedSize(QSize(534, 667))
         self.mywidget.setParent(self)
         self.mywidget.setStyleSheet("background:#D9D9D9; border-radius: 60px;")
+
+        self.mywidget.store_slide.setDirection(QAbstractAnimation.Forward)
+        self.mywidget.store_slide.start()
+
         self.mywidget.show()
 
-        self.cat_1 = Shop_item(0, 0, "source/Sleeper.png", 5642, "Sleeper", "#456B81")
         self.cat_1.makeParent(self.mywidget)
         self.cat_1.show()
         self.cat_1.setGeometry(30, 36, 155, 189)
 
-        self.cat_2 = Shop_item(0, 0, "source/Jokey.png", 5642, "Jokey", "#456B81")
         self.cat_2.makeParent(self.mywidget)
         self.cat_2.show()
         self.cat_2.setGeometry(194, 36, 155, 189)
 
-        self.cat_3 = Shop_item(0, 0, "source/Frisky.png", 5642, "Frisky", "#456B81")
         self.cat_3.makeParent(self.mywidget)
         self.cat_3.show()
         self.cat_3.setGeometry(358, 36, 155, 189)
 
-        self.cat_4 = Shop_item(0, 0, "source/Dreamer.png", 5642, "Dreamer", "#454781")
         self.cat_4.makeParent(self.mywidget)
         self.cat_4.show()
         self.cat_4.setGeometry(29, 235, 155, 189)
 
-        self.cat_5 = Shop_item(0, 0, "source/Fluffy.png", 1234, "Fluffy", "#454781")
         self.cat_5.makeParent(self.mywidget)
         self.cat_5.show()
         self.cat_5.setGeometry(194, 235, 155, 189)
 
-        self.cat_6 = Shop_item(0, 0, "source/Mr_Chief.png", 2345, "Mr.Chief", "#454781")
         self.cat_6.makeParent(self.mywidget)
         self.cat_6.show()
         self.cat_6.setGeometry(358, 235, 155, 189)
 
-        self.cat_7 = Shop_item(0, 0, "source/Prince.png", 1000, "Prince", "#81455E")
         self.cat_7.makeParent(self.mywidget)
         self.cat_7.show()
         self.cat_7.setGeometry(124, 442, 155, 189)
 
-        self.cat_8 = Shop_item(0, 0, "source/Kirill.png", 5134, "Kirill", "#81455E")
         self.cat_8.makeParent(self.mywidget)
         self.cat_8.show()
         self.cat_8.setGeometry(288, 442, 155, 189)
