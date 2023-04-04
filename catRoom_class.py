@@ -113,9 +113,6 @@ class CatRoom(QMainWindow):
             self.PicLabel.setPixmap(QPixmap(path))
             self.PicLabel.setGeometry(xcor, ycor, xsize, ysize)
             self.PicLabel.setStyleSheet("background: transparent;")
-    def UpdateLable(self):
-        self.UpdateCat_Room('source/Sleeper_Room.png', 30, 360, 133, 93, 540)
-        self.UpdateCat_Room('source/Jokey_Room.png', 467, 64, 106, 105, 1080)
     def InitWindow(self):
         self.setGeometry(650, 50, 700, 762)
         self.setFixedSize(QSize(700, 762))
