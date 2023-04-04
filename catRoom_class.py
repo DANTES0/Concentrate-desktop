@@ -1,4 +1,4 @@
-import sys, random, sqlite3
+import sys, random, sqlite3, time
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -254,6 +254,7 @@ class Buy_cat_button(QPushButton):
         self.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 15px 0px 5px;")
         self.anim.setDirection(QAbstractAnimation.Backward)
         self.anim.start()
+
 class CatRoom(QMainWindow):
     def __init__(self):
         super().__init__()  # super() lets you avoid referring to the base class explicitly
@@ -278,13 +279,18 @@ class CatRoom(QMainWindow):
     def storeButton_load_store(self):
         print("'Enter Store' button clicked!")
         self.storeButton_load.hide()
+        # if self.bg.isVisible()==True:
+        #     self.bg.close()
         self.load_store()
     def storeButton_exit_store(self):
         #  закрытие всех виджетов магазина
 
+        self.bg.abba.start(QPropertyAnimation.DeleteWhenStopped)
+        self.bg.abba.setDirection(QAbstractAnimation.Backward)
+
         print("'Exit Store' button clicked!")
         self.mywidget.close()
-        self.bg.close()
+        # self.bg.close()
         self.cat_1.close()
         self.cat_2.close()
         self.cat_3.close()
@@ -294,8 +300,18 @@ class CatRoom(QMainWindow):
         self.cat_7.close()
         self.cat_8.close()
         self.storeButton_load.show()
-        self.mywidget.storeButton_exit.hide()
-        self.mywidget.moneyLable.hide()
+        self.mywidget.storeButton_exit.close()
+        self.mywidget.moneyLable.close()
+
+        # self.close_bg()
+
+    # def close_bg(self):
+        # close_bg_timer = QTimer()
+        # close_bg_timer.start(2000)
+        # while(close_bg_timer.isActive()):
+        #     pass
+        # time.sleep(2)
+        # self.bg.close()
     def init_Ui(self):
         #  ининициализация кнопки для входа в магазин
         self.storeButton_load = MyItem(self)
@@ -311,6 +327,7 @@ class CatRoom(QMainWindow):
         self.storeButton_load.show()
 
     def load_store(self):
+        self.storeButton_load.close()
         #  фрейм серого фона для магазина
         self.mywidget = QFrame()
 
@@ -322,14 +339,14 @@ class CatRoom(QMainWindow):
         self.bg.setParent(self)
 
 
-        self.bg.eff = QGraphicsOpacityEffect(self.bg)
-        self.bg.setGraphicsEffect(self.bg.eff)
-        self.bg.abba = QPropertyAnimation(self.bg.eff, b"opacity")
+        eff = QGraphicsOpacityEffect(self.bg)
+        self.bg.setGraphicsEffect(eff)
+        self.bg.abba = QPropertyAnimation(eff, b"opacity")
         self.bg.abba.setDuration(1700)
         self.bg.abba.setStartValue(0)
         self.bg.abba.setEndValue(0.6)
         self.bg.abba.setEasingCurve(QEasingCurve.OutQuart)
-        self.bg.abba.start(QPropertyAnimation.DeleteWhenStopped)
+        self.bg.abba.start()
         self.bg.abba.setDirection(QAbstractAnimation.Forward)
         self.bg.show()
 
