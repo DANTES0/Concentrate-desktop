@@ -21,18 +21,13 @@ class Money_lable(QPushButton):
         self.moneyLable.setStyleSheet(
             "background: #8350AA;border-radius: 20px;font-family: 'Inter'; font-style: normal; color:#ffffff; font-weight: 700; font-size: 22px; line-height: 15px; text-align: center;padding: 0px 10px 0px 5px;")
         self.moneyLable.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        # self.moneyLable.show()
 
         if money[0] < 100:
             self.moneyLable.setGeometry(0, 0, 67, 41)
-            # self.moneyLable.setGeometry(0, 0, 0, 0)
         if money[0] > 999:
             self.moneyLable.setGeometry(0, 0, 97, 41)
-            # self.moneyLable.setGeometry(0, 0, 0, 0)
-            # self.moneyLable.setGeometry(596, 7, 97, 41)
         if money[0] > 9999:
             self.moneyLable.setGeometry(0, 0, 111, 41)
-            # self.moneyLable.setGeometry(0, 0, 0, 0)
     def updateM(self):
         self.data_base = sqlite3.connect("details.db")
         self.cur = self.data_base.cursor()
@@ -42,10 +37,7 @@ class Money_lable(QPushButton):
         self.moneyLable.setText(str(money[0]))
         if money[0] < 100:
             self.moneyLable.setGeometry(0, 0, 67, 41)
-            # self.moneyLable.setGeometry(0, 0, 0, 0)
         if money[0] > 999:
             self.moneyLable.setGeometry(0, 0, 97, 41)
-            # self.moneyLable.setGeometry(0, 0, 0, 0)
         if money[0] > 9999:
             self.moneyLable.setGeometry(0, 0, 111, 41)
-        # self.moneyLable.setText('123')

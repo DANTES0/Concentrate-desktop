@@ -14,15 +14,7 @@ class Statistics(QMainWindow):
         self.view= QGraphicsView(self.scene)
         self.setStyleSheet("background-color: #E5DBE9")
         self.prevSender = None
-        #self.flag = True
-        # self.data_base = sqlite3.connect('details.db')
-        # self.cur = self.data_base.cursor()
-        # self.data_average = sqlite3.connect('details.db')
-        # self.curent = self.data_average.cursor()
         self.sqlRequest()
-        #self.sqlAverage()
-        print('@E@!$@!$!$@$!$$!$$~')
-        #self.cleanTable()
         self.Graph()
         self.create_donutchart(0)
         self.BackLabel()
@@ -50,18 +42,6 @@ class Statistics(QMainWindow):
             """)
         self.data_base.commit()
         self.data_base.close()
-
-    # def sqlAverage(self):
-    #     self.data_average = sqlite3.connect('details.db')
-    #     self.curent = self.data_average.cursor()
-    #     self.curent.execute("""CREATE TABLE IF NOT EXISTS average (
-    #             lastmin INT,
-    #             lastsec INT,
-    #             thismin INT,
-    #             thissec INT);
-    #     """)
-    #     self.data_average.commit()
-    #     self.data_average.close()
 
     def InitWindow(self):
         self.setGeometry(650,50,700,762)
@@ -605,32 +585,4 @@ class Statistics(QMainWindow):
         self.thuBtn.clicked.connect(self.updateChart)
         self.satBtn.clicked.connect(self.updateChart)
         self.friBtn.clicked.connect(self.updateChart)
-    # def Actions(self):
-    #     sender = self.sender()
-    #     sender.setStyleSheet("background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F")
-    #     self.prevSender.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-    #                                   "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-    #                                   "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-    #                                   )
-    #     if sender == self.monBtn:
-    #         self.create_donutchart(0)
-    #     if sender == self.tueBtn:
-    #         self.create_donutchart(1)
-    #     if sender == self.wedBtn:
-    #         self.create_donutchart(2)
-    #     if sender == self.thuBtn:
-    #         self.create_donutchart(3)
-    #     if sender == self.friBtn:
-    #         self.create_donutchart(4)
-    #     if sender == self.satBtn:
-    #         self.create_donutchart(5)
-    #     if sender == self.sunBtn:
-    #         self.create_donutchart(6)
-    #
-    #     if self.prevSender == sender:
-    #         sender.setStyleSheet(
-    #             "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-    #             "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-    #             "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
-    #             )
-    #     self.prevSender = sender
+

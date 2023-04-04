@@ -38,7 +38,6 @@ class Buy_cat_button(QPushButton):
         self.setText(str(self.price))
         self.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 15px 0px 5px;")
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        # temp = CatRoom()
         self.clicked.connect(self.aboba)
         # Animation
         self.zoom_factor = 1.1
@@ -52,11 +51,8 @@ class Buy_cat_button(QPushButton):
         self.cur.execute(f"SELECT Bought FROM Cats WHERE Cost = {self.price}")
         self.test = self.cur.fetchone()
         self.data_base.close()
-        # if self.test[0] == 1:
-        #     if self.price == 540:
-        #         self.setStyleSheet("background-color: #000000")
+
         if self.test[0] == 1:
-            # self.setStyleSheet("background-color: #000000")
             self.setText("Sold")
             self.setStyleSheet(
                 "background: #D9D9D9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 30px 0px 5px;"

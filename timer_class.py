@@ -57,6 +57,14 @@ class Timer(QMainWindow):
         self.money.setParent(self)
         self.money.setGeometry(600, 7, 98, 41)
         self.money.setStyleSheet("background:transparent")
+        if money[0] >= 100 and money[0] <= 999:
+            self.money.setGeometry(600,7,93,41)
+        if money[0] < 100:
+            self.money.setGeometry(626,7,111,41)
+        if money[0] > 999:
+            self.money.setGeometry(596,7,97,41)
+        if money[0] > 9999:
+            self.money.setGeometry(582,7,111,41)
 
     def Timer(self):
         timer = QTimer(self)

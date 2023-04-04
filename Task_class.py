@@ -20,7 +20,6 @@ class Task(QMainWindow):
         self.add_task()
         self.cat()
         self.TaskList()
-        # self.TaskAdd(self.height)
         self.InitWindow()
     def InitWindow(self):
         self.setGeometry(650,50,700,762)
@@ -66,7 +65,6 @@ class Task(QMainWindow):
         self.line += 1
         self.taskListHell.setText(self.labelTask.text())
         self.labelTask.setText('')
-        # print(self.taskListHell.objectName())
 
         self.circle = QLabel(self)
         self.circle.setGeometry(69, height + 20, 9, 9)

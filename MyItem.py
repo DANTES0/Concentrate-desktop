@@ -35,7 +35,6 @@ class MyItem(QPushButton):
         final_rect.moveCenter(initial_rect.center())
         self.anim.setStartValue(initial_rect)
         self.anim.setEndValue(final_rect)
-        # self.setText(self.changed_text)
         if self.changed_style == True:
             self.setObjectName("buy_cat_button_hover")
             self.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
