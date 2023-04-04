@@ -1,183 +1,15 @@
 import sys, random, sqlite3
-from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5 import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from MyItem import MyItem
-class Shop_item(QWidget):
-    def __init__(self, xcor: int, ycor: int, cat_image_path: str, price: int, cat_name: str, shadow_color: str):
-        super().__init__()
-        self.based = QFrame(self)
-        self.based.setGeometry(xcor, ycor, 155, 189)
-        self.based.setStyleSheet("background: #000000;")
-        self.based.shadow = QLabel(self)
-        self.based.shadow.setParent(self.based)
-        self.based.shadow.setGeometry(3, 9, 152, 180)
-        self.based.shadow.setStyleSheet(f"background: {shadow_color}; border-radius: 30px")
-        self.based.shop_item_bg = QLabel(self)
-        self.based.shop_item_bg.setParent(self.based)
-        self.based.shop_item_bg.setGeometry(0, 0, 146, 180)
-        self.based.shop_item_bg.setStyleSheet("background: #FFFFFF; border-radius: 30px")
-        self.based.shop_item_bg.cat_image = QLabel(self)
-        self.based.shop_item_bg.cat_image.setParent(self.based.shop_item_bg)
-        img = QPixmap(cat_image_path)
-        self.based.shop_item_bg.cat_image.setPixmap(img)
-        self.based.shop_item_bg.cat_image.setGeometry(1, 38, 143, 95)
-        self.based.shop_item_bg.cat_image.setStyleSheet("background: transparent;")
-        self.based.shop_item_bg.cat_image.setAlignment(Qt.AlignCenter)
-        #self.based.shop_item_bg.cat_image.move(self.based.shop_item_bg.rect().center())
-        self.based.shop_item_bg.cat_name = QLabel(self)
-        self.based.shop_item_bg.cat_name.setParent(self.based.shop_item_bg)
-        self.based.shop_item_bg.cat_name.setGeometry(0, 8, 146, 26)
-        self.based.shop_item_bg.cat_name.setText(cat_name)
-        self.based.shop_item_bg.cat_name.setObjectName("cat_name")
-        self.based.shop_item_bg.cat_name.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
-        self.based.shop_item_bg.cat_name.setAlignment(Qt.AlignCenter)
-        self.buy_cat_button = Buy_cat_button(price)
-        self.buy_cat_button.setParent(self.based.shop_item_bg)
-        self.buy_cat_button.show()
-    def makeParent(self, object: QWidget):
-        self.setParent(object)
-#
-class Buy_cat_button(QPushButton):
-    def __init__(self, price: int):
-        #*args, **kwargs
-        super().__init__()
-        self.xcor = 24
-        self.ycor = 138
-        self.xsize = 97
-        self.ysize = 31
-        self.price = price
-        self.cat_name = ''
+from Buy_cat_button import Buy_cat_button
+from Shop_item import Shop_item
+from Money import Money_lable
 
-        if self.price == 540:
-            self.cat_name = 'Sleeper'
-        if self.price == 1080:
-            self.cat_name = 'Jokey'
-        if self.price == 2160:
-            self.cat_name = 'Frisky'
-        if self.price == 5540:
-            self.cat_name = 'Dreamer'
-        if self.price == 9540:
-            self.cat_name = 'Fluffy'
-        if self.price == 12540:
-            self.cat_name = 'Mr.Chief'
-        if self.price == 50000:
-            self.cat_name = 'Prince'
-        if self.price == 99999:
-            self.cat_name = 'Kirill'
-        self.setGeometry(self.xcor, self.ycor, self.xsize, self.ysize)
-        self.setIcon(QIcon("source/Coin.png"))
-        self.setLayoutDirection(Qt.RightToLeft)
-        self.setText(str(self.price))
-        self.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 15px 0px 5px;")
-        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.clicked.connect(self.aboba)
-        # Animation
-        self.zoom_factor = 1.1
 
-        self.anim = QPropertyAnimation(self, b"geometry")
-        self.anim.setEasingCurve(QEasingCurve.InOutSine)
-        self.anim.setDuration(150)
-
-        self.data_base = sqlite3.connect('details.db')
-        self.cur = self.data_base.cursor()
-        self.cur.execute(f"SELECT Bought FROM Cats WHERE Cost = {self.price}")
-        self.test = self.cur.fetchone()
-        self.data_base.close()
-        # if self.test[0] == 1:
-        #     if self.price == 540:
-        #         self.setStyleSheet("background-color: #000000")
-        if self.test[0] == 1:
-            # self.setStyleSheet("background-color: #000000")
-            self.setText("Sold")
-            self.setStyleSheet(
-                "background: #D9D9D9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 30px 0px 5px;"
-                "color: #29002F;")
-            self.setIcon(QIcon("source"))
-            self.setEnabled(False)
-
-    def aboba(self):
-        self.data_base = sqlite3.connect('details.db')
-        self.cur = self.data_base.cursor()
-        self.cur.execute("SELECT money FROM money")
-        self.money = self.cur.fetchone()
-        self.data_base.close()
-        self.temp_price = self.money[0]
-        if self.temp_price >= self.price:
-            self.temp_price = self.temp_price - self.price
-            self.data_base = sqlite3.connect('details.db')
-            self.cur = self.data_base.cursor()
-            self.cur.execute(f"UPDATE money SET money = {self.temp_price}")
-            self.data_base.commit()
-            self.cur.execute(f"UPDATE Cats SET Bought = 1 WHERE Cost = {self.price}")
-            self.data_base.commit()
-            self.data_base.close()
-            self.setText("Sold")
-            self.setStyleSheet(
-                "background: #D9D9D9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 30px 0px 5px;"
-                "color: #29002F;")
-            self.setIcon(QIcon("source"))
-            self.setEnabled(False)
-
-        print(self.cat_name)
-        print("Я РАБОТАЮ")
-
-    def enterEvent(self, event: QEvent) -> None:
-        self.data_base = sqlite3.connect('details.db')
-        self.cur = self.data_base.cursor()
-        self.cur.execute(f"SELECT Bought FROM Cats WHERE Cost = {self.price}")
-        self.test = self.cur.fetchone()
-        self.data_base.close()
-        # self.resize_obj()
-        self.setGeometry(self.xcor, self.ycor, self.xsize, self.ysize)
-        initial_rect = self.geometry()
-        final_rect = QRect(
-            0,
-            0,
-            int(initial_rect.width() * self.zoom_factor),
-            int(initial_rect.height() * self.zoom_factor),
-        )
-        final_rect.moveCenter(initial_rect.center())
-        self.anim.setStartValue(initial_rect)
-        self.anim.setEndValue(final_rect)
-
-        if self.test[0] == 1:
-            self.setText("Sold")
-            self.setStyleSheet(
-                "background: #D9D9D9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 30px 0px 5px;"
-                "color: #29002F; text-align:center;")
-            self.setIcon(QIcon("source"))
-            self.setEnabled(False)
-            self.anim.setDirection(QAbstractAnimation.Forward)
-            self.anim.start()
-        else:
-            self.setText("BUY")
-            self.setStyleSheet("background: #5ee672; border: 1.5px dashed #29002F; border-radius: 15px; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 16px; line-height: 15px; text-align: center; padding: 0px 20px 0px 5px;")
-            self.anim.setDirection(QAbstractAnimation.Forward)
-            self.anim.start()
-    def leaveEvent(self, event: QEvent) -> None:
-        # self.resize_obj()
-        self.data_base = sqlite3.connect('details.db')
-        self.cur = self.data_base.cursor()
-        self.cur.execute(f"SELECT Bought FROM Cats WHERE Cost = {self.price}")
-        self.test = self.cur.fetchone()
-        self.data_base.close()
-        self.setGeometry(self.xcor, self.ycor, self.xsize, self.ysize)
-        if self.test[0] == 1:
-            self.setText("Sold")
-            self.setStyleSheet(
-                "background: #D9D9D9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 30px 0px 5px;"
-                "color: #29002F; text-align:center;")
-            self.setIcon(QIcon("source"))
-            self.setEnabled(False)
-            self.anim.setDirection(QAbstractAnimation.Backward)
-            self.anim.start()
-        else:
-            self.setText(str(self.price))
-            self.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 15px 0px 5px;")
-            self.anim.setDirection(QAbstractAnimation.Forward)
-            self.anim.start()
+global a
 
 class CatRoom(QMainWindow):
     def __init__(self):
@@ -192,6 +24,9 @@ class CatRoom(QMainWindow):
         self.moneyExpo = self.cur.fetchone()
         self.data_base.close()
         self.init_Ui()
+        # self.money = Money_lable()
+        # self.money.show()
+        self.create_money()
         self.UpdateCat_Room('source/Sleeper_Room.png', 30, 360, 133, 93, 540)
         self.InitWindow()
 
@@ -229,6 +64,8 @@ class CatRoom(QMainWindow):
         self.storeButton_load.show()
         self.mywidget.storeButton_exit.hide()
         self.mywidget.moneyLable.hide()
+    def create_money(self):
+        self.money = Money_lable()
     def init_Ui(self):
         #  ининициализация кнопки для входа в магазин
         self.storeButton_load = MyItem(self)
@@ -242,6 +79,15 @@ class CatRoom(QMainWindow):
         self.storeButton_load.clicked.connect(self.storeButton_load_store)
         self.storeButton_load.resize_obj()
         self.storeButton_load.show()
+
+    def pomoika(self):
+        while True:
+            self.data_base = sqlite3.connect("details.db")
+            self.cur = self.data_base.cursor()
+            self.cur.execute("SELECT money FROM money")
+            money = self.cur.fetchone()
+            self.data_base.close()
+            self.mywidget.moneyLable.setText(str(money[0]))
 
     def load_store(self):
         #  фрейм серого фона для магазина
@@ -365,3 +211,10 @@ class CatRoom(QMainWindow):
         self.cat_8.makeParent(self.mywidget)
         self.cat_8.show()
         self.cat_8.setGeometry(288, 442, 155, 189)
+
+        time = QTimer()
+        # time.timeout.connect(self.pomoika2)
+        time.start(1000)
+
+        def pomoika2(self):
+            pass
