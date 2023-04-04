@@ -1,96 +1,16 @@
 import sys, random, sqlite3
-from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5 import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from MyItem import MyItem
-class Shop_item(QWidget):
-    def __init__(self, xcor: int, ycor: int, cat_image_path: str, price: int, cat_name: str, shadow_color: str):
-        super().__init__()
-        self.based = QFrame(self)
-        self.based.setGeometry(xcor, ycor, 155, 189)
-        self.based.setStyleSheet("background: #000000;")
-        self.based.shadow = QLabel(self)
-        self.based.shadow.setParent(self.based)
-        self.based.shadow.setGeometry(3, 9, 152, 180)
-        self.based.shadow.setStyleSheet(f"background: {shadow_color}; border-radius: 30px")
-        self.based.shop_item_bg = QLabel(self)
-        self.based.shop_item_bg.setParent(self.based)
-        self.based.shop_item_bg.setGeometry(0, 0, 146, 180)
-        self.based.shop_item_bg.setStyleSheet("background: #FFFFFF; border-radius: 30px")
-        self.based.shop_item_bg.cat_image = QLabel(self)
-        self.based.shop_item_bg.cat_image.setParent(self.based.shop_item_bg)
-        img = QPixmap(cat_image_path)
-        self.based.shop_item_bg.cat_image.setPixmap(img)
-        self.based.shop_item_bg.cat_image.setGeometry(1, 38, 143, 95)
-        self.based.shop_item_bg.cat_image.setStyleSheet("background: transparent;")
-        self.based.shop_item_bg.cat_image.setAlignment(Qt.AlignCenter)
-        #self.based.shop_item_bg.cat_image.move(self.based.shop_item_bg.rect().center())
-        self.based.shop_item_bg.cat_name = QLabel(self)
-        self.based.shop_item_bg.cat_name.setParent(self.based.shop_item_bg)
-        self.based.shop_item_bg.cat_name.setGeometry(0, 8, 146, 26)
-        self.based.shop_item_bg.cat_name.setText(cat_name)
-        self.based.shop_item_bg.cat_name.setObjectName("cat_name")
-        self.based.shop_item_bg.cat_name.setStyleSheet(open('source/CatRoom_sheetstyles.qss').read())
-        self.based.shop_item_bg.cat_name.setAlignment(Qt.AlignCenter)
-        self.buy_cat_button = Buy_cat_button(price)
-        self.buy_cat_button.setParent(self.based.shop_item_bg)
-        self.buy_cat_button.show()
-    def makeParent(self, object: QWidget):
-        self.setParent(object)
-#
-class Buy_cat_button(QPushButton):
-    def __init__(self, price: int):
-        #*args, **kwargs
-        super().__init__()
-        self.xcor = 24
-        self.ycor = 138
-        self.xsize = 97
-        self.ysize = 31
-        self.price = price
-        self.setGeometry(self.xcor, self.ycor, self.xsize, self.ysize)
-        self.setIcon(QIcon("source/Coin.png"))
-        self.setLayoutDirection(Qt.RightToLeft)
-        self.setText(str(self.price))
-        self.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 15px 0px 5px;")
-        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.clicked.connect(self.aboba)
-        # Animation
-        self.zoom_factor = 1.1
-
-        self.anim = QPropertyAnimation(self, b"geometry")
-        self.anim.setEasingCurve(QEasingCurve.InOutSine)
-        self.anim.setDuration(150)
-    def aboba(self):
-            print("Я РАБОТАЮ")
+from Buy_cat_button import Buy_cat_button
+from Shop_item import Shop_item
+from Money import Money_lable
 
 
+global a
 
-    def enterEvent(self, event: QEvent) -> None:
-        #self.resize_obj()
-        self.setGeometry(self.xcor, self.ycor, self.xsize, self.ysize)
-        initial_rect = self.geometry()
-        final_rect = QRect(
-            0,
-            0,
-            int(initial_rect.width() * self.zoom_factor),
-            int(initial_rect.height() * self.zoom_factor),
-        )
-        final_rect.moveCenter(initial_rect.center())
-        self.anim.setStartValue(initial_rect)
-        self.anim.setEndValue(final_rect)
-
-        self.setText("BUY")
-        self.setStyleSheet("background: #5ee672; border: 1.5px dashed #29002F; border-radius: 15px; font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 16px; line-height: 15px; text-align: center; padding: 0px 20px 0px 5px;")
-        self.anim.setDirection(QAbstractAnimation.Forward)
-        self.anim.start()
-    def leaveEvent(self, event: QEvent) -> None:
-        #self.resize_obj()
-        self.setGeometry(self.xcor, self.ycor, self.xsize, self.ysize)
-        self.setText(str(self.price))
-        self.setStyleSheet("background: #D8B5E9; border: 1.5px dashed #29002F; border-radius: 15px;font-family: 'Inter'; font-style: normal; font-weight: 700; font-size: 15px; line-height: 15px; text-align: center;padding: 0px 15px 0px 5px;")
-        self.anim.setDirection(QAbstractAnimation.Backward)
-        self.anim.start()
 class CatRoom(QMainWindow):
     def __init__(self):
         super().__init__()  # super() lets you avoid referring to the base class explicitly
@@ -104,11 +24,98 @@ class CatRoom(QMainWindow):
         self.moneyExpo = self.cur.fetchone()
         self.data_base.close()
         self.init_Ui()
+        self.Cat_on_lable()
+        self.Bought_cat()
+        self.create_money()
+        self.timer()
         self.InitWindow()
+    def Cat_on_lable(self):
+        self.Sleeper = QLabel(self)
+        self.Sleeper.setPixmap(QPixmap('source/Sleeper_Room'))
+        self.Sleeper.setGeometry(30,360,133,93)
+        self.Sleeper.setStyleSheet("background: transparent")
+        self.Sleeper.hide()
 
-    def MoneyUpdate(self):
-        self.moneyLable.setText(str(self.moneyExpo[0]))
-        print(self.moneyExpo)
+        self.Jokey = QLabel(self)
+        self.Jokey.setPixmap(QPixmap('source/Jokey_Room'))
+        self.Jokey.setGeometry(455,130,106,105)
+        self.Jokey.setStyleSheet("background:transparent")
+        self.Jokey.hide()
+
+        self.Frisky = QLabel(self)
+        self.Frisky.setPixmap(QPixmap('source/Frisky_Room'))
+        self.Frisky.setGeometry(523, 345, 163, 102)
+        self.Frisky.setStyleSheet("background:transparent")
+        self.Frisky.hide()
+
+        self.Dreamer = QLabel(self)
+        self.Dreamer.setPixmap(QPixmap('source/Dreamer_Room'))
+        self.Dreamer.setGeometry(183, 415, 153, 101)
+        self.Dreamer.setStyleSheet("background:transparent")
+        self.Dreamer.hide()
+
+        self.Fluffy = QLabel(self)
+        self.Fluffy.setPixmap(QPixmap('source/Fluffy_Room'))
+        self.Fluffy.setGeometry(345, 217, 97, 72)
+        self.Fluffy.setStyleSheet("background:transparent")
+        self.Fluffy.hide()
+
+        self.Mr_Chief = QLabel(self)
+        self.Mr_Chief.setPixmap(QPixmap('source/Mr_Chief_Room'))
+        self.Mr_Chief.setGeometry(128, 468, 217, 134)
+        self.Mr_Chief.setStyleSheet("background:transparent")
+        self.Mr_Chief.hide()
+
+        self.Prince = QLabel(self)
+        self.Prince.setPixmap(QPixmap('source/Prince_Room'))
+        self.Prince.setGeometry(550, 540, 143, 155)
+        self.Prince.setStyleSheet("background:transparent")
+        self.Prince.hide()
+
+        self.Kirill = QLabel(self)
+        self.Kirill.setPixmap(QPixmap('source/Kirill_Room'))
+        self.Kirill.setGeometry(44, 595, 213, 133)
+        self.Kirill.setStyleSheet("background:transparent")
+        self.Kirill.hide()
+
+    def Bought_cat(self):
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
+        self.cur.execute(f'SELECT Cost, Bought FROM Cats')
+        self.test = self.cur.fetchall()
+        self.data_base.close()
+        for row in self.test:
+            if row[1] == 1 and row[0] == 540:
+                self.Sleeper.show()
+            if row[1] == 1 and row[0] == 1080:
+                self.Jokey.show()
+            if row[1] == 1 and row[0] == 2160:
+                self.Frisky.show()
+            if row[1] == 1 and row[0] == 5540:
+                self.Dreamer.show()
+            if row[1] == 1 and row[0] == 9540:
+                self.Fluffy.show()
+            if row[1] == 1 and row[0] == 12540:
+                self.Mr_Chief.show()
+            if row[1] == 1 and row[0] == 50000:
+                self.Prince.show()
+            if row[1] == 1 and row[0] == 99999:
+                self.Kirill.show()
+
+    def UpdateCat_Room(self, path, xcor, ycor, xsize, ysize, cat_name):
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
+        self.cur.execute(f'SELECT Bought FROM Cats WHERE Cost = {cat_name}')
+        self.test = self.cur.fetchone()
+        self.data_base.close()
+        if self.test[0] == 1:
+            self.PicLabel = QLabel(self)
+            self.PicLabel.setPixmap(QPixmap(path))
+            self.PicLabel.setGeometry(xcor, ycor, xsize, ysize)
+            self.PicLabel.setStyleSheet("background: transparent;")
+    def UpdateLable(self):
+        self.UpdateCat_Room('source/Sleeper_Room.png', 30, 360, 133, 93, 540)
+        self.UpdateCat_Room('source/Jokey_Room.png', 467, 64, 106, 105, 1080)
     def InitWindow(self):
         self.setGeometry(650, 50, 700, 762)
         self.setFixedSize(QSize(700, 762))
@@ -131,7 +138,42 @@ class CatRoom(QMainWindow):
         self.cat_8.close()
         self.storeButton_load.show()
         self.mywidget.storeButton_exit.hide()
-        self.mywidget.moneyLable.hide()
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
+        self.cur.execute(f'SELECT Cost, Bought FROM Cats')
+        self.test = self.cur.fetchall()
+        self.data_base.close()
+        for row in self.test:
+            if row[1] == 1 and row[0] == 540:
+                self.Sleeper.show()
+            if row[1] == 1 and row[0] == 1080:
+                self.Jokey.show()
+            if row[1] == 1 and row[0] == 2160:
+                self.Frisky.show()
+            if row[1] == 1 and row[0] == 5540:
+                self.Dreamer.show()
+            if row[1] == 1 and row[0] == 9540:
+                self.Fluffy.show()
+            if row[1] == 1 and row[0] == 12540:
+                self.Mr_Chief.show()
+            if row[1] == 1 and row[0] == 50000:
+                self.Prince.show()
+            if row[1] == 1 and row[0] == 99999:
+                self.Kirill.show()
+    def create_money(self):
+        self.money = Money_lable()
+        self.money.setParent(self)
+        self.money.setGeometry(585,7,111,41)
+        self.money.setStyleSheet("background: transparent")
+        self.money.hide()
+
+    def timer(self):
+        timer = QTimer(self)
+        timer.timeout.connect(self.updateMoney)
+        timer.start(100)
+    def updateMoney(self):
+        self.money.updateM()
+
     def init_Ui(self):
         #  ининициализация кнопки для входа в магазин
         self.storeButton_load = MyItem(self)
@@ -150,12 +192,11 @@ class CatRoom(QMainWindow):
         #  фрейм серого фона для магазина
         self.mywidget = QFrame()
         #  тёмный прозрачный фон магазина
-        self.bg = QFrame()
+        self.bg = QWidget(self)
         self.bg.setGeometry(0, 0, 700, 762)
         self.bg.setFixedSize(QSize(700, 762))
         self.bg.setStyleSheet("background:#000000; background: rgba(0, 0, 0, 0.6);")
         self.bg.setParent(self)
-        self.bg.show()
 
         #  кнопка закрытия магазина
         self.mywidget.storeButton_exit = MyItem(self)
@@ -167,22 +208,14 @@ class CatRoom(QMainWindow):
         self.mywidget.storeButton_exit.resize_obj()
         self.mywidget.storeButton_exit.show()
 
-
         self.data_base = sqlite3.connect("details.db")
         self.cur = self.data_base.cursor()
         self.cur.execute("SELECT money FROM money")
         money = self.cur.fetchone()
         self.data_base.close()
-
-        self.mywidget.moneyLable = QPushButton(self)
-        self.mywidget.moneyLable.setGeometry(600, 7, 93, 41)
-        self.mywidget.moneyLable.setIcon(QIcon("source/Coin.png"))
-        self.mywidget.moneyLable.setLayoutDirection(Qt.RightToLeft)
-        self.mywidget.moneyLable.setText(str(money[0]))
-        self.mywidget.moneyLable.setStyleSheet(
-            "background: #8350AA;border-radius: 20px;font-family: 'Inter'; font-style: normal; color:#ffffff; font-weight: 700; font-size: 22px; line-height: 15px; text-align: center;padding: 0px 10px 0px 5px;")
-        self.mywidget.moneyLable.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.mywidget.moneyLable.show()
+        self.money.setParent(self.bg)
+        self.money.show()
+        self.bg.show()
 
         if money[0] >= 100 and money[0] <= 999:
             self.mywidget.storeButton_exit.xcor = 555
@@ -191,6 +224,7 @@ class CatRoom(QMainWindow):
             self.mywidget.storeButton_exit.ysize = 41
             self.mywidget.storeButton_exit.setGeometry(self.mywidget.storeButton_exit.xcor, self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize, self.mywidget.storeButton_exit.ysize)
+            self.money.setGeometry(600,7,93,41)
         if money[0] < 100:
             self.mywidget.storeButton_exit.xcor = 579
             self.mywidget.storeButton_exit.ycor = 8
@@ -200,7 +234,7 @@ class CatRoom(QMainWindow):
                                                        self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize,
                                                        self.mywidget.storeButton_exit.ysize)
-            self.mywidget.moneyLable.setGeometry(626, 7, 67, 41)
+            self.money.setGeometry(626,7,111,41)
         if money[0] > 999:
             self.mywidget.storeButton_exit.xcor = 549
             self.mywidget.storeButton_exit.ycor = 8
@@ -210,7 +244,7 @@ class CatRoom(QMainWindow):
                                                        self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize,
                                                        self.mywidget.storeButton_exit.ysize)
-            self.mywidget.moneyLable.setGeometry(596, 7, 97, 41)
+            self.money.setGeometry(596,7,97,41)
         if money[0] > 9999:
             self.mywidget.storeButton_exit.xcor = 535
             self.mywidget.storeButton_exit.ycor = 8
@@ -220,7 +254,7 @@ class CatRoom(QMainWindow):
                                                        self.mywidget.storeButton_exit.ycor,
                                                        self.mywidget.storeButton_exit.xsize,
                                                        self.mywidget.storeButton_exit.ysize)
-            self.mywidget.moneyLable.setGeometry(582, 7, 111, 41)
+            self.money.setGeometry(582,7,111,41)
 
         #  серый фон магазина
         self.mywidget.setGeometry(83, 60, 700, 762)

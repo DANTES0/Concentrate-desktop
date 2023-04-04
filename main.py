@@ -184,7 +184,6 @@ class widgets(QMainWindow):
         CatRoomButton.setStyleSheet(
             'background-color:#8350AA; border-radius: 25px;font: bold 24px; font-family: Inter; color: #ffffff')
         CatRoomButton.resize_obj()
-
         self.InitWindow()
 
     def InitWindow(self):
