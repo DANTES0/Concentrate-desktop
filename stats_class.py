@@ -51,7 +51,7 @@ class Statistics(QMainWindow):
         pixmap = QPixmap('source/Cat_1.png')
         self.backLabel.setPixmap(pixmap)
         self.backLabel.setStyleSheet("background-color: transparent")
-        self.backLabel.setGeometry(390,520,100,100)
+        self.backLabel.setGeometry(380,520,100,100)
 
         ConcentrationLabel = QLabel("Concentration time", self)
         ConcentrationLabel.setGeometry(83,13,227,29)
@@ -467,6 +467,47 @@ class Statistics(QMainWindow):
         self.chartview.setGeometry(0,0, 580, 318)
         self.chartview.move(60, 410)
         self.chartview.setRenderHint(QPainter.Antialiasing)
+        self.chartview.update()
+
+    def UpdateFullStats(self):
+        self.updateGraph()
+        week = datetime.date.today().weekday()
+        print(week)
+        self.series.clear()
+        sum_work = 0
+        sum_sport = 0
+        sum_other = 0
+        sum_study = 0
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
+        self.cur.execute("SELECT week, tag, time FROM stats")
+        res = self.cur.fetchall()
+        for row in res:
+            if row[0] == week:
+                if row[1] == 'work':
+                    sum_work = sum_work + row[2]
+                if row[1] == 'study':
+                    sum_study = sum_study + row[2]
+                if row[1] == 'other':
+                    sum_other = sum_other + row[2]
+                if row[1] == 'sport':
+                    sum_sport = sum_sport + row[2]
+        self.data_base.close()
+        #     print(row[0], row[1], row[2])
+        minute_work, seconds_work = divmod(sum_work, 60)
+        minute_study, seconds_study = divmod(sum_study, 60)
+        minute_sport, seconds_sport = divmod(sum_sport, 60)
+        minute_other, seconds_other = divmod(sum_other, 60)
+
+        self.series.append(f'<b><font color="#FA7F9D">Sport {minute_sport}m {seconds_sport}s</font></b>',
+                           sum_sport).setColor(QtGui.QColor("#FA7F9D"))
+        self.series.append(f'<b><font color="#97ACF9">Work {minute_work}m {seconds_work}s</font></b>',
+                           sum_work).setColor(QtGui.QColor("#97ACF9"))
+        self.series.append(f'<b><font color="#FADA7F">Study {minute_study}m {seconds_study}s</font></b>',
+                           sum_study).setColor(QtGui.QColor("#FADA7F"))
+        self.series.append(f'<b><font color="#8CFA9C">Other {minute_other}m {seconds_other}s</font></b>',
+                           sum_other).setColor(QtGui.QColor("#8CFA9C"))
+        self.series.setHoleSize(0.4)
         self.chartview.update()
 
     def updateChart(self):

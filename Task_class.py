@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtChart import *
 from PyQt5.QtCore import *
+from MyItem import MyItem
 
 class Task(QMainWindow):
 
@@ -30,18 +31,26 @@ class Task(QMainWindow):
         self.labelTask.setStyleSheet("background: #ffffff; border-radius: 25px;padding: 0px 45px; font-family:Inter; font:24px; font-weight:bold;")
         self.labelTask.setPlaceholderText(" Add new task")
 
-        self.labelPlus = QPushButton(self)
-        self.labelPlus.setGeometry(61, 218, 29, 29)
+        # self.labelPlus = QPushButton(self)
+        # self.labelPlus.setGeometry(61, 218, 29, 29)
+        # self.labelPlus.setStyleSheet("background: #F6F0B7; border-radius: 14px;")
+        self.labelPlus = MyItem('', self)
+        self.labelPlus.xcor = 61
+        self.labelPlus.ycor = 218
+        self.labelPlus.xsize = 29
+        self.labelPlus.ysize = 29
         self.labelPlus.setStyleSheet("background: #F6F0B7; border-radius: 14px;")
+        self.labelPlus.resize_obj()
         pixmap = QPixmap('source/plus.png')
         Icon = QIcon(pixmap)
         self.labelPlus.setIcon(Icon)
         self.labelPlus.clicked.connect(self.action)
 
     def action(self):
-        if self.line != 18:
-            self.height = self.height+57
-            self.TaskAdd(self.height)
+        if self.labelTask.text()!='':
+            if self.line != 18:
+                self.height = self.height+57
+                self.TaskAdd(self.height)
 
 
     def cat(self):

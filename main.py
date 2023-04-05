@@ -172,6 +172,7 @@ class widgets(QMainWindow):
         StatisticsButton.ycor = 24
         StatisticsButton.xsize = 127
         StatisticsButton.ysize = 50
+        StatisticsButton.clicked.connect(self.stats.UpdateFullStats)
         StatisticsButton.setStyleSheet(
             'background-color:#8350AA; border-radius: 25px;font: bold 24px; font-family: Inter; color: #ffffff')
         StatisticsButton.resize_obj()

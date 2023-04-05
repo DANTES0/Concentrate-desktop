@@ -23,8 +23,65 @@ class CatRoom(QMainWindow):
         self.cur.execute("SELECT money FROM money")
         self.moneyExpo = self.cur.fetchone()
         self.data_base.close()
-        self.init_Ui()
+
+        #self.init_Ui()
         self.Cat_on_lable()
+
+        #  тёмный прозрачный фон магазина
+        self.bg = QWidget(self)
+        self.bg.setGeometry(0, 0, 700, 762)
+        self.bg.setFixedSize(QSize(700, 762))
+        self.bg.setStyleSheet("background:#000000; background: rgba(0, 0, 0, 0.6);")
+
+        eff = QGraphicsOpacityEffect(self.bg)
+        self.bg.setGraphicsEffect(eff)
+        self.bg.abba = QPropertyAnimation(eff, b"opacity")
+
+        self.bg.abba.setDuration(800)
+        self.bg.abba.setStartValue(0)
+        self.bg.abba.setEndValue(0.6)
+        self.bg.abba.setEasingCurve(QEasingCurve.OutQuart)
+
+        self.bg.hide()
+
+        #  фрейм серого фона для магазина
+        self.mywidget = QFrame()
+
+        self.mywidget.store_slide = QPropertyAnimation(self.mywidget, b"geometry")
+        self.mywidget.store_slide.setDuration(1000)
+        self.mywidget.store_slide.setStartValue(QRect(710, 60, 564, 667))
+        self.mywidget.store_slide.setEndValue(QRect(83, 60, 564, 667))
+        self.mywidget.store_slide.setEasingCurve(QEasingCurve.OutQuint)
+
+        self.cat_1 = Shop_item(0, 0, "source/Sleeper.png", 540, "Sleeper", "#456B81")
+        self.cat_2 = Shop_item(0, 0, "source/Jokey.png", 1080, "Jokey", "#456B81")
+        self.cat_3 = Shop_item(0, 0, "source/Frisky.png", 2160, "Frisky", "#456B81")
+        self.cat_4 = Shop_item(0, 0, "source/Dreamer.png", 5540, "Dreamer", "#454781")
+        self.cat_5 = Shop_item(0, 0, "source/Fluffy.png", 9540, "Fluffy", "#454781")
+        self.cat_6 = Shop_item(0, 0, "source/Mr_Chief.png", 12540, "Mr.Chief", "#454781")
+        self.cat_7 = Shop_item(0, 0, "source/Prince.png", 50000, "Prince", "#81455E")
+        self.cat_8 = Shop_item(0, 0, "source/Kirill.png", 99999, "Kirill", "#81455E")
+
+        self.cat_1.hide()
+        self.cat_2.hide()
+        self.cat_3.hide()
+        self.cat_4.hide()
+        self.cat_5.hide()
+        self.cat_6.hide()
+        self.cat_7.hide()
+        self.cat_8.hide()
+
+        self.storeButton_load = MyItem(self)
+        self.storeButton_load.xcor = 650
+        self.storeButton_load.ycor = 8
+        self.storeButton_load.xsize = 41
+        self.storeButton_load.ysize = 41
+        self.storeButton_load.setStyleSheet("background:#8350AA; border-radius: 10px;")
+        self.storeButton_load.setIcon(QIcon('source/store_icon.svg'))
+
+        self.storeButton_load.clicked.connect(self.storeButton_load_store)
+        self.storeButton_load.resize_obj()
+
         self.Bought_cat()
         self.create_money()
         self.timer()
@@ -101,7 +158,6 @@ class CatRoom(QMainWindow):
                 self.Prince.show()
             if row[1] == 1 and row[0] == 99999:
                 self.Kirill.show()
-
     def UpdateCat_Room(self, path, xcor, ycor, xsize, ysize, cat_name):
         self.data_base = sqlite3.connect('details.db')
         self.cur = self.data_base.cursor()
@@ -123,17 +179,21 @@ class CatRoom(QMainWindow):
     def storeButton_exit_store(self):
         #  закрытие всех виджетов магазина
         print("'Exit Store' button clicked!")
-        self.mywidget.close()
-        self.bg.close()
-        self.cat_1.close()
-        self.cat_2.close()
-        self.cat_3.close()
-        self.cat_4.close()
-        self.cat_5.close()
-        self.cat_6.close()
-        self.cat_7.close()
-        self.cat_8.close()
+
+        self.bg.abba.setDirection(QAbstractAnimation.Backward)
+        self.bg.abba.start()
+
+        self.mywidget.store_slide.setDirection(QAbstractAnimation.Backward)
+        self.mywidget.store_slide.start()
+
+        # self.mywidget.storeButton_exit.slide_store_button.setDirection(QAbstractAnimation.Backward)
+        # self.mywidget.storeButton_exit.slide_store_button.start()
+
+        self.money.hide()
+        #self.money.setGeometry(0,0,0,0)
+
         self.storeButton_load.show()
+
         self.mywidget.storeButton_exit.hide()
         self.data_base = sqlite3.connect('details.db')
         self.cur = self.data_base.cursor()
@@ -186,18 +246,15 @@ class CatRoom(QMainWindow):
         self.storeButton_load.show()
 
     def load_store(self):
-        #  фрейм серого фона для магазина
-        self.mywidget = QFrame()
-        #  тёмный прозрачный фон магазина
-        self.bg = QWidget(self)
-        self.bg.setGeometry(0, 0, 700, 762)
-        self.bg.setFixedSize(QSize(700, 762))
-        self.bg.setStyleSheet("background:#000000; background: rgba(0, 0, 0, 0.6);")
-        self.bg.setParent(self)
+        #self.storeButton_load.close()
+
+        self.bg.abba.setDirection(QAbstractAnimation.Forward)
+        self.bg.abba.start()
+
+        self.bg.show()
 
         #  кнопка закрытия магазина
         self.mywidget.storeButton_exit = MyItem(self)
-
         self.mywidget.storeButton_exit.setStyleSheet("background:#8350AA; border-radius: 10px;")
         self.mywidget.storeButton_exit.setIcon(QIcon('source/store_icon.svg'))
 
@@ -210,9 +267,8 @@ class CatRoom(QMainWindow):
         self.cur.execute("SELECT money FROM money")
         money = self.cur.fetchone()
         self.data_base.close()
-        self.money.setParent(self.bg)
+        self.money.setParent(self)
         self.money.show()
-        self.bg.show()
 
         if money[0] >= 100 and money[0] <= 999:
             self.mywidget.storeButton_exit.xcor = 555
@@ -258,44 +314,40 @@ class CatRoom(QMainWindow):
         self.mywidget.setFixedSize(QSize(534, 667))
         self.mywidget.setParent(self)
         self.mywidget.setStyleSheet("background:#D9D9D9; border-radius: 60px;")
+
+        self.mywidget.store_slide.setDirection(QAbstractAnimation.Forward)
+        self.mywidget.store_slide.start()
+
         self.mywidget.show()
 
-        self.cat_1 = Shop_item(0, 0, "source/Sleeper.png", 540, "Sleeper", "#456B81")
         self.cat_1.makeParent(self.mywidget)
         self.cat_1.show()
         self.cat_1.setGeometry(30, 36, 155, 189)
 
-        self.cat_2 = Shop_item(0, 0, "source/Jokey.png", 1080, "Jokey", "#456B81")
         self.cat_2.makeParent(self.mywidget)
         self.cat_2.show()
         self.cat_2.setGeometry(194, 36, 155, 189)
 
-        self.cat_3 = Shop_item(0, 0, "source/Frisky.png", 2160, "Frisky", "#456B81")
         self.cat_3.makeParent(self.mywidget)
         self.cat_3.show()
         self.cat_3.setGeometry(358, 36, 155, 189)
 
-        self.cat_4 = Shop_item(0, 0, "source/Dreamer.png", 5540, "Dreamer", "#454781")
         self.cat_4.makeParent(self.mywidget)
         self.cat_4.show()
         self.cat_4.setGeometry(29, 235, 155, 189)
 
-        self.cat_5 = Shop_item(0, 0, "source/Fluffy.png", 9540, "Fluffy", "#454781")
         self.cat_5.makeParent(self.mywidget)
         self.cat_5.show()
         self.cat_5.setGeometry(194, 235, 155, 189)
 
-        self.cat_6 = Shop_item(0, 0, "source/Mr_Chief.png", 12540, "Mr.Chief", "#454781")
         self.cat_6.makeParent(self.mywidget)
         self.cat_6.show()
         self.cat_6.setGeometry(358, 235, 155, 189)
 
-        self.cat_7 = Shop_item(0, 0, "source/Prince.png", 50000, "Prince", "#81455E")
         self.cat_7.makeParent(self.mywidget)
         self.cat_7.show()
         self.cat_7.setGeometry(124, 442, 155, 189)
 
-        self.cat_8 = Shop_item(0, 0, "source/Kirill.png", 99999, "Kirill", "#81455E")
         self.cat_8.makeParent(self.mywidget)
         self.cat_8.show()
         self.cat_8.setGeometry(288, 442, 155, 189)

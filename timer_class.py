@@ -1,5 +1,6 @@
 import sys, random
 from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5.QtMultimedia import QSound
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtChart import *
@@ -60,7 +61,7 @@ class Timer(QMainWindow):
         if money[0] >= 100 and money[0] <= 999:
             self.money.setGeometry(600,7,93,41)
         if money[0] < 100:
-            self.money.setGeometry(626,7,111,41)
+            self.money.setGeometry(626,7,67,41)
         if money[0] > 999:
             self.money.setGeometry(596,7,97,41)
         if money[0] > 9999:
@@ -215,9 +216,11 @@ class Timer(QMainWindow):
         self.lableTimer.setStyleSheet("color:#8350AA; font-family: Inter; font-weight:bold;")
         self.lableTimer.setGeometry(298, 358, 115, 36)
 
+        self.start_sound = QSound('source/1.wav', self)
         self.start_btn = QPushButton("Start", self)
         self.start_btn.setGeometry(208, 500, 127, 50)
         self.start_btn.clicked.connect(self.start_action)
+        self.start_btn.clicked.connect(self.start_sound.play)
         self.start_btn.setStyleSheet("border-radius: 25px; background-color:#9CC152; color:#ffffff; "
                                      "font-family:Inter; font:24px; font-weight:bold;")
 
