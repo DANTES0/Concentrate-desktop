@@ -5,6 +5,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from MyItem import MyItem
 from Money import Money_lable
+from PyQt5.QtMultimedia import QSound
 class Buy_cat_button(QPushButton):
     def __init__(self, price: int):
         #*args, **kwargs
@@ -82,15 +83,18 @@ class Buy_cat_button(QPushButton):
                 "color: #29002F;")
             self.setIcon(QIcon("source"))
             self.setEnabled(False)
-            self.moneyLable = QPushButton(self)
-            self.moneyLable.setGeometry(600, 7, 93, 41)
-            self.moneyLable.setIcon(QIcon("source/Coin.png"))
-            self.moneyLable.setLayoutDirection(Qt.RightToLeft)
-            self.moneyLable.setText(str(self.money[0]))
-            self.moneyLable.setStyleSheet(
-                "background: #8350AA;border-radius: 20px;font-family: 'Inter'; font-style: normal; color:#ffffff; font-weight: 700; font-size: 22px; line-height: 15px; text-align: center;padding: 0px 10px 0px 5px;")
-            self.moneyLable.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-            self.moneyLable.show()
+            if self.price == 99999:
+                QSound('source/buy_kirill.wav', self).play()
+
+            # self.moneyLable = QPushButton(self)
+            # self.moneyLable.setGeometry(600, 7, 93, 41)
+            # self.moneyLable.setIcon(QIcon("source/Coin.png"))
+            # self.moneyLable.setLayoutDirection(Qt.RightToLeft)
+            # self.moneyLable.setText(str(self.money[0]))
+            # self.moneyLable.setStyleSheet(
+            #     "background: #8350AA;border-radius: 20px;font-family: 'Inter'; font-style: normal; color:#ffffff; font-weight: 700; font-size: 22px; line-height: 15px; text-align: center;padding: 0px 10px 0px 5px;")
+            # self.moneyLable.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+            # self.moneyLable.show()
 
 
         print(self.cat_name)

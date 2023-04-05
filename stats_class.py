@@ -583,9 +583,12 @@ class Statistics(QMainWindow):
         frame.setGeometry(66,370,568,36)
         frame.setStyleSheet("background-color:#A597AB; border-radius: 10px")
 
+        week = datetime.date.today().weekday()
+
+
         self.monBtn = QPushButton('mon', self)
         self.monBtn.setGeometry(73,374,79,28)
-        self.monBtn.setStyleSheet("QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+        self.monBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
                              "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
                              "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
         self.tueBtn = QPushButton('tue', self)
@@ -618,7 +621,6 @@ class Statistics(QMainWindow):
         self.sunBtn.setStyleSheet("QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
                                   "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
                                   "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
-        self.prevSender = self.monBtn
         self.sunBtn.clicked.connect(self.updateChart)
         self.monBtn.clicked.connect(self.updateChart)
         self.tueBtn.clicked.connect(self.updateChart)
@@ -626,4 +628,45 @@ class Statistics(QMainWindow):
         self.thuBtn.clicked.connect(self.updateChart)
         self.satBtn.clicked.connect(self.updateChart)
         self.friBtn.clicked.connect(self.updateChart)
-
+        if week == 0:
+            self.monBtn.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+            self.prevSender = self.monBtn
+        if week == 1:
+            self.tueBtn.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+            self.prevSender = self.tueBtn
+        if week == 2:
+            self.wedBtn.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+            self.prevSender = self.wedBtn
+        if week == 3:
+            self.thuBtn.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+            self.prevSender = self.thuBtn
+        if week == 4:
+            self.friBtn.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+            self.prevSender = self.friBtn
+        if week == 5:
+            self.satBtn.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+            self.prevSender = self.satBtn
+        if week == 6:
+            self.sunBtn.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+            self.prevSender = self.sunBtn
