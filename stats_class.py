@@ -179,7 +179,7 @@ class Statistics(QMainWindow):
             times = self.cur.fetchall()
             for time in times:
                 averges += time[0]
-            averges /= 7
+            averges /= datetime.date.today().weekday()+1
             self.data_base.close()
             aver_min = 0
             aver_sec = 0
@@ -347,7 +347,7 @@ class Statistics(QMainWindow):
         times = self.cur.fetchall()
         for time in times:
             averges += time[0]
-        averges /= 7
+        averges /= datetime.date.today().weekday()+1
         self.data_base.close()
         aver_min, aver_sec = divmod(averges, 60)
 
