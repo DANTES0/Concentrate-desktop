@@ -86,6 +86,13 @@ class Statistics(QMainWindow):
         sum_studyFri = 0
         sum_studySat = 0
         sum_studySun = 0
+        sum_Mon = 0
+        sum_Tue = 0
+        sum_Wed = 0
+        sum_Thu = 0
+        sum_Fri = 0
+        sum_Sat = 0
+        sum_Sun = 0
         self.data_base = sqlite3.connect('details.db')
         self.cur = self.data_base.cursor()
         self.cur.execute("SELECT week, tag, time FROM stats")
@@ -154,70 +161,88 @@ class Statistics(QMainWindow):
             if row[1] == 'sport' and row[0] == 6:
                 sum_sportSun = sum_sportSun + row[2]
 
-            self.data_base.close()
+        self.data_base.close()
+        sum_Mon = sum_sportM + sum_studyM + sum_otherM + sum_workM
+        sum_Tue = sum_sportTue + sum_studyTue + sum_otherTue + sum_workTue
+        sum_Wed = sum_sportWed + sum_studyWed + sum_otherWed + sum_workTue
+        sum_Thu = sum_sportThu + sum_studyThu + sum_otherThu + sum_workThu
+        sum_Fri = sum_sportFri + sum_studyFri + sum_otherFri + sum_workFri
+        sum_Sat = sum_sportSat + sum_studySat + sum_otherSat + sum_workSat
+        sum_Sun = sum_sportSun + sum_studySun + sum_otherSun + sum_workSun
+        MaxSum = max(sum_Mon, sum_Tue, sum_Wed, sum_Thu, sum_Fri, sum_Sat, sum_Sun)
+        self.chartG.removeSeries(self.seriesG)
 
-            self.chartG.removeSeries(self.seriesG)
+        set1 = QBarSet('<b><font color="#FA7F9D">Sport</font></b>')
+        set2 = QBarSet('<b><font color="#97ACF9">Work</font></b>')
+        set3 = QBarSet('<b><font color="#FADA7F">Study</font></b>')
+        set4 = QBarSet('<b><font color="#8CFA9C">Other</font></b>')
 
-            set1 = QBarSet('<b><font color="#FA7F9D">Sport</font></b>')
-            set2 = QBarSet('<b><font color="#97ACF9">Work</font></b>')
-            set3 = QBarSet('<b><font color="#FADA7F">Study</font></b>')
-            set4 = QBarSet('<b><font color="#8CFA9C">Other</font></b>')
+        self.seriesG.clear()
+        set1.append([sum_sportM, sum_sportTue, sum_sportWed, sum_sportThu, sum_sportFri, sum_sportSat, sum_sportSun])
+        set2.append([sum_workM, sum_workTue, sum_workWed, sum_workThu, sum_workFri, sum_workSat, sum_workSun])
+        set3.append([sum_studyM, sum_studyTue, sum_studyWed, sum_studyThu, sum_studyFri, sum_studySat, sum_studySun])
+        set4.append([sum_otherM, sum_otherTue, sum_otherWed, sum_otherThu, sum_otherFri, sum_otherSat, sum_otherSun])
+        set1.setColor(QtGui.QColor("#FA7F9D"))
+        set2.setColor(QtGui.QColor("#97ACF9"))
+        set3.setColor(QtGui.QColor("#FADA7F"))
+        set4.setColor(QtGui.QColor("#8CFA9C"))
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
+        self.cur.execute("SELECT time FROM stats")
+        averges = 0
+        times = self.cur.fetchall()
+        for time in times:
+            averges += time[0]
+        averges /= datetime.date.today().weekday()+1
+        self.data_base.close()
+        aver_min = 0
+        aver_sec = 0
+        aver_min, aver_sec = divmod(averges, 60)
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
+        self.cur.execute("SELECT lastmin, lastsec FROM average")
+        lasts = self.cur.fetchone()
+        self.data_base.close()
+        numbertwo = (aver_min * 60) + aver_sec
+        numberone = (lasts[0] * 60) + lasts[1]
+        try:
+            procent = ((numberone * 100) / numbertwo) - 100
+        except ZeroDivisionError:
+            procent = 0
+        self.data_base = sqlite3.connect('details.db')
+        self.cur = self.data_base.cursor()
+        self.cur.execute(f'UPDATE average SET thismin = {int(aver_min)}, thissec = {int(aver_sec)}')
+        self.data_base.commit()
+        self.data_base.close()
+        procent = procent*-1
+        if (procent < 0):
+            self.chartG.setTitle(
+                f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤ<img src="source/down_arrow.png"> {int(procent * -1)} % from last week</font></b>'
+                f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
+        else:
+            self.chartG.setTitle(
+                f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤ<img src="source/up_arrow.png"> {int(procent)} % from last week</font></b>'
+                f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
 
-            self.seriesG.clear()
-            set1.append([sum_sportM, sum_sportTue, sum_sportWed, sum_sportThu, sum_sportFri, sum_sportSat, sum_sportSun])
-            set2.append([sum_workM, sum_workTue, sum_workWed, sum_workThu, sum_workFri, sum_workSat, sum_workSun])
-            set3.append([sum_studyM, sum_studyTue, sum_studyWed, sum_studyThu, sum_studyFri, sum_studySat, sum_studySun])
-            set4.append([sum_otherM, sum_otherTue, sum_otherWed, sum_otherThu, sum_otherFri, sum_otherSat, sum_otherSun])
-            set1.setColor(QtGui.QColor("#FA7F9D"))
-            set2.setColor(QtGui.QColor("#97ACF9"))
-            set3.setColor(QtGui.QColor("#FADA7F"))
-            set4.setColor(QtGui.QColor("#8CFA9C"))
-            self.data_base = sqlite3.connect('details.db')
-            self.cur = self.data_base.cursor()
-            self.cur.execute("SELECT time FROM stats")
-            averges = 0
-            times = self.cur.fetchall()
-            for time in times:
-                averges += time[0]
-            averges /= 7
-            self.data_base.close()
-            aver_min = 0
-            aver_sec = 0
-            aver_min, aver_sec = divmod(averges, 60)
-            self.data_base = sqlite3.connect('details.db')
-            self.cur = self.data_base.cursor()
-            self.cur.execute("SELECT lastmin, lastsec FROM average")
-            lasts = self.cur.fetchone()
-            self.data_base.close()
-            numbertwo = (aver_min * 60) + aver_sec
-            numberone = (lasts[0] * 60) + lasts[1]
-            try:
-                procent = ((numberone * 100) / numbertwo) - 100
-            except ZeroDivisionError:
-                procent = 0
-            self.data_base = sqlite3.connect('details.db')
-            self.cur = self.data_base.cursor()
-            self.cur.execute(f'UPDATE average SET thismin = {int(aver_min)}, thissec = {int(aver_sec)}')
-            self.data_base.commit()
-            self.data_base.close()
-            procent = procent*-1
-            if (procent < 0):
-                self.chartG.setTitle(
-                    f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤ<img src="source/down_arrow.png"> {int(procent * -1)} % from last week</font></b>'
-                    f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
-            else:
-                self.chartG.setTitle(
-                    f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤ<img src="source/up_arrow.png"> {int(procent)} % from last week</font></b>'
-                    f'<br align="left"><b><font face="Inter" size="5" color="#29002F">{int(aver_min)} min {int(aver_sec)} sec </font></b></br>')
+        # seriesG = QStackedBarSeries()
+        self.seriesG.append(set1)
+        self.seriesG.append(set2)
+        self.seriesG.append(set3)
+        self.seriesG.append(set4)
+        self.chartG.removeAxis(self.axisY)
+        self.axisY = QValueAxis()
+        minY = 0
+        maxY = int(MaxSum / 60)
 
-            # seriesG = QStackedBarSeries()
-            self.seriesG.append(set1)
-            self.seriesG.append(set2)
-            self.seriesG.append(set3)
-            self.seriesG.append(set4)
-            self.chartG.addSeries(self.seriesG)
-            self.chartG.update()
-            self.chartViewG.update()
+        self.axisY.setRange(minY, maxY)
+        self.axisY.setLabelFormat(f'<b><font face="Inter" color="#6E6E6E" size="4">%d min</font></b>')
+        self.axisY.setTickCount(3)
+        self.axisY.setMinorTickCount(1)
+
+        self.chartG.addAxis(self.axisY, Qt.AlignRight)
+        self.chartG.addSeries(self.seriesG)
+        self.chartG.update()
+        self.chartViewG.update()
 
 
     def Graph(self):
@@ -249,6 +274,13 @@ class Statistics(QMainWindow):
         sum_studyFri = 0
         sum_studySat = 0
         sum_studySun = 0
+        sum_Mon = 0
+        sum_Tue = 0
+        sum_Wed = 0
+        sum_Thu = 0
+        sum_Fri = 0
+        sum_Sat = 0
+        sum_Sun = 0
         self.data_base = sqlite3.connect('details.db')
         self.cur = self.data_base.cursor()
         self.cur.execute("SELECT week, tag, time FROM stats")
@@ -318,6 +350,14 @@ class Statistics(QMainWindow):
                 sum_sportSun = sum_sportSun + row[2]
 
             self.data_base.close()
+        sum_Mon = sum_sportM + sum_studyM + sum_otherM + sum_workM
+        sum_Tue = sum_sportTue + sum_studyTue + sum_otherTue + sum_workTue
+        sum_Wed = sum_sportWed + sum_studyWed + sum_otherWed + sum_workTue
+        sum_Thu = sum_sportThu + sum_studyThu + sum_otherThu + sum_workThu
+        sum_Fri = sum_sportFri + sum_studyFri + sum_otherFri + sum_workFri
+        sum_Sat = sum_sportSat + sum_studySat + sum_otherSat + sum_workSat
+        sum_Sun = sum_sportSun + sum_studySun + sum_otherSun + sum_workSun
+        MaxSum = max(sum_Mon, sum_Tue, sum_Wed, sum_Thu, sum_Fri, sum_Sat, sum_Sun)
 
         self.set1 = QBarSet('<b><font color="#FA7F9D">Sport</font></b>')
         self.set2 = QBarSet('<b><font color="#97ACF9">Work</font></b>')
@@ -347,7 +387,7 @@ class Statistics(QMainWindow):
         times = self.cur.fetchall()
         for time in times:
             averges += time[0]
-        averges /= 7
+        averges /= datetime.date.today().weekday()+1
         self.data_base.close()
         aver_min, aver_sec = divmod(averges, 60)
 
@@ -394,17 +434,17 @@ class Statistics(QMainWindow):
 
         axisX = QBarCategoryAxis()
         axisX.append(months)
-        axisY = QValueAxis()
+        self.axisY = QValueAxis()
         minY = 0
-        maxY = 12
+        maxY = int(MaxSum/60)
 
-        axisY.setRange(minY, maxY)
-        axisY.setLabelFormat(f'<b><font face="Inter" color="#6E6E6E" size="4">%dh</font></b>')
-        axisY.setTickCount(3)
-        axisY.setMinorTickCount(1)
+        self.axisY.setRange(minY, maxY)
+        self.axisY.setLabelFormat(f'<b><font face="Inter" color="#6E6E6E" size="4">%d min</font></b>')
+        self.axisY.setTickCount(3)
+        self.axisY.setMinorTickCount(1)
 
         self.chartG.addAxis(axisX, Qt.AlignBottom)
-        self.chartG.addAxis(axisY, Qt.AlignRight)
+        self.chartG.addAxis(self.axisY, Qt.AlignRight)
         self.chartG.legend().setVisible(True)
         self.chartG.legend().setFont(QtGui.QFont('Arial', 12))
         self.chartG.legend().setAlignment(Qt.AlignBottom)
@@ -509,6 +549,55 @@ class Statistics(QMainWindow):
                            sum_other).setColor(QtGui.QColor("#8CFA9C"))
         self.series.setHoleSize(0.4)
         self.chartview.update()
+
+        week = datetime.date.today().weekday()
+        self.prevSender.setStyleSheet(
+            "QPushButton{background-color:transparent; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+            "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+            "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+        )
+        if week == 0:
+            self.monBtn.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+            self.prevSender = self.monBtn
+        if week == 1:
+            self.tueBtn.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+            self.prevSender = self.tueBtn
+        if week == 2:
+            self.wedBtn.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+            self.prevSender = self.wedBtn
+        if week == 3:
+            self.thuBtn.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+            self.prevSender = self.thuBtn
+        if week == 4:
+            self.friBtn.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+            self.prevSender = self.friBtn
+        if week == 5:
+            self.satBtn.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+            self.prevSender = self.satBtn
+        if week == 6:
+            self.sunBtn.setStyleSheet(
+                "QPushButton{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:hover{background-color:#ffffff; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}"
+                "QPushButton:pressed{background-color:#8a8189; border-radius: 4px; font: bold 24px; font-family: Inter; color:#29002F}")
+            self.prevSender = self.sunBtn
 
     def updateChart(self):
         sender = self.sender()
