@@ -164,12 +164,14 @@ class Statistics(QMainWindow):
         self.data_base.close()
         sum_Mon = sum_sportM + sum_studyM + sum_otherM + sum_workM
         sum_Tue = sum_sportTue + sum_studyTue + sum_otherTue + sum_workTue
-        sum_Wed = sum_sportWed + sum_studyWed + sum_otherWed + sum_workTue
+        sum_Wed = sum_sportWed + sum_studyWed + sum_otherWed + sum_workWed
         sum_Thu = sum_sportThu + sum_studyThu + sum_otherThu + sum_workThu
         sum_Fri = sum_sportFri + sum_studyFri + sum_otherFri + sum_workFri
         sum_Sat = sum_sportSat + sum_studySat + sum_otherSat + sum_workSat
         sum_Sun = sum_sportSun + sum_studySun + sum_otherSun + sum_workSun
         MaxSum = max(sum_Mon, sum_Tue, sum_Wed, sum_Thu, sum_Fri, sum_Sat, sum_Sun)
+        list = [sum_Mon, sum_Tue, sum_Wed, sum_Thu, sum_Fri, sum_Sat, sum_Sun]
+
         self.chartG.removeSeries(self.seriesG)
 
         set1 = QBarSet('<b><font color="#FA7F9D">Sport</font></b>')
@@ -193,11 +195,25 @@ class Statistics(QMainWindow):
         times = self.cur.fetchall()
         for time in times:
             averges += time[0]
-        averges /= datetime.date.today().weekday()+1
+        count = 1
+        for i in list:
+            print (i)
+            if i != 0:
+                count += 1
+        if(count>1):
+            count-=1
+
+        averges = (sum_Mon + sum_Tue + sum_Wed + sum_Thu + sum_Fri + sum_Sat + sum_Sun)/count
+        print(count)
         self.data_base.close()
         aver_min = 0
         aver_sec = 0
-        aver_min, aver_sec = divmod(averges, 60)
+        if averges < 60:
+            aver_sec = averges
+            aver_min = 0
+            print(aver_sec)
+        else:
+            aver_min, aver_sec = divmod(averges, 60)
         self.data_base = sqlite3.connect('details.db')
         self.cur = self.data_base.cursor()
         self.cur.execute("SELECT lastmin, lastsec FROM average")
@@ -215,6 +231,7 @@ class Statistics(QMainWindow):
         self.data_base.commit()
         self.data_base.close()
         procent = procent*-1
+        print(aver_sec)
         if (procent < 0):
             self.chartG.setTitle(
                 f'<b><font face="Inter" size="5" color="#6E6E6E">Daily averageㅤㅤㅤㅤㅤㅤ<img src="source/down_arrow.png"> {int(procent * -1)} % from last week</font></b>'
@@ -387,9 +404,15 @@ class Statistics(QMainWindow):
         times = self.cur.fetchall()
         for time in times:
             averges += time[0]
-        averges /= datetime.date.today().weekday()+1
+        # averges /= datetime.date.today().weekday()+1
+        # averges = max(sum_Mon, sum_Tue, sum_Wed, sum_Thu, sum_Fri, sum_Sat, sum_Sun)
+        averges = (sum_Mon + sum_Tue + sum_Wed + sum_Thu + sum_Fri + sum_Sat + sum_Sun)/7
         self.data_base.close()
-        aver_min, aver_sec = divmod(averges, 60)
+        if averges < 60:
+            aver_sec = averges
+            aver_min = 0
+        else:
+            aver_min, aver_sec = divmod(averges, 60)
 
         self.data_base = sqlite3.connect('details.db')
         self.cur = self.data_base.cursor()

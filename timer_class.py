@@ -539,15 +539,3 @@ class Timer(QMainWindow):
         self.setGeometry(650, 50, 700, 762)
         self.setFixedSize(QSize(700, 762))
 
-# class MyThread(QtCore.QThread):
-#     mySignal = QtCore.pyqtSignal(int)
-#
-#     def __init__(self, *args, **kwargs):
-#         super().__init__()
-#         self.val = 0
-#
-#     def run(self):
-#         while True:
-#             self.val += 1  # Получаем определённые данные
-#             self.mySignal.emit(self.val)  # Передаем данные для отображения
-#             QtCore.QThread.msleep(1)
